@@ -478,20 +478,8 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 });
-window.addEventListener("load", () => {
-  const loginBtn = document.getElementById('admin-login-btn');
-  if (!loginBtn) {
-    console.error("Login button NOT found");
-    return;
-  }
-  console.log("Login button found");
-  loginBtn.addEventListener("click", () => {
-    console.log("Login button clicked");
-    alert("Login button clicked - event handler works");
-    // Uncomment next line to test login function call
-    // loginAdmin();
-  });
-});
+
+
 
 
 
