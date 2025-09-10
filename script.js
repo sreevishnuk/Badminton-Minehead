@@ -1,9 +1,9 @@
-// script.js - Complete script for Minehead Badminton Tournament Website
 console.log("Loaded updated script.js");
+
 // Firebase setup and imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
@@ -18,6 +18,22 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Admin login function
+async function loginAdmin() {
+  const email = document.getElementById('admin-email').value.trim();
+  const password = document.getElementById('admin-pass').value.trim();
+  const errorDiv = document.getElementById('login-error');
+  errorDiv.innerText = '';
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    window.location.href = 'admin.html';  // Redirect on successful login
+  } catch (error) {
+    errorDiv.innerText = error.message || 'Login failed.';
+  }
+}
 
 // Utility to get/set registration status
 const registrationStatusDoc = doc(db, "config", "registration");
@@ -462,5 +478,6 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 });
+
 
 
