@@ -4,6 +4,28 @@ body {
   padding: 0;
   background: #f5fafb;
 }
+.admin-login-topright {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.admin-login-button {
+  background-color: #191654;
+  color: white;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(25, 22, 84, 0.4);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-login-button:hover {
+  background-color: #0353a4;
+  box-shadow: 0 6px 18px rgba(3, 83, 164, 0.6);
+}
 
 /* Login Styling */
 .login-bg {
@@ -138,3 +160,4 @@ section { margin-bottom: 24px; }
   color: #191654;
   margin-bottom: 18px;
 }
+
