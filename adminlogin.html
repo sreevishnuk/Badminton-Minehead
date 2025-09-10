@@ -10,26 +10,26 @@
   <div class="login-card">
     <div class="login-header">
       <img src="badmintonlogo.png" alt="Badminton Logo" class="logo-sm" />
-
-      <h1>Admin Login</h1>
+      <h1>🔐 Admin Login</h1>
+      <p>Access the tournament dashboard</p>
     </div>
-    <form onsubmit="return false;"> <!-- prevent form submit to allow JS handling -->
-      <input type="email" id="admin-email" class="input" placeholder="Enter Admin Email" required />
-      <input type="password" id="admin-pass" class="input" placeholder="Enter Admin Password" required />
-      <button type="button" id="admin-login-btn" class="btn-primary">Login</button>
-
-      <div id="login-error" class="error"></div>
+    <form onsubmit="return false;" id="login-form">
+      <input type="email" id="admin-email" class="input" placeholder="Admin Email" required autocomplete="username" />
+      <input type="password" id="admin-pass" class="input" placeholder="Password" required autocomplete="current-password" />
+      <button type="button" id="admin-login-btn" class="btn-primary" style="width: 100%;">Login to Dashboard</button>
+      <div id="login-error" class="error" style="margin-top: 10px; min-height: 20px;"></div>
     </form>
   </div>
 
   <script src="script.js" type="module"></script>
-
-
+  <script>
+    // Optional: Add extra safety to ensure click handler is attached
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('admin-login-btn');
+      if (btn && typeof loginAdmin === 'function') {
+        btn.addEventListener('click', loginAdmin);
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
