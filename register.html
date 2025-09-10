@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Player Registration</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="reg-bg">
+  <div class="reg-card">
+    <div class="reg-header">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Badminton_racket_1.png" alt="Badminton Logo" class="logo-sm"/>
+      <h1>Register as Player</h1>
+      <p>Join the excitement. Select your categories below!</p>
+    </div>
+    <form id="registration-form">
+      <input type="text" id="player-name" class="input" placeholder="Your Name" required>
+      <div class="options">
+        <label><input type="checkbox" id="singles"/> Singles (£2)</label>
+        <label><input type="checkbox" id="doubles"/> Doubles (£2)</label>
+      </div>
+      <button class="btn-primary">Register</button>
+      <div id="registration-success" class="success"></div>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
