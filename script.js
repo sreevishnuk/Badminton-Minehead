@@ -485,6 +485,13 @@ window.addEventListener("load", () => {
     document.getElementById('admin-login-btn').addEventListener('click', loginAdmin);
   }
 });
+// At the bottom of script.js
+window.toggleRegistration = toggleRegistration;
+window.generateFixtures = generateFixtures;
+window.logoutAdmin = logoutAdmin;
+window.removePlayer = removePlayer;
+window.updateScore = updateScore;
+window.editMatch = editMatch;
 
 
 
