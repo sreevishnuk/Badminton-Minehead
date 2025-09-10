@@ -1,9 +1,9 @@
 console.log("Loaded updated script.js");
 
 // Firebase setup and imports — REMOVED TRAILING SPACES
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js ";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js ";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js ";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
@@ -176,7 +176,7 @@ async function toggleRegistration() {
   }
 }
 
-// Generate fixtures - knockout bracket for singles and doubles
+// ✅ ✅ ✅ FIXED: Generate fixtures + FORCE CLOSE REGISTRATION
 async function generateFixtures() {
   const btn = document.querySelector('button[onclick="generateFixtures()"]');
   if (btn) {
@@ -185,12 +185,9 @@ async function generateFixtures() {
   }
 
   try {
-    // Only generate if registration is closed
-    let open = await getRegistrationStatus();
-    if (open) {
-      alert("Close registration before generating fixtures.");
-      return;
-    }
+    // ✅ FORCE CLOSE REGISTRATION
+    await setRegistrationStatus(false);
+    console.log("✅ Registration closed automatically.");
 
     // Fetch players
     const allPlayersSnapshot = await getDocs(collection(db, "players"));
@@ -221,7 +218,7 @@ async function generateFixtures() {
     await setDoc(doublesRef, { rounds: doublesFixtures });
 
     console.log("✅ Fixtures saved successfully.");
-    alert("Fixtures generated successfully.");
+    alert("Fixtures generated successfully. Registration is now CLOSED.");
 
     // Reload displays
     if (typeof loadFixtures === 'function') loadFixtures();
@@ -474,7 +471,7 @@ function formatPlayerName(playerObj, isDoubles) {
   return playerObj.name || "Unknown";
 }
 
-// ✅ ✅ ✅ UPDATED: Format fixture display WITHOUT "Edit" buttons
+// ✅ Format fixture display WITHOUT "Edit" buttons
 function formatFixtureEditingHTML(rounds, type) {
   let html = `<div id="${type}-edit-area">`;
   rounds.forEach((roundObj, i) => {
@@ -493,7 +490,7 @@ function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// Format score input for admin
+// ✅ Format score input — CLEAN: Player [input] vs Player [input] [Update]
 function formatFixtureScoreInputHTML(rounds, type) {
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
@@ -501,11 +498,13 @@ function formatFixtureScoreInputHTML(rounds, type) {
     roundObj.matches.forEach((match, j) => {
       const p1Name = formatPlayerName(match.player1, type === "doubles");
       const p2Name = formatPlayerName(match.player2, type === "doubles");
-      html += `<div>
-          <span>Match ${j + 1}: ${p1Name} vs ${p2Name}</span><br>
-          <label>Score ${p1Name}: <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}"></label>
-          <label>Score ${p2Name}: <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}"></label>
-          <button onclick="updateScore('${type}', ${i}, ${j})">Update Score</button>
+
+      html += `<div class="score-row">
+          <span>${p1Name}</span>
+          <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}" placeholder="0">
+          <span class="vs">vs</span>
+          <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}" placeholder="0">
+          <button onclick="updateScore('${type}', ${i}, ${j})">Update</button>
         </div><hr>`;
     });
   });
@@ -513,7 +512,7 @@ function formatFixtureScoreInputHTML(rounds, type) {
   return html;
 }
 
-// ✅ ✅ ✅ UPDATED: Update score + auto-propagate winner to next round
+// ✅ Update score + auto-propagate winner to next round
 async function updateScore(type, roundIndex, matchIndex) {
   try {
     const score1Input = document.getElementById(`${type}-${roundIndex}-${matchIndex}-score1`);
@@ -627,7 +626,7 @@ window.addEventListener("load", () => {
   }
 });
 
-// Expose functions to global scope for HTML onclick handlers
+// ✅ ✅ ✅ FIXED: Expose ALL required functions to window
 try {
   window.toggleRegistration = toggleRegistration;
   window.generateFixtures = generateFixtures;
@@ -635,7 +634,13 @@ try {
   window.removePlayer = removePlayer;
   window.updateScore = updateScore;
   window.editMatch = editMatch;
-  console.log("✅ Functions exposed to window scope successfully.");
+
+  // ✅ CRITICAL for index.html
+  window.getRegistrationStatus = getRegistrationStatus;
+  window.loadFixtures = loadFixtures;
+  window.submitRegistrationForm = submitRegistrationForm;
+
+  console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-    }
+}
