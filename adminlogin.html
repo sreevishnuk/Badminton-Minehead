@@ -12,11 +12,14 @@
       <h1>Admin Login</h1>
     </div>
     <form>
-      <input type="password" id="admin-pass" class="input" placeholder="Enter Admin Password">
-      <button type="button" class="btn-primary" onclick="loginAdmin()">Login</button>
-      <div id="login-error" class="error"></div>
-    </form>
+  <input type="email" id="admin-email" class="input" placeholder="Enter Admin Email" required>
+  <input type="password" id="admin-pass" class="input" placeholder="Enter Admin Password" required>
+  <button type="button" class="btn-primary" onclick="loginAdmin()">Login</button>
+  <div id="login-error" class="error"></div>
+</form>
+
   </div>
   <script src="script.js"></script>
 </body>
 </html>
+
