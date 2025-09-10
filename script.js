@@ -1,5 +1,5 @@
 // script.js - Complete script for Minehead Badminton Tournament Website
-
+console.log("Loaded updated script.js");
 // Firebase setup and imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -462,4 +462,5 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 });
+
 
