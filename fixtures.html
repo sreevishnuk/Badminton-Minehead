@@ -2,26 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tournament Fixtures</title>
+  <title>Fixtures & Results</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="fixtures-bg">
-  <header class="fixtures-header">
-    <img src="badmintonlogo.png" alt="Badminton Logo" class="logo-sm" />
+  <div class="fixtures-header">
+    <img src="badmintonlogo.png" alt="Logo" class="logo-md" />
+    <h1>🏸 Tournament Fixtures & Live Results</h1>
+    <p class="subtitle">Updated live as matches are played!</p>
+  </div>
 
-    <h1>Minehead Badminton Tournament</h1>
-    <p class="subtitle">Check the schedule and bracket!</p>
-  </header>
   <div class="fixture-section">
-    <h2>Singles Fixtures</h2>
-    <div id="singles-fixtures"></div>
+    <h2>Singles Bracket</h2>
+    <div id="singles-fixtures">Loading fixtures...</div>
   </div>
+
   <div class="fixture-section">
-    <h2>Doubles Fixtures</h2>
-    <div id="doubles-fixtures"></div>
+    <h2>Doubles Bracket</h2>
+    <div id="doubles-fixtures">Loading fixtures...</div>
   </div>
-  <script src="script.js" type="module"></script>
+
+  <div style="text-align: center; margin: 40px 0;">
+    <a href="index.html" class="btn-secondary" style="text-decoration: none; padding: 10px 24px; border-radius: 8px;">
+      ← Back to Home
+    </a>
+  </div>
+
+  <script type="module" src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof loadFixtures === 'function') {
+        loadFixtures();
+      }
+    });
+  </script>
 </body>
 </html>
-
-
