@@ -515,7 +515,7 @@ function formatFixtureScoreInputHTML(rounds, type) {
   return html;
 }
 
-// Update score and decide winner for a match
+// ✅ ✅ ✅ UPDATED: Update score + auto-propagate winner to next round
 async function updateScore(type, roundIndex, matchIndex) {
   try {
     const score1Input = document.getElementById(`${type}-${roundIndex}-${matchIndex}-score1`);
@@ -539,28 +539,56 @@ async function updateScore(type, roundIndex, matchIndex) {
       return;
     }
 
-    const rounds = [...fixtureSnap.data().rounds]; // shallow clone
+    // Deep clone to avoid mutation issues
+    const rounds = JSON.parse(JSON.stringify(fixtureSnap.data().rounds));
 
     // Update scores
     rounds[roundIndex].matches[matchIndex].score1 = score1;
     rounds[roundIndex].matches[matchIndex].score2 = score2;
 
-    // Determine winner player object
+    // Determine winner
+    let winner = null;
     if (score1 > score2) {
-      rounds[roundIndex].matches[matchIndex].winner = rounds[roundIndex].matches[matchIndex].player1;
+      winner = rounds[roundIndex].matches[matchIndex].player1;
     } else if (score2 > score1) {
-      rounds[roundIndex].matches[matchIndex].winner = rounds[roundIndex].matches[matchIndex].player2;
+      winner = rounds[roundIndex].matches[matchIndex].player2;
     } else {
-      rounds[roundIndex].matches[matchIndex].winner = null; // draw or undecided
+      // Draw — no winner yet
+      rounds[roundIndex].matches[matchIndex].winner = null;
+      await updateDoc(fixtureDoc, { rounds });
+      alert("Scores updated. No winner due to draw.");
+      if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
+      if (typeof loadFixtures === 'function') loadFixtures();
+      return;
+    }
+
+    // Set winner
+    rounds[roundIndex].matches[matchIndex].winner = winner;
+
+    // ➡️ PROPAGATE WINNER TO NEXT ROUND (if exists)
+    const nextRoundIndex = roundIndex + 1;
+    if (nextRoundIndex < rounds.length) {
+      // In knockout, winner of match N goes to match floor(N/2) in next round
+      const nextMatchIndex = Math.floor(matchIndex / 2);
+
+      // Which slot? Even matchIndex → player1, Odd → player2
+      const slot = matchIndex % 2 === 0 ? "player1" : "player2";
+
+      // Assign winner to next round match
+      if (rounds[nextRoundIndex].matches[nextMatchIndex]) {
+        rounds[nextRoundIndex].matches[nextMatchIndex][slot] = winner;
+        console.log(`✅ Winner "${formatPlayerName(winner, type === 'doubles')}" propagated to Round ${nextRoundIndex + 1}, Match ${nextMatchIndex + 1}, slot: ${slot}`);
+      }
     }
 
     // Save back updated rounds
     await updateDoc(fixtureDoc, { rounds });
 
-    alert("Score updated and winner set.");
+    alert("Score updated and winner set. Winner propagated to next round.");
     if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
     if (typeof loadFixtures === 'function') loadFixtures();
   } catch (error) {
+    console.error("❌ Error updating score:", error);
     alert("Failed to update score: " + error.message);
   }
 }
@@ -612,4 +640,4 @@ try {
   console.log("✅ Functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-      }
+}
