@@ -7,17 +7,19 @@
 </head>  
 <body class="reg-bg">
   <div class="admin-login-topright">
-  <a href="adminlogin.html" class="admin-login-button">Admin Login</a>
+    <a href="adminlogin.html" class="admin-login-button">Admin Login</a>
   </div>
-    <div class="reg-card">
-    <div class="reg-header">
-       <img src="badmintonlogo.png" alt="Badminton Logo" class="logo-sm" />
 
-      <h1>Register as Player</h1>
+  <div class="reg-card">
+    <div class="reg-header">
+      <img src="badmintonlogo.png" alt="Badminton Logo" class="logo-sm" />
+      <h1>🏸 Minehead Badminton Tournament</h1>
       <p>Join the excitement. Select your categories below!</p>
     </div>
-    <form id="registration-form">
-      <input type="text" id="player-name" class="input" placeholder="Your Name" required>
+
+    <!-- Registration Form (shown only if registration is OPEN) -->
+    <form id="registration-form" style="display: none; margin-top: 20px;">
+      <input type="text" id="player-name" class="input" placeholder="Your Full Name" required>
       <div class="options">
         <label><input type="checkbox" id="singles"/> Singles (£2)</label>
         <label><input type="checkbox" id="doubles"/> Doubles (£2)</label>
@@ -25,12 +27,69 @@
       <button class="btn-primary">Register</button>
       <div id="registration-success" class="success"></div>
     </form>
+
+    <!-- Fixtures View (shown only if registration is CLOSED) -->
+    <div id="fixtures-view" style="display: none; margin-top: 20px; width: 100%;">
+      <div style="background: #fff; padding: 20px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color: #e74c3c; text-align: center;">⚠️ REGISTRATION IS NOW CLOSED</h3>
+        <p style="text-align: center; margin-bottom: 24px;">View the tournament fixtures and live results below:</p>
+
+        <div class="fixture-section">
+          <h2>Singles Bracket</h2>
+          <div id="singles-fixtures">Loading fixtures...</div>
+        </div>
+
+        <div class="fixture-section">
+          <h2>Doubles Bracket</h2>
+          <div id="doubles-fixtures">Loading fixtures...</div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- SCRIPTS -->
   <script type="module" src="script.js"></script>
+  <script>
+    // Wait for DOM and script.js to load
+    document.addEventListener('DOMContentLoaded', async () => {
+      const form = document.getElementById('registration-form');
+      const fixturesView = document.getElementById('fixtures-view');
+
+      try {
+        // ✅ Check if registration is open
+        const isOpen = await getRegistrationStatus();
+
+        if (isOpen) {
+          form.style.display = 'block';
+          fixturesView.style.display = 'none';
+        } else {
+          form.style.display = 'none';
+          fixturesView.style.display = 'block';
+          // ✅ Load fixtures for public view
+          if (typeof loadFixtures === 'function') {
+            loadFixtures();
+          }
+        }
+      } catch (err) {
+        console.error("Error checking registration status or loading fixtures:", err);
+        // If error, show fixtures view as fallback
+        form.style.display = 'none';
+        fixturesView.style.display = 'block';
+        if (typeof loadFixtures === 'function') {
+          loadFixtures();
+        }
+      }
+
+      // ✅ Attach submit handler to form (if it exists)
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          if (typeof submitRegistrationForm === 'function') {
+            submitRegistrationForm(e);
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
