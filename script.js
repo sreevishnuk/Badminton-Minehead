@@ -270,7 +270,7 @@ function createDoublesBrackets(players) {
 
   return rounds;
 }
-}
+
 
 // Shuffle helper
 function shuffleArray(arr) {
@@ -506,6 +506,7 @@ window.logoutAdmin = logoutAdmin;
 window.removePlayer = removePlayer;
 window.updateScore = updateScore;
 window.editMatch = editMatch;
+
 
 
 
