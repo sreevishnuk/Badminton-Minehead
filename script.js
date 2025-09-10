@@ -184,8 +184,6 @@ async function generateFixtures() {
     btn.innerText = "Generating...";
   }
 
-  console.log("generateFixtures called!");
-
   try {
     // Only generate if registration is closed
     let open = await getRegistrationStatus();
@@ -211,16 +209,14 @@ async function generateFixtures() {
     // Generate doubles random pairs + knockout
     const doublesFixtures = createDoublesBrackets(doublesPlayers);
 
-    // ✅ FIX: Use { merge: true } to avoid schema conflicts
-    // ✅ Also, delete first to ensure clean state (optional but safe)
+    // ✅ Delete old docs to avoid schema conflicts
     const singlesRef = doc(db, "fixtures", "singles");
     const doublesRef = doc(db, "fixtures", "doubles");
 
-    // Delete existing docs to avoid schema conflicts
-    await deleteDoc(singlesRef).catch(() => { /* ignore if not exists */ });
-    await deleteDoc(doublesRef).catch(() => { /* ignore if not exists */ });
+    await deleteDoc(singlesRef).catch(() => {});
+    await deleteDoc(doublesRef).catch(() => {});
 
-    // Save fresh
+    // ✅ Save fresh — now using { round: 1, matches: [...] } structure
     await setDoc(singlesRef, { rounds: singlesFixtures });
     await setDoc(doublesRef, { rounds: doublesFixtures });
 
@@ -265,8 +261,14 @@ function createKnockoutBrackets(players) {
     });
   }
 
-  // Prepare rounds array
-  const rounds = [roundMatches];
+  // Prepare rounds array — ✅ FLAT STRUCTURE: { round: 1, matches: [...] }
+  const rounds = [];
+
+  // Round 1
+  rounds.push({
+    round: 1,
+    matches: roundMatches
+  });
 
   // Initialize empty rounds for future rounds
   for (let r = 1; r < roundsNeeded; r++) {
@@ -281,7 +283,10 @@ function createKnockoutBrackets(players) {
         score2: 0
       });
     }
-    rounds.push(emptyMatches);
+    rounds.push({
+      round: r + 1,
+      matches: emptyMatches
+    });
   }
 
   return rounds;
@@ -333,7 +338,13 @@ function createDoublesBrackets(players) {
     });
   }
 
-  const rounds = [roundMatches];
+  const rounds = [];
+
+  // Round 1
+  rounds.push({
+    round: 1,
+    matches: roundMatches
+  });
 
   // Empty future rounds
   for (let r = 1; r < roundsNeeded; r++) {
@@ -348,7 +359,10 @@ function createDoublesBrackets(players) {
         score2: 0
       });
     }
-    rounds.push(emptyMatches);
+    rounds.push({
+      round: r + 1,
+      matches: emptyMatches
+    });
   }
 
   return rounds;
@@ -433,9 +447,9 @@ async function loadFixturesAdmin() {
 function formatBracketsHTML(rounds, isDoubles = false) {
   let html = '<div class="bracket">';
 
-  rounds.forEach((round, i) => {
-    html += `<div class="round"><strong>Round ${i + 1}</strong><ul>`;
-    round.forEach(match => {
+  rounds.forEach((roundObj, i) => {
+    html += `<div class="round"><strong>Round ${roundObj.round}</strong><ul>`;
+    roundObj.matches.forEach(match => {
       const p1 = formatPlayerName(match.player1, isDoubles);
       const p2 = formatPlayerName(match.player2, isDoubles);
       let winner = match.winner ? formatPlayerName(match.winner, isDoubles) : "TBD";
@@ -463,9 +477,9 @@ function formatPlayerName(playerObj, isDoubles) {
 // Format editable fixture HTML for admin (basic)
 function formatFixtureEditingHTML(rounds, type) {
   let html = `<div id="${type}-edit-area">`;
-  rounds.forEach((round, i) => {
-    html += `<h4>Round ${i + 1}</h4>`;
-    round.forEach((match, j) => {
+  rounds.forEach((roundObj, i) => {
+    html += `<h4>Round ${roundObj.round}</h4>`;
+    roundObj.matches.forEach((match, j) => {
       html += `<div>
         <span>Match ${j + 1}: ${formatPlayerName(match.player1, type === "doubles")} vs ${formatPlayerName(match.player2, type === "doubles")}</span>
         <button onclick="editMatch('${type}', ${i}, ${j})">Edit</button>
@@ -484,9 +498,9 @@ function editMatch(type, roundIndex, matchIndex) {
 // Format score input for admin
 function formatFixtureScoreInputHTML(rounds, type) {
   let html = `<div id="${type}-score-area">`;
-  rounds.forEach((round, i) => {
-    html += `<h4>Round ${i + 1}</h4>`;
-    round.forEach((match, j) => {
+  rounds.forEach((roundObj, i) => {
+    html += `<h4>Round ${roundObj.round}</h4>`;
+    roundObj.matches.forEach((match, j) => {
       const p1Name = formatPlayerName(match.player1, type === "doubles");
       const p2Name = formatPlayerName(match.player2, type === "doubles");
       html += `<div>
@@ -528,16 +542,16 @@ async function updateScore(type, roundIndex, matchIndex) {
     const rounds = [...fixtureSnap.data().rounds]; // shallow clone
 
     // Update scores
-    rounds[roundIndex][matchIndex].score1 = score1;
-    rounds[roundIndex][matchIndex].score2 = score2;
+    rounds[roundIndex].matches[matchIndex].score1 = score1;
+    rounds[roundIndex].matches[matchIndex].score2 = score2;
 
     // Determine winner player object
     if (score1 > score2) {
-      rounds[roundIndex][matchIndex].winner = rounds[roundIndex][matchIndex].player1;
+      rounds[roundIndex].matches[matchIndex].winner = rounds[roundIndex].matches[matchIndex].player1;
     } else if (score2 > score1) {
-      rounds[roundIndex][matchIndex].winner = rounds[roundIndex][matchIndex].player2;
+      rounds[roundIndex].matches[matchIndex].winner = rounds[roundIndex].matches[matchIndex].player2;
     } else {
-      rounds[roundIndex][matchIndex].winner = null; // draw or undecided
+      rounds[roundIndex].matches[matchIndex].winner = null; // draw or undecided
     }
 
     // Save back updated rounds
@@ -598,4 +612,4 @@ try {
   console.log("✅ Functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-  }
+      }
