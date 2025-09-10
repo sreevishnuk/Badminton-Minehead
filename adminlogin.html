@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login - Minehead Badminton Tournament</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -11,7 +12,7 @@
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Badminton_racket_1.png" alt="Badminton Logo" class="logo-sm" />
       <h1>Admin Login</h1>
     </div>
-    <form>
+    <form onsubmit="return false;"> <!-- prevent form submit to allow JS handling -->
       <input type="email" id="admin-email" class="input" placeholder="Enter Admin Email" required />
       <input type="password" id="admin-pass" class="input" placeholder="Enter Admin Password" required />
       <button type="button" class="btn-primary" id="admin-login-btn">Login</button>
