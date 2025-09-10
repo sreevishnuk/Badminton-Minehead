@@ -262,49 +262,75 @@ section h2 {
   font-style: italic;
 }
 
-/* 🎯 SCORE INPUT SECTION — ENHANCED */
-#enter-scores label {
-  display: block;
-  margin: 8px 0 4px;
-  font-weight: 500;
-  color: #191654;
+/* ✅ ✅ ✅ SCORE INPUT ROW — CLEAN & MODERN */
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 16px;
+  background: #f0f9ff;
+  border-radius: 12px;
+  border: 1px solid #cce5ff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-#enter-scores input[type="number"] {
+.score-row span {
+  font-weight: 600;
+  color: #191654;
+  font-size: 1.05rem;
+  min-width: max-content;
+}
+
+.score-row .vs {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0 8px;
+}
+
+.score-row input {
   width: 70px;
   text-align: center;
   padding: 8px;
   border: 2px solid #e9ecef;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
-  transition: border-color 0.2s;
+  background: white;
+  transition: all 0.2s;
 }
 
-#enter-scores input[type="number"]:focus {
+.score-row input:focus {
   outline: none;
   border-color: #43c6ac;
   box-shadow: 0 0 0 3px rgba(67, 198, 172, 0.2);
+  background: #f0fdf8;
 }
 
-#enter-scores button {
-  margin-top: 12px;
-  padding: 10px 20px;
+.score-row button {
+  margin-top: 0;
+  padding: 8px 20px;
   background: #43c6ac;
   color: white;
   border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
-#enter-scores button:hover {
+.score-row button:hover {
   background: #191654;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(25, 22, 84, 0.2);
 }
 
-#enter-scores hr {
+/* HR Styling */
+hr {
   margin: 24px 0;
   border: 0;
   border-top: 1px dashed #e0e0e0;
@@ -354,11 +380,14 @@ tr:hover {
   .bracket {
     gap: 12px;
     padding: 10px 0;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .round {
-    min-width: 180px;
+    min-width: auto;
     padding: 16px 12px;
+    margin-bottom: 16px;
   }
 
   .round li {
@@ -385,6 +414,34 @@ tr:hover {
     text-align: center;
     margin-left: 0;
   }
+
+  /* Stack score inputs vertically on mobile */
+  .score-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .score-row > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .score-row span,
+  .score-row .vs,
+  .score-row input,
+  .score-row button {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .score-row button {
+    margin-top: 12px !important;
+    width: 100%;
+  }
 }
 
 /* PRINT STYLES */
@@ -394,7 +451,7 @@ tr:hover {
     color: black;
   }
 
-  .admin-nav, .btn-secondary, #enter-scores button, .admin-login-topright {
+  .admin-nav, .btn-secondary, .admin-login-topright {
     display: none;
   }
 
@@ -412,4 +469,12 @@ tr:hover {
     break-inside: avoid;
     page-break-inside: avoid;
   }
-}
+
+  .score-row button {
+    display: none;
+  }
+
+  .score-row {
+    border: 1px solid #ddd;
+  }
+  }
