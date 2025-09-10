@@ -493,7 +493,7 @@ function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// Format score input for admin
+// ✅ ✅ ✅ FIXED: Clean score input — Player1 [input] vs Player2 [input] [Update]
 function formatFixtureScoreInputHTML(rounds, type) {
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
@@ -501,11 +501,14 @@ function formatFixtureScoreInputHTML(rounds, type) {
     roundObj.matches.forEach((match, j) => {
       const p1Name = formatPlayerName(match.player1, type === "doubles");
       const p2Name = formatPlayerName(match.player2, type === "doubles");
-      html += `<div>
-          <span>Match ${j + 1}: ${p1Name} vs ${p2Name}</span><br>
-          <label>Score ${p1Name}: <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}"></label>
-          <label>Score ${p2Name}: <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}"></label>
-          <button onclick="updateScore('${type}', ${i}, ${j})">Update Score</button>
+
+      // ✅ Clean format: Player1 [input] vs Player2 [input] [Update]
+      html += `<div class="score-row">
+          <span>${p1Name}</span>
+          <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}" placeholder="0">
+          <span class="vs">vs</span>
+          <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}" placeholder="0">
+          <button onclick="updateScore('${type}', ${i}, ${j})">Update</button>
         </div><hr>`;
     });
   });
