@@ -460,6 +460,8 @@ function logoutAdmin() {
 }
 
 // Initializers for pages
+
+// Initializers for pages
 window.addEventListener("load", () => {
   // Detect page and run relevant functions
   if (document.getElementById('registration-form')) {
@@ -477,8 +479,12 @@ window.addEventListener("load", () => {
   if (document.getElementById('edit-fixtures') || document.getElementById('enter-scores')) {
     loadFixturesAdmin();
   }
-});
 
+  // 🔑 Fix for login button
+  if (document.getElementById('admin-login-btn')) {
+    document.getElementById('admin-login-btn').addEventListener('click', loginAdmin);
+  }
+});
 
 
 
