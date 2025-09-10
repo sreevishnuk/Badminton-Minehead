@@ -1,8 +1,9 @@
 // script.js - Complete script for Minehead Badminton Tournament Website
 
 // Firebase setup and imports
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
@@ -461,3 +462,4 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 });
+
