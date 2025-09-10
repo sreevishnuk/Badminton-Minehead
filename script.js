@@ -1,9 +1,9 @@
-// script.js - Complete script for Minehead Badminton Tournament Website
+// Complete script.js for Minehead Badminton Tournament Website with Firebase Auth admin login
 
 // Firebase setup and imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
@@ -18,6 +18,32 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Admin login function using Firebase Authentication email/password
+async function loginAdmin() {
+  const email = document.getElementById('admin-email').value.trim();
+  const password = document.getElementById('admin-pass').value.trim();
+  const errorDiv = document.getElementById('login-error');
+  errorDiv.innerText = '';
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    // Redirect to admin dashboard page
+    window.location.href = 'admin.html'; // Adjust path if needed
+  } catch (error) {
+    errorDiv.innerText = error.message || "Login failed. Check your credentials.";
+  }
+}
+
+// Logout admin function
+function logoutAdmin() {
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  }).catch((error) => {
+    alert("Error logging out: " + error.message);
+  });
+}
 
 // Utility to get/set registration status
 const registrationStatusDoc = doc(db, "config", "registration");
@@ -35,7 +61,7 @@ async function setRegistrationStatus(open) {
   await setDoc(registrationStatusDoc, { open });
 }
 
-// Registration form submit - call this from register.html
+// Registration form submit - called from register.html
 async function submitRegistrationForm(event) {
   event.preventDefault();
 
@@ -176,26 +202,21 @@ async function generateFixtures() {
 // Create bracket for knockout tournament given a player array
 function createKnockoutBrackets(players) {
   const shuffled = shuffleArray(players);
-  // Determine total rounds needed
   const totalPlayers = shuffled.length;
   const roundsNeeded = Math.ceil(Math.log2(totalPlayers));
   const bracketSize = Math.pow(2, roundsNeeded);
 
-  // Add byes as needed
   while (shuffled.length < bracketSize) {
-    shuffled.push(null); // bye represented by null
+    shuffled.push(null);
   }
 
-  // Create matches for round 1
   let roundMatches = [];
   for (let i = 0; i < bracketSize; i += 2) {
     roundMatches.push({ player1: shuffled[i], player2: shuffled[i + 1], winner: null });
   }
 
-  // Prepare rounds array, rounds[0] = first round matches
   const rounds = [roundMatches];
 
-  // Initialize empty rounds for future rounds
   for (let r = 1; r < roundsNeeded; r++) {
     const numMatches = bracketSize / Math.pow(2, r + 1);
     let emptyMatches = [];
@@ -211,7 +232,6 @@ function createKnockoutBrackets(players) {
 // Create doubles brackets with random pairs
 function createDoublesBrackets(players) {
   const shuffled = shuffleArray(players);
-  // Pair in twos - if odd count, last player gets a bye
   let pairs = [];
   for (let i = 0; i < shuffled.length; i += 2) {
     const p1 = shuffled[i];
@@ -219,12 +239,10 @@ function createDoublesBrackets(players) {
     pairs.push({ player1: p1, player2: p2, winner: null });
   }
 
-  // Total pairs count
   const totalPairs = pairs.length;
   const roundsNeeded = Math.ceil(Math.log2(totalPairs));
   const bracketSize = Math.pow(2, roundsNeeded);
 
-  // Add byes as needed
   while (pairs.length < bracketSize) {
     pairs.push({ player1: null, player2: null, winner: null });
   }
@@ -245,7 +263,7 @@ function createDoublesBrackets(players) {
 // Shuffle helper
 function shuffleArray(arr) {
   const array = arr.slice();
-  for(let i = array.length - 1; i > 0; i--){
+  for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
@@ -341,7 +359,6 @@ function formatPlayerName(playerObj, isDoubles) {
   if (!playerObj) return "BYE";
   if (!isDoubles) return playerObj.name || "Unknown";
 
-  // Doubles playerObj expected as {player1: {}, player2: {}}
   if (playerObj.player1 && playerObj.player2) {
     return `${playerObj.player1.name || "Unknown"} & ${playerObj.player2.name || "Unknown"}`;
   }
@@ -405,7 +422,6 @@ async function updateScore(type, roundIndex, matchIndex) {
       return;
     }
 
-    // Load fixture doc & rounds
     const fixtureDoc = doc(db, "fixtures", type);
     const fixtureSnap = await getDoc(fixtureDoc);
     if (!fixtureSnap.exists()) {
@@ -414,20 +430,17 @@ async function updateScore(type, roundIndex, matchIndex) {
     }
     const rounds = fixtureSnap.data().rounds;
 
-    // Update scores and winner
     rounds[roundIndex][matchIndex].score1 = score1;
     rounds[roundIndex][matchIndex].score2 = score2;
 
-    // Determine winner player object
     if (score1 > score2) {
       rounds[roundIndex][matchIndex].winner = rounds[roundIndex][matchIndex].player1;
     } else if (score2 > score1) {
       rounds[roundIndex][matchIndex].winner = rounds[roundIndex][matchIndex].player2;
     } else {
-      rounds[roundIndex][matchIndex].winner = null; // draw or undecided
+      rounds[roundIndex][matchIndex].winner = null;
     }
 
-    // Save back updated rounds
     await updateDoc(fixtureDoc, { rounds });
 
     alert("Score updated and winner set.");
@@ -438,14 +451,18 @@ async function updateScore(type, roundIndex, matchIndex) {
   }
 }
 
-// Logout admin (simple redirect)
+// Logout admin
 function logoutAdmin() {
   window.location.href = "index.html";
 }
 
-// Initializers for pages
+// Initializers for pages and event bindings
 window.addEventListener("load", () => {
-  // Detect page and run relevant functions
+  if (document.getElementById('admin-email') && document.getElementById('admin-pass')) {
+    const loginBtn = document.querySelector('.btn-primary');
+    if (loginBtn) loginBtn.addEventListener("click", loginAdmin);
+  }
+
   if (document.getElementById('registration-form')) {
     document.getElementById('registration-form').addEventListener('submit', submitRegistrationForm);
   }
@@ -462,4 +479,3 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 });
-
