@@ -23,8 +23,23 @@
   </div>
 
   <script src="script.js" type="module"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('admin-login-btn');
+  if (!btn) {
+    console.error("Login button not found");
+    return;
+  }
+  btn.addEventListener('click', () => {
+    alert('Login button clicked!');
+    console.log('Login button clicked event fired');
+  });
+});
+</script>
+
 </body>
 </html>
+
 
 
 
