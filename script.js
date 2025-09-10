@@ -211,16 +211,27 @@ async function generateFixtures() {
     // Generate doubles random pairs + knockout
     const doublesFixtures = createDoublesBrackets(doublesPlayers);
 
-    // Save fixtures to Firestore under "fixtures" collection doc "singles" and "doubles"
-    await setDoc(doc(db, "fixtures", "singles"), { rounds: singlesFixtures });
-    await setDoc(doc(db, "fixtures", "doubles"), { rounds: doublesFixtures });
+    // ✅ FIX: Use { merge: true } to avoid schema conflicts
+    // ✅ Also, delete first to ensure clean state (optional but safe)
+    const singlesRef = doc(db, "fixtures", "singles");
+    const doublesRef = doc(db, "fixtures", "doubles");
 
+    // Delete existing docs to avoid schema conflicts
+    await deleteDoc(singlesRef).catch(() => { /* ignore if not exists */ });
+    await deleteDoc(doublesRef).catch(() => { /* ignore if not exists */ });
+
+    // Save fresh
+    await setDoc(singlesRef, { rounds: singlesFixtures });
+    await setDoc(doublesRef, { rounds: doublesFixtures });
+
+    console.log("✅ Fixtures saved successfully.");
     alert("Fixtures generated successfully.");
+
     // Reload displays
     if (typeof loadFixtures === 'function') loadFixtures();
     if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
   } catch (error) {
-    console.error("Error in generateFixtures:", error);
+    console.error("❌ Error in generateFixtures:", error);
     alert("Failed to generate fixtures: " + error.message);
   } finally {
     if (btn) {
@@ -233,7 +244,6 @@ async function generateFixtures() {
 // Create bracket for knockout tournament given a player array
 function createKnockoutBrackets(players) {
   const shuffled = shuffleArray(players);
-  // Determine total rounds needed
   const totalPlayers = shuffled.length;
   const roundsNeeded = Math.ceil(Math.log2(totalPlayers));
   const bracketSize = Math.pow(2, roundsNeeded);
@@ -246,10 +256,16 @@ function createKnockoutBrackets(players) {
   // Create matches for round 1
   let roundMatches = [];
   for (let i = 0; i < bracketSize; i += 2) {
-    roundMatches.push({ player1: shuffled[i], player2: shuffled[i + 1], winner: null, score1: 0, score2: 0 });
+    roundMatches.push({
+      player1: shuffled[i],
+      player2: shuffled[i + 1],
+      winner: null,
+      score1: 0,
+      score2: 0
+    });
   }
 
-  // Prepare rounds array, rounds[0] = first round matches
+  // Prepare rounds array
   const rounds = [roundMatches];
 
   // Initialize empty rounds for future rounds
@@ -257,7 +273,13 @@ function createKnockoutBrackets(players) {
     const numMatches = bracketSize / Math.pow(2, r + 1);
     let emptyMatches = [];
     for (let i = 0; i < numMatches; i++) {
-      emptyMatches.push({ player1: null, player2: null, winner: null, score1: 0, score2: 0 });
+      emptyMatches.push({
+        player1: null,
+        player2: null,
+        winner: null,
+        score1: 0,
+        score2: 0
+      });
     }
     rounds.push(emptyMatches);
   }
@@ -276,7 +298,7 @@ function createDoublesBrackets(players) {
     const p2 = (i + 1 < shuffled.length) ? shuffled[i + 1] : null;
 
     pairs.push({
-      player1: { player1: p1, player2: p2 }, // 👈 Wrap into a team object
+      player1: { player1: p1, player2: p2 },
       player2: null,
       winner: null,
       score1: 0,
@@ -318,7 +340,13 @@ function createDoublesBrackets(players) {
     const numMatches = bracketSize / Math.pow(2, r + 1);
     let emptyMatches = [];
     for (let i = 0; i < numMatches; i++) {
-      emptyMatches.push({ player1: null, player2: null, winner: null, score1: 0, score2: 0 });
+      emptyMatches.push({
+        player1: null,
+        player2: null,
+        winner: null,
+        score1: 0,
+        score2: 0
+      });
     }
     rounds.push(emptyMatches);
   }
@@ -496,6 +524,7 @@ async function updateScore(type, roundIndex, matchIndex) {
       alert("Fixtures not found.");
       return;
     }
+
     const rounds = [...fixtureSnap.data().rounds]; // shallow clone
 
     // Update scores
@@ -566,7 +595,7 @@ try {
   window.removePlayer = removePlayer;
   window.updateScore = updateScore;
   window.editMatch = editMatch;
-  console.log("Functions exposed to window scope successfully.");
+  console.log("✅ Functions exposed to window scope successfully.");
 } catch (err) {
-  console.error("Failed to expose functions to window:", err);
-      }
+  console.error("❌ Failed to expose functions to window:", err);
+  }
