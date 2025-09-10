@@ -1,9 +1,9 @@
 console.log("Loaded updated script.js");
 
 // Firebase setup and imports — REMOVED TRAILING SPACES
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js ";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js ";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js ";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
@@ -493,7 +493,7 @@ function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// ✅ ✅ ✅ FIXED: Clean score input — Player1 [input] vs Player2 [input] [Update]
+// Format score input for admin
 function formatFixtureScoreInputHTML(rounds, type) {
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
@@ -501,14 +501,11 @@ function formatFixtureScoreInputHTML(rounds, type) {
     roundObj.matches.forEach((match, j) => {
       const p1Name = formatPlayerName(match.player1, type === "doubles");
       const p2Name = formatPlayerName(match.player2, type === "doubles");
-
-      // ✅ Clean format: Player1 [input] vs Player2 [input] [Update]
-      html += `<div class="score-row">
-          <span>${p1Name}</span>
-          <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}" placeholder="0">
-          <span class="vs">vs</span>
-          <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}" placeholder="0">
-          <button onclick="updateScore('${type}', ${i}, ${j})">Update</button>
+      html += `<div>
+          <span>Match ${j + 1}: ${p1Name} vs ${p2Name}</span><br>
+          <label>Score ${p1Name}: <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}"></label>
+          <label>Score ${p2Name}: <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}"></label>
+          <button onclick="updateScore('${type}', ${i}, ${j})">Update Score</button>
         </div><hr>`;
     });
   });
@@ -641,4 +638,4 @@ try {
   console.log("✅ Functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-}
+    }
