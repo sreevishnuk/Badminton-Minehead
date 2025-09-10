@@ -21,7 +21,6 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Admin login function using Firebase Authentication email/password
-
 async function loginAdmin() {
   const email = document.getElementById('admin-email').value.trim();
   const password = document.getElementById('admin-pass').value.trim();
@@ -35,17 +34,6 @@ async function loginAdmin() {
     errorDiv.innerText = error.message || "Login failed. Check credentials.";
   }
 }
-
-// Attach event listener on page load
-window.addEventListener("load", () => {
-  const loginBtn = document.getElementById('admin-login-btn');
-  if (loginBtn) {
-    loginBtn.addEventListener("click", loginAdmin);
-  }
-
-  // Your other initializations...
-});
-
 
 // Logout admin function
 function logoutAdmin() {
@@ -205,7 +193,6 @@ async function generateFixtures() {
   await setDoc(doc(db, "fixtures", "doubles"), { rounds: doublesFixtures });
 
   alert("Fixtures generated successfully.");
-  // Optionally reload admin fixtures display here
   loadFixtures();
   loadFixturesAdmin();
 }
@@ -469,9 +456,9 @@ function logoutAdmin() {
 
 // Initializers for pages and event bindings
 window.addEventListener("load", () => {
-  if (document.getElementById('admin-email') && document.getElementById('admin-pass')) {
-    const loginBtn = document.querySelector('.btn-primary');
-    if (loginBtn) loginBtn.addEventListener("click", loginAdmin);
+  const loginBtn = document.getElementById('admin-login-btn');
+  if (loginBtn) {
+    loginBtn.addEventListener("click", loginAdmin);
   }
 
   if (document.getElementById('registration-form')) {
@@ -490,4 +477,3 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 });
-
