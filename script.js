@@ -474,23 +474,21 @@ function formatPlayerName(playerObj, isDoubles) {
   return playerObj.name || "Unknown";
 }
 
-// Format editable fixture HTML for admin (basic)
+// ✅ ✅ ✅ UPDATED: Format fixture display WITHOUT "Edit" buttons
 function formatFixtureEditingHTML(rounds, type) {
   let html = `<div id="${type}-edit-area">`;
   rounds.forEach((roundObj, i) => {
-    html += `<h4>Round ${roundObj.round}</h4>`;
+    html += `<h4>Round ${roundObj.round}</h4><ul>`;
     roundObj.matches.forEach((match, j) => {
-      html += `<div>
-        <span>Match ${j + 1}: ${formatPlayerName(match.player1, type === "doubles")} vs ${formatPlayerName(match.player2, type === "doubles")}</span>
-        <button onclick="editMatch('${type}', ${i}, ${j})">Edit</button>
-      </div>`;
+      html += `<li>Match ${j + 1}: ${formatPlayerName(match.player1, type === "doubles")} vs ${formatPlayerName(match.player2, type === "doubles")}</li>`;
     });
+    html += `</ul>`;
   });
   html += `</div>`;
   return html;
 }
 
-// Placeholder for editing match (to be implemented)
+// Placeholder for editing match (to be implemented) — kept for compatibility
 function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
