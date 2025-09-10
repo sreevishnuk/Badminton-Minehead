@@ -1,6 +1,6 @@
 console.log("Loaded updated script.js");
 
-// Firebase setup and imports
+// Firebase setup and imports — REMOVED TRAILING SPACES
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
@@ -22,16 +22,21 @@ const auth = getAuth(app);
 
 // Admin login function
 async function loginAdmin() {
-  const email = document.getElementById('admin-email').value.trim();
-  const password = document.getElementById('admin-pass').value.trim();
+  const email = document.getElementById('admin-email')?.value.trim();
+  const password = document.getElementById('admin-pass')?.value.trim();
   const errorDiv = document.getElementById('login-error');
-  errorDiv.innerText = '';
+  if (errorDiv) errorDiv.innerText = '';
+
+  if (!email || !password) {
+    if (errorDiv) errorDiv.innerText = 'Please enter email and password.';
+    return;
+  }
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = 'admin.html';  // Redirect on successful login
+    window.location.href = 'admin.html'; // Redirect on successful login
   } catch (error) {
-    errorDiv.innerText = error.message || 'Login failed.';
+    if (errorDiv) errorDiv.innerText = error.message || 'Login failed.';
   }
 }
 
@@ -55,9 +60,9 @@ async function setRegistrationStatus(open) {
 async function submitRegistrationForm(event) {
   event.preventDefault();
 
-  const name = document.getElementById('player-name').value.trim();
-  const singles = document.getElementById('singles').checked;
-  const doubles = document.getElementById('doubles').checked;
+  const name = document.getElementById('player-name')?.value.trim();
+  const singles = document.getElementById('singles')?.checked;
+  const doubles = document.getElementById('doubles')?.checked;
 
   if (!name) {
     alert("Please enter your name.");
@@ -88,9 +93,12 @@ async function submitRegistrationForm(event) {
       fee,
       createdAt: new Date().toISOString()
     });
-    document.getElementById('registration-success').innerText =
-      `Successfully registered. Please pay £${fee}.`;
-    document.getElementById('registration-form').reset();
+    const successDiv = document.getElementById('registration-success');
+    if (successDiv) {
+      successDiv.innerText = `Successfully registered. Please pay £${fee}.`;
+    }
+    const form = document.getElementById('registration-form');
+    if (form) form.reset();
   } catch (error) {
     alert("Error registering player: " + error.message);
   }
@@ -148,45 +156,78 @@ async function removePlayer(playerId) {
 
 // Enable or disable registration (button toggle)
 async function toggleRegistration() {
-  let open = await getRegistrationStatus();
-  await setRegistrationStatus(!open);
-  alert("Registration is now " + (!open ? "OPEN" : "CLOSED"));
+  const btn = document.querySelector('button[onclick="toggleRegistration()"]');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Updating...";
+  }
+
+  try {
+    let open = await getRegistrationStatus();
+    await setRegistrationStatus(!open);
+    alert("Registration is now " + (!open ? "OPEN" : "CLOSED"));
+  } catch (error) {
+    alert("Error updating registration status: " + error.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "Enable/Disable Registration";
+    }
+  }
 }
 
 // Generate fixtures - knockout bracket for singles and doubles
 async function generateFixtures() {
-  // Only generate if registration is closed
-  let open = await getRegistrationStatus();
-  if (open) {
-    alert("Close registration before generating fixtures.");
-    return;
+  const btn = document.querySelector('button[onclick="generateFixtures()"]');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Generating...";
   }
 
-  // Fetch players
-  const allPlayersSnapshot = await getDocs(collection(db, "players"));
-  const players = [];
-  allPlayersSnapshot.forEach(docSnap => {
-    players.push({ id: docSnap.id, ...docSnap.data() });
-  });
+  console.log("generateFixtures called!");
 
-  // Filter Singles and Doubles
-  const singlesPlayers = players.filter(p => p.singles);
-  const doublesPlayers = players.filter(p => p.doubles);
+  try {
+    // Only generate if registration is closed
+    let open = await getRegistrationStatus();
+    if (open) {
+      alert("Close registration before generating fixtures.");
+      return;
+    }
 
-  // Generate singles knockout bracket
-  const singlesFixtures = createKnockoutBrackets(singlesPlayers);
+    // Fetch players
+    const allPlayersSnapshot = await getDocs(collection(db, "players"));
+    const players = [];
+    allPlayersSnapshot.forEach(docSnap => {
+      players.push({ id: docSnap.id, ...docSnap.data() });
+    });
 
-  // Generate doubles random pairs + knockout
-  const doublesFixtures = createDoublesBrackets(doublesPlayers);
+    // Filter Singles and Doubles
+    const singlesPlayers = players.filter(p => p.singles);
+    const doublesPlayers = players.filter(p => p.doubles);
 
-  // Save fixtures to Firestore under "fixtures" collection doc "singles" and "doubles"
-  await setDoc(doc(db, "fixtures", "singles"), { rounds: singlesFixtures });
-  await setDoc(doc(db, "fixtures", "doubles"), { rounds: doublesFixtures });
+    // Generate singles knockout bracket
+    const singlesFixtures = createKnockoutBrackets(singlesPlayers);
 
-  alert("Fixtures generated successfully.");
-  // Optionally reload admin fixtures display here
-  loadFixtures();
-  loadFixturesAdmin();
+    // Generate doubles random pairs + knockout
+    const doublesFixtures = createDoublesBrackets(doublesPlayers);
+
+    // Save fixtures to Firestore under "fixtures" collection doc "singles" and "doubles"
+    await setDoc(doc(db, "fixtures", "singles"), { rounds: singlesFixtures });
+    await setDoc(doc(db, "fixtures", "doubles"), { rounds: doublesFixtures });
+
+    alert("Fixtures generated successfully.");
+    // Reload displays
+    if (typeof loadFixtures === 'function') loadFixtures();
+    if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
+  } catch (error) {
+    console.error("Error in generateFixtures:", error);
+    alert("Failed to generate fixtures: " + error.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "Generate Fixtures";
+    }
+  }
 }
 
 // Create bracket for knockout tournament given a player array
@@ -205,7 +246,7 @@ function createKnockoutBrackets(players) {
   // Create matches for round 1
   let roundMatches = [];
   for (let i = 0; i < bracketSize; i += 2) {
-    roundMatches.push({ player1: shuffled[i], player2: shuffled[i + 1], winner: null });
+    roundMatches.push({ player1: shuffled[i], player2: shuffled[i + 1], winner: null, score1: 0, score2: 0 });
   }
 
   // Prepare rounds array, rounds[0] = first round matches
@@ -216,7 +257,7 @@ function createKnockoutBrackets(players) {
     const numMatches = bracketSize / Math.pow(2, r + 1);
     let emptyMatches = [];
     for (let i = 0; i < numMatches; i++) {
-      emptyMatches.push({ player1: null, player2: null, winner: null });
+      emptyMatches.push({ player1: null, player2: null, winner: null, score1: 0, score2: 0 });
     }
     rounds.push(emptyMatches);
   }
@@ -237,7 +278,9 @@ function createDoublesBrackets(players) {
     pairs.push({
       player1: { player1: p1, player2: p2 }, // 👈 Wrap into a team object
       player2: null,
-      winner: null
+      winner: null,
+      score1: 0,
+      score2: 0
     });
   }
 
@@ -247,13 +290,25 @@ function createDoublesBrackets(players) {
 
   // Add byes if needed
   while (pairs.length < bracketSize) {
-    pairs.push({ player1: { player1: null, player2: null }, player2: null, winner: null });
+    pairs.push({
+      player1: { player1: null, player2: null },
+      player2: null,
+      winner: null,
+      score1: 0,
+      score2: 0
+    });
   }
 
   // First round matches
   let roundMatches = [];
   for (let i = 0; i < pairs.length; i += 2) {
-    roundMatches.push({ player1: pairs[i].player1, player2: pairs[i + 1]?.player1, winner: null });
+    roundMatches.push({
+      player1: pairs[i].player1,
+      player2: pairs[i + 1]?.player1 || null,
+      winner: null,
+      score1: 0,
+      score2: 0
+    });
   }
 
   const rounds = [roundMatches];
@@ -263,14 +318,13 @@ function createDoublesBrackets(players) {
     const numMatches = bracketSize / Math.pow(2, r + 1);
     let emptyMatches = [];
     for (let i = 0; i < numMatches; i++) {
-      emptyMatches.push({ player1: null, player2: null, winner: null });
+      emptyMatches.push({ player1: null, player2: null, winner: null, score1: 0, score2: 0 });
     }
     rounds.push(emptyMatches);
   }
 
   return rounds;
 }
-
 
 // Shuffle helper
 function shuffleArray(arr) {
@@ -442,9 +496,9 @@ async function updateScore(type, roundIndex, matchIndex) {
       alert("Fixtures not found.");
       return;
     }
-    const rounds = fixtureSnap.data().rounds;
+    const rounds = [...fixtureSnap.data().rounds]; // shallow clone
 
-    // Update scores and winner
+    // Update scores
     rounds[roundIndex][matchIndex].score1 = score1;
     rounds[roundIndex][matchIndex].score2 = score2;
 
@@ -461,8 +515,8 @@ async function updateScore(type, roundIndex, matchIndex) {
     await updateDoc(fixtureDoc, { rounds });
 
     alert("Score updated and winner set.");
-    loadFixturesAdmin();
-    loadFixtures();
+    if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
+    if (typeof loadFixtures === 'function') loadFixtures();
   } catch (error) {
     alert("Failed to update score: " + error.message);
   }
@@ -474,12 +528,15 @@ function logoutAdmin() {
 }
 
 // Initializers for pages
-
-// Initializers for pages
 window.addEventListener("load", () => {
+  console.log("Page loaded — initializing components...");
+
   // Detect page and run relevant functions
   if (document.getElementById('registration-form')) {
-    document.getElementById('registration-form').addEventListener('submit', submitRegistrationForm);
+    const form = document.getElementById('registration-form');
+    if (form) {
+      form.addEventListener('submit', submitRegistrationForm);
+    }
   }
 
   if (document.getElementById('players-list')) {
@@ -494,22 +551,22 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 
-  // 🔑 Fix for login button
-  if (document.getElementById('admin-login-btn')) {
-    document.getElementById('admin-login-btn').addEventListener('click', loginAdmin);
+  // Login button handler
+  const loginBtn = document.getElementById('admin-login-btn');
+  if (loginBtn) {
+    loginBtn.addEventListener('click', loginAdmin);
   }
 });
-// At the bottom of script.js
-window.toggleRegistration = toggleRegistration;
-window.generateFixtures = generateFixtures;
-window.logoutAdmin = logoutAdmin;
-window.removePlayer = removePlayer;
-window.updateScore = updateScore;
-window.editMatch = editMatch;
 
-
-
-
-
-
-
+// Expose functions to global scope for HTML onclick handlers
+try {
+  window.toggleRegistration = toggleRegistration;
+  window.generateFixtures = generateFixtures;
+  window.logoutAdmin = logoutAdmin;
+  window.removePlayer = removePlayer;
+  window.updateScore = updateScore;
+  window.editMatch = editMatch;
+  console.log("Functions exposed to window scope successfully.");
+} catch (err) {
+  console.error("Failed to expose functions to window:", err);
+      }
