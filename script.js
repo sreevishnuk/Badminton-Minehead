@@ -227,25 +227,38 @@ function createKnockoutBrackets(players) {
 // Create doubles brackets with random pairs
 function createDoublesBrackets(players) {
   const shuffled = shuffleArray(players);
-  // Pair in twos - if odd count, last player gets a bye
   let pairs = [];
+
+  // Pair players into teams
   for (let i = 0; i < shuffled.length; i += 2) {
     const p1 = shuffled[i];
     const p2 = (i + 1 < shuffled.length) ? shuffled[i + 1] : null;
-    pairs.push({ player1: p1, player2: p2, winner: null });
+
+    pairs.push({
+      player1: { player1: p1, player2: p2 }, // 👈 Wrap into a team object
+      player2: null,
+      winner: null
+    });
   }
 
-  // Total pairs count
   const totalPairs = pairs.length;
   const roundsNeeded = Math.ceil(Math.log2(totalPairs));
   const bracketSize = Math.pow(2, roundsNeeded);
 
-  // Add byes as needed
+  // Add byes if needed
   while (pairs.length < bracketSize) {
-    pairs.push({ player1: null, player2: null, winner: null });
+    pairs.push({ player1: { player1: null, player2: null }, player2: null, winner: null });
   }
 
-  const rounds = [pairs];
+  // First round matches
+  let roundMatches = [];
+  for (let i = 0; i < pairs.length; i += 2) {
+    roundMatches.push({ player1: pairs[i].player1, player2: pairs[i + 1]?.player1, winner: null });
+  }
+
+  const rounds = [roundMatches];
+
+  // Empty future rounds
   for (let r = 1; r < roundsNeeded; r++) {
     const numMatches = bracketSize / Math.pow(2, r + 1);
     let emptyMatches = [];
@@ -256,6 +269,7 @@ function createDoublesBrackets(players) {
   }
 
   return rounds;
+}
 }
 
 // Shuffle helper
@@ -492,6 +506,7 @@ window.logoutAdmin = logoutAdmin;
 window.removePlayer = removePlayer;
 window.updateScore = updateScore;
 window.editMatch = editMatch;
+
 
 
 
