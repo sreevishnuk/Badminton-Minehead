@@ -21,6 +21,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Admin login function using Firebase Authentication email/password
+
 async function loginAdmin() {
   const email = document.getElementById('admin-email').value.trim();
   const password = document.getElementById('admin-pass').value.trim();
@@ -29,12 +30,22 @@ async function loginAdmin() {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    // Redirect to admin dashboard page
-    window.location.href = 'admin.html'; // Adjust path if needed
+    window.location.href = 'admin.html';  // Redirect on successful login
   } catch (error) {
-    errorDiv.innerText = error.message || "Login failed. Check your credentials.";
+    errorDiv.innerText = error.message || "Login failed. Check credentials.";
   }
 }
+
+// Attach event listener on page load
+window.addEventListener("load", () => {
+  const loginBtn = document.getElementById('admin-login-btn');
+  if (loginBtn) {
+    loginBtn.addEventListener("click", loginAdmin);
+  }
+
+  // Your other initializations...
+});
+
 
 // Logout admin function
 function logoutAdmin() {
@@ -479,3 +490,4 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 });
+
