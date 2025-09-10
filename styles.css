@@ -3,7 +3,10 @@ body {
   margin: 0;
   padding: 0;
   background: #f5fafb;
+  color: #333;
+  line-height: 1.6;
 }
+
 .admin-login-topright {
   position: fixed;
   top: 20px;
@@ -103,6 +106,7 @@ body {
   padding: 18px 26px;
   background: rgba(255,255,255,0.95);
   box-shadow: 0 4px 18px rgba(30,60,114,0.06);
+  backdrop-filter: blur(10px);
 }
 .admin-title {
   font-size: 1.6rem;
@@ -114,13 +118,32 @@ body {
 .admin-container {
   margin: 32px auto;
   width: 90%;
-  max-width: 1000px;
+  max-width: 1200px;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 2px 18px rgba(42,82,152,0.08);
   padding: 32px;
 }
-section { margin-bottom: 24px; }
+section {
+  margin-bottom: 24px;
+  background: #f8fbff;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #e6eefc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+}
+section h2 {
+  color: #191654;
+  margin-top: 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #43c6ac;
+  font-size: 1.4rem;
+}
 .btn-secondary {
   background: #fff;
   color: #2a5298;
@@ -129,17 +152,26 @@ section { margin-bottom: 24px; }
   padding: 8px 20px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background .25s;
+  transition: background .25s, color .25s, transform 0.2s;
 }
 .btn-secondary:hover {
   background: #2a5298;
-  color:#fff;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(42,82,152,0.2);
+}
+
+/* BUTTONS - Unified Style */
+.btn-primary, .btn-accent, .btn-secondary {
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 /* Fixtures Page Styling */
 .fixtures-bg {
   background: linear-gradient(130deg, #b8c6db 0%, #f5f7fa 100%);
   min-height: 100vh;
+  padding-bottom: 40px;
 }
 .fixtures-header {
   text-align: center;
@@ -151,7 +183,7 @@ section { margin-bottom: 24px; }
 .fixture-section {
   background: #fff;
   margin: 22px auto 32px auto;
-  max-width: 800px;
+  max-width: 900px;
   border-radius: 16px;
   box-shadow: 0 0 18px rgba(42, 82, 152, .09);
   padding: 24px 36px;
@@ -159,5 +191,225 @@ section { margin-bottom: 24px; }
 .fixture-section h2 {
   color: #191654;
   margin-bottom: 18px;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
+/* 🎯 FIXTURES BRACKET STYLING — ENHANCED */
+.bracket {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  margin: 20px 0;
+}
+
+.round {
+  background: #f0f7ff;
+  border-radius: 16px;
+  padding: 20px 16px;
+  min-width: 240px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  border: 1px solid #d0e3ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.round strong {
+  display: block;
+  background: #191654;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+}
+
+.round ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.round li {
+  background: white;
+  margin: 12px 0;
+  padding: 14px;
+  border-radius: 10px;
+  border-left: 4px solid #43c6ac;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.round li:hover {
+  transform: translateX(4px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.round li .winner {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.round li .bye {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* 🎯 SCORE INPUT SECTION — ENHANCED */
+#enter-scores label {
+  display: block;
+  margin: 8px 0 4px;
+  font-weight: 500;
+  color: #191654;
+}
+
+#enter-scores input[type="number"] {
+  width: 70px;
+  text-align: center;
+  padding: 8px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: border-color 0.2s;
+}
+
+#enter-scores input[type="number"]:focus {
+  outline: none;
+  border-color: #43c6ac;
+  box-shadow: 0 0 0 3px rgba(67, 198, 172, 0.2);
+}
+
+#enter-scores button {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: #43c6ac;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+#enter-scores button:hover {
+  background: #191654;
+  transform: translateY(-2px);
+}
+
+#enter-scores hr {
+  margin: 24px 0;
+  border: 0;
+  border-top: 1px dashed #e0e0e0;
+}
+
+/* TABLE STYLING */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background: #191654;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+tr:hover {
+  background-color: #e3f2fd;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .admin-container {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .bracket {
+    gap: 12px;
+    padding: 10px 0;
+  }
+
+  .round {
+    min-width: 180px;
+    padding: 16px 12px;
+  }
+
+  .round li {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  section {
+    padding: 18px;
+  }
+
+  .fixture-section {
+    padding: 20px;
+    margin: 16px auto;
+  }
+
+  .admin-nav {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .admin-title {
+    text-align: center;
+    margin-left: 0;
+  }
+}
+
+/* PRINT STYLES */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .admin-nav, .btn-secondary, #enter-scores button, .admin-login-topright {
+    display: none;
+  }
+
+  .admin-container, .fixture-section, section {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .bracket {
+    overflow: visible;
+    flex-wrap: wrap;
+  }
+
+  .round {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
