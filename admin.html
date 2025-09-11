@@ -7,21 +7,20 @@
 </head>
 <body class="admin-bg">
 
-  <!-- ✅ SECURITY CHECK: Redirect to login if not authenticated -->
+  <!-- ✅ SECURITY GUARD: Check authentication state immediately -->
   <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
     // Initialize Firebase Auth
-    // We assume your script.js has already initialized the app.
-    // If not, you can initialize it here, but since script.js is loaded below, we rely on it.
     const auth = getAuth();
 
+    // Listen for auth state changes
     onAuthStateChanged(auth, (user) => {
       if (!user) {
-        // User is not signed in. Redirect to login page.
+        // Redirect to login page if not authenticated
         window.location.href = 'adminlogin.html';
       }
-      // If user is signed in, do nothing. Let the page load normally.
+      // If user is logged in, allow the page to load normally
     });
   </script>
 
@@ -48,16 +47,14 @@
     </section>
 
     <section>
-      <h2>Fixtures & Results</h2> <!-- ✅ Fixed typo -->
+      <h2>Fixtures & Results</h2>
       <div id="enter-scores">Loading score entry...</div>
     </section>
   </div>
 
   <script src="script.js" type="module"></script>
   <script>
-    // Optional: Add loading indicators if script.js is slow to load
     document.addEventListener('DOMContentLoaded', () => {
-      // script.js will replace these, but this is a nice fallback
       if (typeof loadPlayers === 'function') loadPlayers();
       if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
     });
