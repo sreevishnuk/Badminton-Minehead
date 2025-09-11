@@ -312,7 +312,7 @@
             color: var(--dark);
         }
         
-        /* Complete Tournament Bracket Styles */
+        /* Horizontal Tournament Bracket Styles */
         .tournament-bracket {
             width: 100%;
             overflow-x: auto;
@@ -322,27 +322,25 @@
         
         .bracket-container {
             display: flex;
-            flex-direction: column;
-            min-width: 800px;
+            flex-direction: row;
+            min-width: 1000px;
             padding: 20px;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
             border-radius: 10px;
-        }
-        
-        .rounds-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: flex-start;
             gap: 30px;
-            padding: 20px 0;
         }
         
         .round-column {
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 1;
             min-width: 250px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         
         .round-header {
@@ -464,18 +462,20 @@
             margin-right: 5px;
         }
         
-        .connector-line {
-            width: 100%;
-            height: 2px;
-            background-color: #ddd;
-            margin: 10px 0;
-        }
-        
+        /* Connector lines between rounds */
         .round-connector {
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 40px;
+            justify-content: center;
+            height: 100%;
+            min-height: 300px;
+        }
+        
+        .connector-line {
+            width: 30px;
+            height: 2px;
+            background-color: #ddd;
+            margin: 0 5px;
         }
         
         .connector-arrow {
@@ -486,12 +486,11 @@
         
         /* Responsive adjustments */
         @media (max-width: 1200px) {
-            .rounds-container {
+            .bracket-container {
                 flex-wrap: wrap;
             }
             
             .round-column {
-                min-width: 220px;
                 margin-bottom: 30px;
             }
         }
@@ -516,18 +515,21 @@
             }
             
             .bracket-container {
+                flex-direction: column;
                 min-width: 100%;
                 padding: 10px;
-            }
-            
-            .rounds-container {
-                flex-direction: column;
                 gap: 20px;
             }
             
-            .round-column {
+            .round-connector {
                 width: 100%;
-                max-width: 100%;
+                justify-content: center;
+                min-height: 40px;
+            }
+            
+            .connector-line {
+                width: 100px;
+                height: 2px;
             }
         }
     </style>
@@ -1232,7 +1234,7 @@
             }
         }
 
-        // Updated: Render complete tournament bracket with improved visual structure
+        // Updated: Render complete tournament bracket with horizontal layout
         function renderTournamentBracket(bracket, containerId) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
@@ -1245,10 +1247,7 @@
             const bracketContainer = document.createElement('div');
             bracketContainer.className = 'bracket-container';
             
-            const roundsContainer = document.createElement('div');
-            roundsContainer.className = 'rounds-container';
-            
-            // Render each round
+            // Render each round from left to right
             bracket.rounds.forEach((round, roundIndex) => {
                 const roundColumn = document.createElement('div');
                 roundColumn.className = 'round-column';
@@ -1317,18 +1316,20 @@
                     roundColumn.appendChild(matchDiv);
                 });
                 
-                roundsContainer.appendChild(roundColumn);
+                bracketContainer.appendChild(roundColumn);
                 
                 // Add connector arrow between rounds (except after the last round)
                 if (roundIndex < bracket.rounds.length - 1) {
                     const connectorDiv = document.createElement('div');
                     connectorDiv.className = 'round-connector';
-                    connectorDiv.innerHTML = '<div class="connector-arrow">→</div>';
-                    roundsContainer.appendChild(connectorDiv);
+                    connectorDiv.innerHTML = `
+                        <div class="connector-line"></div>
+                        <div class="connector-arrow">→</div>
+                        <div class="connector-line"></div>
+                    `;
+                    bracketContainer.appendChild(connectorDiv);
                 }
             });
-            
-            bracketContainer.appendChild(roundsContainer);
             
             // Add champion section if tournament is complete
             if (bracket.rounds.length > 0) {
@@ -1346,9 +1347,22 @@
                     }
                     
                     if (actualChampion) {
+                        const championSection = document.createElement('div');
+                        championSection.style.marginLeft = '50px';
+                        championSection.style.display = 'flex';
+                        championSection.style.alignItems = 'center';
+                        
+                        const championArrow = document.createElement('div');
+                        championArrow.className = 'round-connector';
+                        championArrow.innerHTML = `
+                            <div class="connector-line"></div>
+                            <div class="connector-arrow">→</div>
+                            <div class="connector-line"></div>
+                        `;
+                        
                         const championDiv = document.createElement('div');
                         championDiv.className = 'round-column';
-                        championDiv.style.marginTop = '40px';
+                        championDiv.style.marginTop = '0';
                         championDiv.style.textAlign = 'center';
                         
                         const championTitle = document.createElement('h3');
@@ -1365,7 +1379,10 @@
                         
                         championDiv.appendChild(championTitle);
                         championDiv.appendChild(championName);
-                        bracketContainer.appendChild(championDiv);
+                        
+                        championSection.appendChild(championArrow);
+                        championSection.appendChild(championDiv);
+                        bracketContainer.appendChild(championSection);
                     }
                 }
             }
@@ -1735,7 +1752,7 @@
                 loadAdminFixtures();
                 updateRegistrationStatusDisplay();
             } catch (error) {
-                console.error("Error loading admin data:", error);
+                console.error("Error loading admin ", error);
                 document.getElementById('admin-players-loading').classList.add('hidden');
                 alert("Error loading admin  " + error.message);
             }
@@ -1812,10 +1829,7 @@
             const bracketContainer = document.createElement('div');
             bracketContainer.className = 'bracket-container';
             
-            const roundsContainer = document.createElement('div');
-            roundsContainer.className = 'rounds-container';
-            
-            // Render each round
+            // Render each round from left to right
             bracket.rounds.forEach((round, roundIndex) => {
                 const roundColumn = document.createElement('div');
                 roundColumn.className = 'round-column';
@@ -1898,18 +1912,20 @@
                     roundColumn.appendChild(matchDiv);
                 });
                 
-                roundsContainer.appendChild(roundColumn);
+                bracketContainer.appendChild(roundColumn);
                 
                 // Add connector arrow between rounds (except after the last round)
                 if (roundIndex < bracket.rounds.length - 1) {
                     const connectorDiv = document.createElement('div');
                     connectorDiv.className = 'round-connector';
-                    connectorDiv.innerHTML = '<div class="connector-arrow">→</div>';
-                    roundsContainer.appendChild(connectorDiv);
+                    connectorDiv.innerHTML = `
+                        <div class="connector-line"></div>
+                        <div class="connector-arrow">→</div>
+                        <div class="connector-line"></div>
+                    `;
+                    bracketContainer.appendChild(connectorDiv);
                 }
             });
-            
-            bracketContainer.appendChild(roundsContainer);
             
             // Add champion section if tournament is complete
             if (bracket.rounds.length > 0) {
@@ -1927,9 +1943,22 @@
                     }
                     
                     if (actualChampion) {
+                        const championSection = document.createElement('div');
+                        championSection.style.marginLeft = '50px';
+                        championSection.style.display = 'flex';
+                        championSection.style.alignItems = 'center';
+                        
+                        const championArrow = document.createElement('div');
+                        championArrow.className = 'round-connector';
+                        championArrow.innerHTML = `
+                            <div class="connector-line"></div>
+                            <div class="connector-arrow">→</div>
+                            <div class="connector-line"></div>
+                        `;
+                        
                         const championDiv = document.createElement('div');
                         championDiv.className = 'round-column';
-                        championDiv.style.marginTop = '40px';
+                        championDiv.style.marginTop = '0';
                         championDiv.style.textAlign = 'center';
                         
                         const championTitle = document.createElement('h3');
@@ -1946,7 +1975,10 @@
                         
                         championDiv.appendChild(championTitle);
                         championDiv.appendChild(championName);
-                        bracketContainer.appendChild(championDiv);
+                        
+                        championSection.appendChild(championArrow);
+                        championSection.appendChild(championDiv);
+                        bracketContainer.appendChild(championSection);
                     }
                 }
             }
