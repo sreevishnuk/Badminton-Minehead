@@ -440,35 +440,78 @@ async function loadFixturesAdmin() {
   }
 }
 
-// Format bracket display HTML (read-only)
+// ✅ ✅ ✅ UPDATED: Format bracket display with Quarter/Semi/Final + centered design
 function formatBracketsHTML(rounds, isDoubles = false) {
   let html = '<div class="bracket">';
 
   rounds.forEach((roundObj, i) => {
-    html += `<div class="round"><strong>Round ${roundObj.round}</strong><ul>`;
+    const totalRounds = rounds.length;
+    const roundNumber = roundObj.round;
+    let roundLabel = `Round ${roundNumber}`;
+
+    // ✅ Smart labels based on total rounds and match count
+    const matchCount = roundObj.matches.length;
+
+    if (totalRounds === 1) {
+      roundLabel = "Final";
+    } else if (totalRounds === 2) {
+      if (roundNumber === 1) roundLabel = "Semi Final";
+      if (roundNumber === 2) roundLabel = "Final";
+    } else if (totalRounds >= 3) {
+      if (roundNumber === totalRounds) {
+        roundLabel = "Final";
+      } else if (roundNumber === totalRounds - 1) {
+        roundLabel = "Semi Final";
+      } else if (roundNumber === totalRounds - 2 && matchCount <= 4) {
+        roundLabel = "Quarter Final";
+      }
+    }
+
+    html += `<div class="round">
+      <div class="round-header">${roundLabel}</div>
+      <div class="matches">`;
+
     roundObj.matches.forEach(match => {
       const p1 = formatPlayerName(match.player1, isDoubles);
       const p2 = formatPlayerName(match.player2, isDoubles);
       let winner = match.winner ? formatPlayerName(match.winner, isDoubles) : "TBD";
-      html += `<li>${p1} vs ${p2} - <em>Winner: ${winner}</em></li>`;
+
+      html += `
+        <div class="match-item">
+          <div class="match-line"></div>
+          <div class="match-content">
+            <div class="match-players">
+              <div>${p1}</div>
+              <div>vs</div>
+              <div>${p2}</div>
+            </div>
+            <div class="match-winner">
+              Winner: <strong>${winner}</strong>
+            </div>
+          </div>
+          <div class="match-line"></div>
+        </div>`;
     });
-    html += '</ul></div>';
+
+    html += `</div></div>`;
   });
 
   html += '</div>';
   return html;
 }
 
-// Format player or pair names for display
+// ✅ ✅ ✅ UPDATED: Show "TBD" instead of "BYE"
 function formatPlayerName(playerObj, isDoubles) {
-  if (!playerObj) return "BYE";
-  if (!isDoubles) return playerObj.name || "Unknown";
+  if (!playerObj) return "TBD"; // ✅ Changed from "BYE" to "TBD"
+  if (!isDoubles) return playerObj.name || "TBD";
 
   // Doubles playerObj expected as {player1: {}, player2: {}}
   if (playerObj.player1 && playerObj.player2) {
-    return `${playerObj.player1.name || "Unknown"} & ${playerObj.player2.name || "Unknown"}`;
+    const p1 = playerObj.player1.name || "TBD";
+    const p2 = playerObj.player2.name || "TBD";
+    return `${p1} & ${p2}`;
   }
-  return playerObj.name || "Unknown";
+  return playerObj.name || "TBD";
 }
 
 // ✅ Format fixture display WITHOUT "Edit" buttons
@@ -643,4 +686,4 @@ try {
   console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-}
+      }
