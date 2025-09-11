@@ -440,7 +440,7 @@ async function loadFixturesAdmin() {
   }
 }
 
-// ✅ ✅ ✅ UPDATED: Format bracket display with Quarter/Semi/Final + centered design
+// ✅ ✅ ✅ UPDATED: Format bracket display as true tournament bracket
 function formatBracketsHTML(rounds, isDoubles = false) {
   let html = '<div class="bracket">';
 
@@ -450,8 +450,6 @@ function formatBracketsHTML(rounds, isDoubles = false) {
     let roundLabel = `Round ${roundNumber}`;
 
     // ✅ Smart labels based on total rounds and match count
-    const matchCount = roundObj.matches.length;
-
     if (totalRounds === 1) {
       roundLabel = "Final";
     } else if (totalRounds === 2) {
@@ -462,7 +460,7 @@ function formatBracketsHTML(rounds, isDoubles = false) {
         roundLabel = "Final";
       } else if (roundNumber === totalRounds - 1) {
         roundLabel = "Semi Final";
-      } else if (roundNumber === totalRounds - 2 && matchCount <= 4) {
+      } else if (roundNumber === totalRounds - 2 && roundObj.matches.length <= 4) {
         roundLabel = "Quarter Final";
       }
     }
@@ -471,23 +469,23 @@ function formatBracketsHTML(rounds, isDoubles = false) {
       <div class="round-header">${roundLabel}</div>
       <div class="matches">`;
 
-    roundObj.matches.forEach(match => {
+    roundObj.matches.forEach((match, j) => {
       const p1 = formatPlayerName(match.player1, isDoubles);
       const p2 = formatPlayerName(match.player2, isDoubles);
       let winner = match.winner ? formatPlayerName(match.winner, isDoubles) : "TBD";
 
+      // Calculate position for lines
+      const matchIndex = j + 1;
+      const hasNextRound = i < rounds.length - 1;
+      const nextMatchIndex = Math.floor(matchIndex / 2); // Winner goes to next match
+
       html += `
-        <div class="match-item">
-          <div class="match-line"></div>
-          <div class="match-content">
-            <div class="match-players">
-              <div>${p1}</div>
-              <div>vs</div>
-              <div>${p2}</div>
-            </div>
-            <div class="match-winner">
-              Winner: <strong>${winner}</strong>
-            </div>
+        <div class="match-item" data-match="${matchIndex}" data-next="${nextMatchIndex}">
+          <div class="match-box">
+            <div class="match-player">${p1}</div>
+            <div class="match-vs">vs</div>
+            <div class="match-player">${p2}</div>
+            <div class="match-winner">${winner}</div>
           </div>
           <div class="match-line"></div>
         </div>`;
@@ -686,4 +684,4 @@ try {
   console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-      }
+          }
