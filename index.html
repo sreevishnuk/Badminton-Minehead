@@ -29,7 +29,7 @@
         }
         
         .container {
-            max-width: 1600px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -168,21 +168,20 @@
         }
         
         .fixture-section {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
+            padding: 15px;
         }
         
         .fixture-title {
             font-size: 20px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: var(--primary);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 2px solid var(--primary);
-            text-align: center;
         }
         
         .hidden {
@@ -295,102 +294,95 @@
             font-size: 16px;
         }
         
-        /* Tournament Bracket Styles - Pyramid Layout */
+        /* Compact Tournament Bracket Styles */
         .tournament-bracket {
             width: 100%;
             overflow-x: auto;
-            margin: 20px 0;
-            padding: 20px 0;
-            position: relative;
+            margin: 15px 0;
+            padding: 10px 0;
         }
         
         .bracket-container {
             display: flex;
             flex-direction: row;
-            min-width: 1400px;
-            position: relative;
-            height: 700px;
+            min-width: 800px;
+            padding: 10px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
             align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
         }
         
-        /* Bracket Sections */
-        .bracket-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-        
-        /* Round Columns */
         .round-column {
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-width: 180px;
             background-color: white;
-            padding: 8px;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            min-width: 140px;
-            max-width: 160px;
-            margin: 0 10px;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .round-header {
             text-align: center;
             font-weight: bold;
-            margin-bottom: 8px;
-            padding: 5px 10px;
+            margin-bottom: 12px;
+            padding: 6px 12px;
             background-color: var(--primary);
             color: white;
-            border-radius: 4px;
-            font-size: 12px;
+            border-radius: 6px;
+            font-size: 14px;
             width: 100%;
+            max-width: 220px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .match-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 6px 0;
+            margin: 8px 0;
             background-color: white;
-            padding: 8px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            width: 95%;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 280px;
             transition: all 0.2s ease;
-            font-size: 11px;
+            font-size: 13px;
         }
         
         .match-container:hover {
             transform: translateY(-1px);
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
         
         .player-container {
             width: 100%;
-            padding: 5px;
-            margin: 3px 0;
+            padding: 8px;
+            margin: 6px 0;
             border: 1px solid #ddd;
-            border-radius: 3px;
+            border-radius: 4px;
             text-align: center;
             background-color: #fafafa;
             transition: all 0.2s ease;
             position: relative;
-            font-size: 11px;
+            font-size: 13px;
         }
         
         .player-name {
             font-weight: 500;
-            font-size: 11px;
+            font-size: 13px;
         }
         
         .vs-divider {
-            margin: 6px 0;
+            margin: 10px 0;
             text-align: center;
             font-weight: bold;
             color: #666;
-            font-size: 12px;
+            font-size: 14px;
             position: relative;
         }
         
@@ -407,22 +399,22 @@
         
         .vs-divider span {
             background-color: white;
-            padding: 0 5px;
+            padding: 0 8px;
             position: relative;
             z-index: 1;
-            font-size: 10px;
+            font-size: 12px;
         }
         
         .match-score {
-            margin: 6px 0;
+            margin: 10px 0;
             text-align: center;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 14px;
             color: var(--primary);
             background-color: #e8f5e9;
-            padding: 4px;
-            border-radius: 3px;
-            width: 65%;
+            padding: 6px;
+            border-radius: 4px;
+            width: 70%;
         }
         
         .winner {
@@ -431,30 +423,15 @@
             font-weight: bold;
         }
         
-        /* Round specific styling */
-        .round-r16 {
-            background-color: #f8f9fa;
-        }
-        
-        .round-qf {
-            background-color: #e3f2fd;
-            border: 1px solid #2196F3;
-        }
-        
-        .round-sf {
-            background-color: #f3e5f5;
-            border: 2px solid #9c27b0;
-        }
-        
-        .round-final {
+        .final-match {
             background-color: #fff3e0;
-            border: 3px solid var(--accent);
-            transform: scale(1.15);
+            border: 2px solid var(--accent);
+            transform: scale(1.03);
         }
         
         .champion {
             background-color: #fff9c4 !important;
-            border: 3px solid #ffc107 !important;
+            border: 2px solid #ffc107 !important;
             font-weight: bold;
             animation: championGlow 2s infinite;
         }
@@ -470,88 +447,79 @@
             margin-right: 3px;
         }
         
-        /* Connector lines */
-        .connector-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .connector-line {
-            position: absolute;
-            background-color: #9e9e9e;
-            height: 2px;
-            z-index: 1;
-        }
-        
-        .vertical-connector {
-            width: 2px;
-            height: auto;
-        }
-        
-        /* Bracket positioning sections */
-        .left-section {
+        /* Compact Connector lines between rounds */
+        .round-connector {
             display: flex;
-            flex-direction: row;
-            height: 100%;
-            align-items: center;
-        }
-        
-        .center-section {
-            display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100%;
+            min-height: 200px;
         }
         
-        .right-section {
-            display: flex;
-            flex-direction: row;
-            height: 100%;
-            align-items: center;
+        .connector-line {
+            width: 20px;
+            height: 1px;
+            background-color: #ddd;
+            margin: 0 3px;
+        }
+        
+        .connector-arrow {
+            font-size: 18px;
+            color: var(--primary);
+            font-weight: bold;
         }
         
         /* Responsive adjustments */
-        @media (max-width: 1600px) {
-            .bracket-container {
-                min-width: 1200px;
-                height: 600px;
-            }
-        }
-        
         @media (max-width: 1200px) {
             .bracket-container {
-                min-width: 1000px;
-                height: 500px;
+                flex-wrap: wrap;
             }
             
             .round-column {
-                min-width: 120px;
-                max-width: 140px;
+                margin-bottom: 20px;
             }
         }
         
         @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 10px;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 0 8px;
+            }
+            
             .bracket-container {
                 flex-direction: column;
                 min-width: 100%;
-                height: auto;
-            }
-            
-            .left-section, .center-section, .right-section {
-                width: 100%;
-                padding: 10px 0;
-                display: block;
+                padding: 8px;
+                gap: 12px;
             }
             
             .round-column {
-                margin: 10px auto;
-                min-width: 90%;
+                min-width: 100%;
+                max-width: 100%;
+            }
+            
+            .round-connector {
+                width: 100%;
+                justify-content: center;
+                min-height: 30px;
+            }
+            
+            .connector-line {
+                width: 60px;
+                height: 1px;
+            }
+            
+            .connector-arrow {
+                font-size: 16px;
             }
         }
     </style>
@@ -1050,17 +1018,17 @@
             }
         }
 
-        // Create tournament bracket with the exact structure requested
+        // Updated: Complete tournament bracket generation with proper structure
         async function generateFixtures() {
             try {
                 // Get players
                 const players = await getPlayers();
                 
-                // Generate singles fixtures with pyramid bracket
+                // Generate singles fixtures with complete bracket
                 const singlesPlayers = players.filter(p => p.singles);
-                const singlesBracket = createStructuredTournamentBracket(singlesPlayers.map(p => ({ id: p.id, name: p.name })));
+                const singlesBracket = createCompleteTournamentBracket(singlesPlayers.map(p => ({ id: p.id, name: p.name })));
                 
-                // Generate doubles fixtures with pyramid bracket
+                // Generate doubles fixtures with complete bracket
                 const doublesPlayers = players.filter(p => p.doubles);
                 // Randomly pair players for doubles
                 const shuffledDoubles = [...doublesPlayers].sort(() => 0.5 - Math.random());
@@ -1081,7 +1049,7 @@
                     }
                 }
                 
-                const doublesBracket = createStructuredTournamentBracket(doublesTeams);
+                const doublesBracket = createCompleteTournamentBracket(doublesTeams);
                 
                 // Save fixtures
                 const fixturesData = {
@@ -1102,8 +1070,8 @@
             }
         }
 
-        // Create a structured tournament bracket with final in middle, semis on sides, etc.
-        function createStructuredTournamentBracket(players) {
+        // Updated: Create a complete tournament bracket with multiple rounds
+        function createCompleteTournamentBracket(players) {
             if (players.length === 0) return { rounds: [], champion: null, totalRounds: 0 };
             
             // Create a copy to avoid modifying the original array
@@ -1157,6 +1125,8 @@
                 });
                 
                 // For the next round, we'll need to determine winners
+                // For now, we'll just carry forward player1 as placeholder
+                // In reality, winners will be determined when scores are entered
                 currentRoundPlayers = roundMatches.map(match => match.player1);
                 roundNumber++;
             }
@@ -1256,8 +1226,8 @@
             }
         }
 
-        // Render structured tournament bracket with final in middle, semis on sides, etc.
-        function renderStructuredTournamentBracket(bracket, containerId) {
+        // Updated: Render complete tournament bracket with horizontal layout
+        function renderTournamentBracket(bracket, containerId) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             
@@ -1269,34 +1239,27 @@
             const bracketContainer = document.createElement('div');
             bracketContainer.className = 'bracket-container';
             
-            // Create left, center, and right sections
-            const leftSection = document.createElement('div');
-            leftSection.className = 'left-section';
-            
-            const centerSection = document.createElement('div');
-            centerSection.className = 'center-section';
-            
-            const rightSection = document.createElement('div');
-            rightSection.className = 'right-section';
-            
-            // Get total rounds
-            const totalRounds = bracket.rounds.length;
-            
-            // Group rounds by their position in the bracket
-            const roundsByPosition = {};
-            
-            // Process each round to determine its position
+            // Render each round from left to right
             bracket.rounds.forEach((round, roundIndex) => {
-                const roundName = `Round ${round.roundNumber}`;
-                const roundClass = `round-r${round.roundNumber}`;
-                
-                // Create column for this round
                 const roundColumn = document.createElement('div');
-                roundColumn.className = `round-column ${roundClass}`;
+                roundColumn.className = 'round-column';
                 
                 const roundHeader = document.createElement('div');
                 roundHeader.className = 'round-header';
-                roundHeader.textContent = roundName;
+                
+                // Special headers for final rounds
+                if (roundIndex === bracket.rounds.length - 1) {
+                    roundHeader.textContent = '🏆 FINAL';
+                    roundHeader.style.backgroundColor = '#ffc107';
+                    roundHeader.style.fontSize = '13px';
+                } else if (roundIndex === bracket.rounds.length - 2) {
+                    roundHeader.textContent = 'SEMIFINALS';
+                    roundHeader.style.backgroundColor = '#2196F3';
+                    roundHeader.style.fontSize = '13px';
+                } else {
+                    roundHeader.textContent = `R${round.roundNumber}`;
+                    roundHeader.style.fontSize = '13px';
+                }
                 
                 roundColumn.appendChild(roundHeader);
                 
@@ -1305,20 +1268,16 @@
                     const matchDiv = document.createElement('div');
                     matchDiv.className = 'match-container';
                     
-                    // Special styling for different rounds
-                    if (round.roundNumber === totalRounds) {
-                        matchDiv.classList.add('round-final');
-                    } else if (round.roundNumber === totalRounds - 1) {
-                        matchDiv.classList.add('round-sf');
-                    } else if (round.roundNumber === totalRounds - 2) {
-                        matchDiv.classList.add('round-qf');
+                    // Special styling for final match
+                    if (roundIndex === bracket.rounds.length - 1) {
+                        matchDiv.classList.add('final-match');
                     }
                     
                     const player1Div = document.createElement('div');
                     player1Div.className = 'player-container';
                     if (match.winner && match.winner.id === match.player1.id) {
                         player1Div.classList.add('winner');
-                        if (round.roundNumber === totalRounds) {
+                        if (roundIndex === bracket.rounds.length - 1) {
                             player1Div.classList.add('champion');
                         }
                     }
@@ -1332,7 +1291,7 @@
                     player2Div.className = 'player-container';
                     if (match.winner && match.winner.id === match.player2.id) {
                         player2Div.classList.add('winner');
-                        if (round.roundNumber === totalRounds) {
+                        if (roundIndex === bracket.rounds.length - 1) {
                             player2Div.classList.add('champion');
                         }
                     }
@@ -1352,128 +1311,20 @@
                     roundColumn.appendChild(matchDiv);
                 });
                 
-                // Store this round column for positioning
-                if (!roundsByPosition[round.roundNumber]) {
-                    roundsByPosition[round.roundNumber] = [];
+                bracketContainer.appendChild(roundColumn);
+                
+                // Add connector arrow between rounds (except after the last round)
+                if (roundIndex < bracket.rounds.length - 1) {
+                    const connectorDiv = document.createElement('div');
+                    connectorDiv.className = 'round-connector';
+                    connectorDiv.innerHTML = `
+                        <div class="connector-line"></div>
+                        <div class="connector-arrow">→</div>
+                        <div class="connector-line"></div>
+                    `;
+                    bracketContainer.appendChild(connectorDiv);
                 }
-                roundsByPosition[round.roundNumber].push(roundColumn);
             });
-            
-            // Position rounds according to the requested structure
-            // Final in the center
-            if (roundsByPosition[totalRounds] && roundsByPosition[totalRounds].length > 0) {
-                centerSection.appendChild(roundsByPosition[totalRounds][0]);
-            }
-            
-            // Semifinals: SF1 on left of final, SF2 on right of final
-            if (totalRounds > 1 && roundsByPosition[totalRounds - 1]) {
-                if (roundsByPosition[totalRounds - 1].length > 0) {
-                    leftSection.appendChild(roundsByPosition[totalRounds - 1][0]);
-                }
-                if (roundsByPosition[totalRounds - 1].length > 1) {
-                    rightSection.appendChild(roundsByPosition[totalRounds - 1][1]);
-                }
-            }
-            
-            // Quarterfinals: QF1 and QF2 on left side (left of SF1), QF3 and QF4 on right side (right of SF2)
-            if (totalRounds > 2 && roundsByPosition[totalRounds - 2]) {
-                const qfRounds = roundsByPosition[totalRounds - 2];
-                const leftQfContainer = document.createElement('div');
-                leftQfContainer.style.display = 'flex';
-                leftQfContainer.style.flexDirection = 'column';
-                leftQfContainer.style.gap = '10px';
-                
-                const rightQfContainer = document.createElement('div');
-                rightQfContainer.style.display = 'flex';
-                rightQfContainer.style.flexDirection = 'column';
-                rightQfContainer.style.gap = '10px';
-                
-                // Add QF1 and QF2 to left side
-                if (qfRounds.length > 0) {
-                    leftQfContainer.appendChild(qfRounds[0]);
-                }
-                if (qfRounds.length > 1) {
-                    leftQfContainer.appendChild(qfRounds[1]);
-                }
-                
-                // Add QF3 and QF4 to right side
-                if (qfRounds.length > 2) {
-                    rightQfContainer.appendChild(qfRounds[2]);
-                }
-                if (qfRounds.length > 3) {
-                    rightQfContainer.appendChild(qfRounds[3]);
-                }
-                
-                if (leftQfContainer.children.length > 0) {
-                    leftSection.insertBefore(leftQfContainer, leftSection.firstChild);
-                }
-                if (rightQfContainer.children.length > 0) {
-                    rightSection.appendChild(rightQfContainer);
-                }
-            }
-            
-            // Round of 16: 4 games on left of QF1/QF2, 4 games on right of QF3/QF4
-            if (totalRounds > 3 && roundsByPosition[totalRounds - 3]) {
-                const r16Rounds = roundsByPosition[totalRounds - 3];
-                const leftR16Container = document.createElement('div');
-                leftR16Container.style.display = 'flex';
-                leftR16Container.style.flexDirection = 'column';
-                leftR16Container.style.gap = '10px';
-                
-                const rightR16Container = document.createElement('div');
-                rightR16Container.style.display = 'flex';
-                rightR16Container.style.flexDirection = 'column';
-                rightR16Container.style.gap = '10px';
-                
-                // Add first 4 R16 matches to left side
-                for (let i = 0; i < Math.min(4, r16Rounds.length); i++) {
-                    leftR16Container.appendChild(r16Rounds[i]);
-                }
-                
-                // Add next 4 R16 matches to right side
-                for (let i = 4; i < Math.min(8, r16Rounds.length); i++) {
-                    rightR16Container.appendChild(r16Rounds[i]);
-                }
-                
-                if (leftR16Container.children.length > 0) {
-                    leftSection.insertBefore(leftR16Container, leftSection.firstChild);
-                }
-                if (rightR16Container.children.length > 0) {
-                    rightSection.appendChild(rightR16Container);
-                }
-            }
-            
-            // For any remaining rounds, distribute them to left and right sides
-            for (let r = totalRounds - 4; r >= 1; r--) {
-                if (roundsByPosition[r]) {
-                    const roundRounds = roundsByPosition[r];
-                    const leftRoundContainer = document.createElement('div');
-                    leftRoundContainer.style.display = 'flex';
-                    leftRoundContainer.style.flexDirection = 'column';
-                    leftRoundContainer.style.gap = '10px';
-                    
-                    const rightRoundContainer = document.createElement('div');
-                    rightRoundContainer.style.display = 'flex';
-                    rightRoundContainer.style.flexDirection = 'column';
-                    rightRoundContainer.style.gap = '10px';
-                    
-                    // Split matches between left and right
-                    const halfIndex = Math.ceil(roundRounds.length / 2);
-                    for (let i = 0; i < halfIndex && i < roundRounds.length; i++) {
-                        leftRoundContainer.appendChild(roundRounds[i]);
-                    }
-                    for (let i = halfIndex; i < roundRounds.length; i++) {
-                        rightRoundContainer.appendChild(roundRounds[i]);
-                    }
-                    
-                    if (leftRoundContainer.children.length > 0) {
-                        leftSection.insertBefore(leftRoundContainer, leftSection.firstChild);
-                    }
-                    if (rightRoundContainer.children.length > 0) {
-                        rightSection.appendChild(rightRoundContainer);
-                    }
-                }
-            }
             
             // Add champion section if tournament is complete
             if (bracket.rounds.length > 0) {
@@ -1491,27 +1342,42 @@
                     }
                     
                     if (actualChampion) {
+                        const championSection = document.createElement('div');
+                        championSection.style.marginLeft = '30px';
+                        championSection.style.display = 'flex';
+                        championSection.style.alignItems = 'center';
+                        championSection.style.marginTop = '10px';
+                        
+                        const championArrow = document.createElement('div');
+                        championArrow.className = 'round-connector';
+                        championArrow.innerHTML = `
+                            <div class="connector-line"></div>
+                            <div class="connector-arrow">→</div>
+                            <div class="connector-line"></div>
+                        `;
+                        
                         const championDiv = document.createElement('div');
                         championDiv.className = 'round-column';
-                        championDiv.style.marginTop = '20px';
+                        championDiv.style.marginTop = '0';
                         championDiv.style.textAlign = 'center';
+                        championDiv.style.padding = '10px';
                         
                         const championName = document.createElement('div');
                         championName.className = 'player-container champion';
-                        championName.style.fontSize = '18px';
+                        championName.style.fontSize = '16px';
                         championName.style.fontWeight = 'bold';
-                        championName.style.padding = '15px';
-                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name} <span class="champion-crown">👑</span>`;
+                        championName.style.padding = '10px';
+                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name}`;
                         
                         championDiv.appendChild(championName);
-                        centerSection.appendChild(championDiv);
+                        
+                        championSection.appendChild(championArrow);
+                        championSection.appendChild(championDiv);
+                        bracketContainer.appendChild(championSection);
                     }
                 }
             }
             
-            bracketContainer.appendChild(leftSection);
-            bracketContainer.appendChild(centerSection);
-            bracketContainer.appendChild(rightSection);
             container.appendChild(bracketContainer);
         }
 
@@ -1898,10 +1764,10 @@
                 }
                 
                 // Render singles fixtures
-                renderStructuredTournamentBracket(fixtures.singles, 'singles-fixtures');
+                renderTournamentBracket(fixtures.singles, 'singles-fixtures');
                 
                 // Render doubles fixtures
-                renderStructuredTournamentBracket(fixtures.doubles, 'doubles-fixtures');
+                renderTournamentBracket(fixtures.doubles, 'doubles-fixtures');
                 
                 // Hide loading state
                 document.getElementById('fixtures-loading').classList.add('hidden');
@@ -1927,10 +1793,10 @@
                 }
                 
                 // Render singles fixtures with score inputs
-                renderAdminStructuredTournamentBracket(fixtures.singles, 'admin-singles-fixtures', 'singles');
+                renderAdminTournamentBracket(fixtures.singles, 'admin-singles-fixtures', 'singles');
                 
                 // Render doubles fixtures with score inputs
-                renderAdminStructuredTournamentBracket(fixtures.doubles, 'admin-doubles-fixtures', 'doubles');
+                renderAdminTournamentBracket(fixtures.doubles, 'admin-doubles-fixtures', 'doubles');
                 
                 // Hide loading state
                 document.getElementById('admin-fixtures-loading').classList.add('hidden');
@@ -1941,8 +1807,8 @@
             }
         }
 
-        // Render structured tournament bracket for admin with score inputs
-        function renderAdminStructuredTournamentBracket(bracket, containerId, category) {
+        // Updated: Render tournament bracket for admin with score inputs
+        function renderAdminTournamentBracket(bracket, containerId, category) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             
@@ -1954,34 +1820,27 @@
             const bracketContainer = document.createElement('div');
             bracketContainer.className = 'bracket-container';
             
-            // Create left, center, and right sections
-            const leftSection = document.createElement('div');
-            leftSection.className = 'left-section';
-            
-            const centerSection = document.createElement('div');
-            centerSection.className = 'center-section';
-            
-            const rightSection = document.createElement('div');
-            rightSection.className = 'right-section';
-            
-            // Get total rounds
-            const totalRounds = bracket.rounds.length;
-            
-            // Group rounds by their position in the bracket
-            const roundsByPosition = {};
-            
-            // Process each round to determine its position
+            // Render each round from left to right
             bracket.rounds.forEach((round, roundIndex) => {
-                const roundName = `Round ${round.roundNumber}`;
-                const roundClass = `round-r${round.roundNumber}`;
-                
-                // Create column for this round
                 const roundColumn = document.createElement('div');
-                roundColumn.className = `round-column ${roundClass}`;
+                roundColumn.className = 'round-column';
                 
                 const roundHeader = document.createElement('div');
                 roundHeader.className = 'round-header';
-                roundHeader.textContent = roundName;
+                
+                // Special headers for final rounds
+                if (roundIndex === bracket.rounds.length - 1) {
+                    roundHeader.textContent = '🏆 FINAL';
+                    roundHeader.style.backgroundColor = '#ffc107';
+                    roundHeader.style.fontSize = '13px';
+                } else if (roundIndex === bracket.rounds.length - 2) {
+                    roundHeader.textContent = 'SEMIFINALS';
+                    roundHeader.style.backgroundColor = '#2196F3';
+                    roundHeader.style.fontSize = '13px';
+                } else {
+                    roundHeader.textContent = `R${round.roundNumber}`;
+                    roundHeader.style.fontSize = '13px';
+                }
                 
                 roundColumn.appendChild(roundHeader);
                 
@@ -1990,20 +1849,16 @@
                     const matchDiv = document.createElement('div');
                     matchDiv.className = 'match-container';
                     
-                    // Special styling for different rounds
-                    if (round.roundNumber === totalRounds) {
-                        matchDiv.classList.add('round-final');
-                    } else if (round.roundNumber === totalRounds - 1) {
-                        matchDiv.classList.add('round-sf');
-                    } else if (round.roundNumber === totalRounds - 2) {
-                        matchDiv.classList.add('round-qf');
+                    // Special styling for final match
+                    if (roundIndex === bracket.rounds.length - 1) {
+                        matchDiv.classList.add('final-match');
                     }
                     
                     const player1Div = document.createElement('div');
                     player1Div.className = 'player-container';
                     if (match.winner && match.winner.id === match.player1.id) {
                         player1Div.classList.add('winner');
-                        if (round.roundNumber === totalRounds) {
+                        if (roundIndex === bracket.rounds.length - 1) {
                             player1Div.classList.add('champion');
                         }
                     }
@@ -2017,7 +1872,7 @@
                     player2Div.className = 'player-container';
                     if (match.winner && match.winner.id === match.player2.id) {
                         player2Div.classList.add('winner');
-                        if (round.roundNumber === totalRounds) {
+                        if (roundIndex === bracket.rounds.length - 1) {
                             player2Div.classList.add('champion');
                         }
                     }
@@ -2051,128 +1906,20 @@
                     roundColumn.appendChild(matchDiv);
                 });
                 
-                // Store this round column for positioning
-                if (!roundsByPosition[round.roundNumber]) {
-                    roundsByPosition[round.roundNumber] = [];
+                bracketContainer.appendChild(roundColumn);
+                
+                // Add connector arrow between rounds (except after the last round)
+                if (roundIndex < bracket.rounds.length - 1) {
+                    const connectorDiv = document.createElement('div');
+                    connectorDiv.className = 'round-connector';
+                    connectorDiv.innerHTML = `
+                        <div class="connector-line"></div>
+                        <div class="connector-arrow">→</div>
+                        <div class="connector-line"></div>
+                    `;
+                    bracketContainer.appendChild(connectorDiv);
                 }
-                roundsByPosition[round.roundNumber].push(roundColumn);
             });
-            
-            // Position rounds according to the requested structure
-            // Final in the center
-            if (roundsByPosition[totalRounds] && roundsByPosition[totalRounds].length > 0) {
-                centerSection.appendChild(roundsByPosition[totalRounds][0]);
-            }
-            
-            // Semifinals: SF1 on left of final, SF2 on right of final
-            if (totalRounds > 1 && roundsByPosition[totalRounds - 1]) {
-                if (roundsByPosition[totalRounds - 1].length > 0) {
-                    leftSection.appendChild(roundsByPosition[totalRounds - 1][0]);
-                }
-                if (roundsByPosition[totalRounds - 1].length > 1) {
-                    rightSection.appendChild(roundsByPosition[totalRounds - 1][1]);
-                }
-            }
-            
-            // Quarterfinals: QF1 and QF2 on left side (left of SF1), QF3 and QF4 on right side (right of SF2)
-            if (totalRounds > 2 && roundsByPosition[totalRounds - 2]) {
-                const qfRounds = roundsByPosition[totalRounds - 2];
-                const leftQfContainer = document.createElement('div');
-                leftQfContainer.style.display = 'flex';
-                leftQfContainer.style.flexDirection = 'column';
-                leftQfContainer.style.gap = '10px';
-                
-                const rightQfContainer = document.createElement('div');
-                rightQfContainer.style.display = 'flex';
-                rightQfContainer.style.flexDirection = 'column';
-                rightQfContainer.style.gap = '10px';
-                
-                // Add QF1 and QF2 to left side
-                if (qfRounds.length > 0) {
-                    leftQfContainer.appendChild(qfRounds[0]);
-                }
-                if (qfRounds.length > 1) {
-                    leftQfContainer.appendChild(qfRounds[1]);
-                }
-                
-                // Add QF3 and QF4 to right side
-                if (qfRounds.length > 2) {
-                    rightQfContainer.appendChild(qfRounds[2]);
-                }
-                if (qfRounds.length > 3) {
-                    rightQfContainer.appendChild(qfRounds[3]);
-                }
-                
-                if (leftQfContainer.children.length > 0) {
-                    leftSection.insertBefore(leftQfContainer, leftSection.firstChild);
-                }
-                if (rightQfContainer.children.length > 0) {
-                    rightSection.appendChild(rightQfContainer);
-                }
-            }
-            
-            // Round of 16: 4 games on left of QF1/QF2, 4 games on right of QF3/QF4
-            if (totalRounds > 3 && roundsByPosition[totalRounds - 3]) {
-                const r16Rounds = roundsByPosition[totalRounds - 3];
-                const leftR16Container = document.createElement('div');
-                leftR16Container.style.display = 'flex';
-                leftR16Container.style.flexDirection = 'column';
-                leftR16Container.style.gap = '10px';
-                
-                const rightR16Container = document.createElement('div');
-                rightR16Container.style.display = 'flex';
-                rightR16Container.style.flexDirection = 'column';
-                rightR16Container.style.gap = '10px';
-                
-                // Add first 4 R16 matches to left side
-                for (let i = 0; i < Math.min(4, r16Rounds.length); i++) {
-                    leftR16Container.appendChild(r16Rounds[i]);
-                }
-                
-                // Add next 4 R16 matches to right side
-                for (let i = 4; i < Math.min(8, r16Rounds.length); i++) {
-                    rightR16Container.appendChild(r16Rounds[i]);
-                }
-                
-                if (leftR16Container.children.length > 0) {
-                    leftSection.insertBefore(leftR16Container, leftSection.firstChild);
-                }
-                if (rightR16Container.children.length > 0) {
-                    rightSection.appendChild(rightR16Container);
-                }
-            }
-            
-            // For any remaining rounds, distribute them to left and right sides
-            for (let r = totalRounds - 4; r >= 1; r--) {
-                if (roundsByPosition[r]) {
-                    const roundRounds = roundsByPosition[r];
-                    const leftRoundContainer = document.createElement('div');
-                    leftRoundContainer.style.display = 'flex';
-                    leftRoundContainer.style.flexDirection = 'column';
-                    leftRoundContainer.style.gap = '10px';
-                    
-                    const rightRoundContainer = document.createElement('div');
-                    rightRoundContainer.style.display = 'flex';
-                    rightRoundContainer.style.flexDirection = 'column';
-                    rightRoundContainer.style.gap = '10px';
-                    
-                    // Split matches between left and right
-                    const halfIndex = Math.ceil(roundRounds.length / 2);
-                    for (let i = 0; i < halfIndex && i < roundRounds.length; i++) {
-                        leftRoundContainer.appendChild(roundRounds[i]);
-                    }
-                    for (let i = halfIndex; i < roundRounds.length; i++) {
-                        rightRoundContainer.appendChild(roundRounds[i]);
-                    }
-                    
-                    if (leftRoundContainer.children.length > 0) {
-                        leftSection.insertBefore(leftRoundContainer, leftSection.firstChild);
-                    }
-                    if (rightRoundContainer.children.length > 0) {
-                        rightSection.appendChild(rightRoundContainer);
-                    }
-                }
-            }
             
             // Add champion section if tournament is complete
             if (bracket.rounds.length > 0) {
@@ -2190,27 +1937,42 @@
                     }
                     
                     if (actualChampion) {
+                        const championSection = document.createElement('div');
+                        championSection.style.marginLeft = '30px';
+                        championSection.style.display = 'flex';
+                        championSection.style.alignItems = 'center';
+                        championSection.style.marginTop = '10px';
+                        
+                        const championArrow = document.createElement('div');
+                        championArrow.className = 'round-connector';
+                        championArrow.innerHTML = `
+                            <div class="connector-line"></div>
+                            <div class="connector-arrow">→</div>
+                            <div class="connector-line"></div>
+                        `;
+                        
                         const championDiv = document.createElement('div');
                         championDiv.className = 'round-column';
-                        championDiv.style.marginTop = '20px';
+                        championDiv.style.marginTop = '0';
                         championDiv.style.textAlign = 'center';
+                        championDiv.style.padding = '10px';
                         
                         const championName = document.createElement('div');
                         championName.className = 'player-container champion';
-                        championName.style.fontSize = '18px';
+                        championName.style.fontSize = '16px';
                         championName.style.fontWeight = 'bold';
-                        championName.style.padding = '15px';
-                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name} <span class="champion-crown">👑</span>`;
+                        championName.style.padding = '10px';
+                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name}`;
                         
                         championDiv.appendChild(championName);
-                        centerSection.appendChild(championDiv);
+                        
+                        championSection.appendChild(championArrow);
+                        championSection.appendChild(championDiv);
+                        bracketContainer.appendChild(championSection);
                     }
                 }
             }
             
-            bracketContainer.appendChild(leftSection);
-            bracketContainer.appendChild(centerSection);
-            bracketContainer.appendChild(rightSection);
             container.appendChild(bracketContainer);
             
             // Add event listeners to update score buttons
