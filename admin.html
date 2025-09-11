@@ -4,11 +4,6 @@
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="styles.css">
-
-  <!-- ✅ CACHE-BUSTING: Prevent browsers from caching this page -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
 </head>
 <body class="admin-bg">
 
@@ -20,7 +15,7 @@
     // Load Firebase dynamically
     const loadFirebaseAndCheckAuth = async () => {
       try {
-        // Import Firebase modules dynamically — ✅ FIXED TRAILING SPACES
+        // Import Firebase modules dynamically
         const { initializeApp } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js");
         const { getAuth, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js");
 
