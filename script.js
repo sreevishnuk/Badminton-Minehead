@@ -300,8 +300,8 @@ function createDoublesBrackets(players) {
     const p2 = (i + 1 < shuffled.length) ? shuffled[i + 1] : null;
 
     pairs.push({
-      team: { player1: p1, player2: p2 },
-      opponent: null,
+      player1: { player1: p1, player2: p2 },
+      player2: null,
       winner: null,
       score1: 0,
       score2: 0
@@ -315,8 +315,8 @@ function createDoublesBrackets(players) {
   // Add byes if needed
   while (pairs.length < bracketSize) {
     pairs.push({
-      team: { player1: null, player2: null },
-      opponent: null,
+      player1: { player1: null, player2: null },
+      player2: null,
       winner: null,
       score1: 0,
       score2: 0
@@ -327,8 +327,8 @@ function createDoublesBrackets(players) {
   let roundMatches = [];
   for (let i = 0; i < pairs.length; i += 2) {
     roundMatches.push({
-      player1: pairs[i].team,
-      player2: pairs[i + 1]?.team || null,
+      player1: pairs[i].player1,
+      player2: pairs[i + 1]?.player1 || null,
       winner: null,
       score1: 0,
       score2: 0
@@ -413,12 +413,14 @@ async function loadFixtures() {
   }
 }
 
-// Admin fixture editor view loading — NOW INCLUDES WINNER SELECTION
+// Admin fixture editor view loading
 async function loadFixturesAdmin() {
   const editDiv = document.getElementById('edit-fixtures');
-  if (!editDiv) return;
+  const scoresDiv = document.getElementById('enter-scores');
+  if (!editDiv || !scoresDiv) return;
 
   editDiv.innerHTML = "Loading fixtures...";
+  scoresDiv.innerHTML = "Loading fixtures...";
 
   try {
     const singlesSnap = await getDoc(doc(db, "fixtures", "singles"));
@@ -426,17 +428,23 @@ async function loadFixturesAdmin() {
 
     if (!(singlesSnap.exists() && doublesSnap.exists())) {
       editDiv.innerHTML = "<p>No fixtures found. Generate fixtures first.</p>";
+      scoresDiv.innerHTML = "";
       return;
     }
 
     const singlesBrackets = singlesSnap.data().rounds;
     const doublesBrackets = doublesSnap.data().rounds;
 
-    editDiv.innerHTML = '<h3>Singles Fixtures</h3>' + formatFixtureWinnerSelectionHTML(singlesBrackets, "singles");
-    editDiv.innerHTML += '<h3>Doubles Fixtures</h3>' + formatFixtureWinnerSelectionHTML(doublesBrackets, "doubles");
+    editDiv.innerHTML = '<h3>Singles Fixtures</h3>' + formatFixtureEditingHTML(singlesBrackets, "singles");
+    editDiv.innerHTML += '<h3>Doubles Fixtures</h3>' + formatFixtureEditingHTML(doublesBrackets, "doubles");
+
+    scoresDiv.innerHTML = '<h3>Update Scores & Winners</h3>' +
+      formatFixtureScoreInputHTML(singlesBrackets, "singles") +
+      formatFixtureScoreInputHTML(doublesBrackets, "doubles");
 
   } catch (error) {
     editDiv.innerHTML = "Error loading fixtures: " + error.message;
+    scoresDiv.innerHTML = "Error loading fixtures: " + error.message;
   }
 }
 
@@ -456,37 +464,31 @@ function injectFixtureStyles() {
       font-size: 1.1em;
       font-weight: 500;
     }
-    .winner-select {
-      margin: 8px 0;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background: #f9f9f9;
-    }
-    .winner-select label {
-      display: block;
-      margin-bottom: 4px;
-      font-weight: bold;
-    }
-    .winner-select select {
-      width: 100%;
-      padding: 6px;
-      margin-top: 4px;
-    }
-    .update-btn {
-      margin-top: 8px;
-      padding: 6px 12px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .update-btn:hover {
-      background: #218838;
-    }
   `;
   document.head.appendChild(style);
+}
+
+// Format bracket display HTML (read-only) — ✅ UPDATED: Removed "Winner: TBD", use "TBD" for null players
+function formatBracketsHTML(rounds, isDoubles = false) {
+  injectFixtureStyles(); // ✅ Inject styles once
+
+  let html = '<div class="bracket">';
+
+  rounds.forEach((roundObj, i) => {
+    const matchCount = roundObj.matches.length;
+    const roundLabel = getRoundLabel(matchCount, roundObj.round);
+    html += `<div class="round"><strong>${roundLabel}</strong><ul>`;
+    roundObj.matches.forEach(match => {
+      const p1 = formatPlayerName(match.player1, isDoubles);
+      const p2 = formatPlayerName(match.player2, isDoubles);
+      // ✅ REMOVED WINNER DISPLAY — just show match
+      html += `<li>${p1} vs ${p2}</li>`;
+    });
+    html += '</ul></div>';
+  });
+
+  html += '</div>';
+  return html;
 }
 
 // Format player or pair names for display — ✅ UPDATED: "BYE" → "TBD" + HTML with classes
@@ -514,11 +516,34 @@ function formatPlayerName(playerObj, isDoubles) {
   return `<span class="tbd">TBD</span>`;
 }
 
-// ✅ Format fixture display WITH WINNER SELECTION DROPDOWN
-function formatFixtureWinnerSelectionHTML(rounds, type) {
+// ✅ Format fixture display WITHOUT "Edit" buttons — ✅ UPDATED: use "TBD" with styling
+function formatFixtureEditingHTML(rounds, type) {
   injectFixtureStyles(); // ✅ Inject styles once
 
-  let html = `<div id="${type}-winner-selection">`;
+  let html = `<div id="${type}-edit-area">`;
+  rounds.forEach((roundObj, i) => {
+    const matchCount = roundObj.matches.length;
+    const roundLabel = getRoundLabel(matchCount, roundObj.round);
+    html += `<h4>${roundLabel}</h4><ul>`;
+    roundObj.matches.forEach((match, j) => {
+      html += `<li>Match ${j + 1}: ${formatPlayerName(match.player1, type === "doubles")} vs ${formatPlayerName(match.player2, type === "doubles")}</li>`;
+    });
+    html += `</ul>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+// Placeholder for editing match (to be implemented) — kept for compatibility
+function editMatch(type, roundIndex, matchIndex) {
+  alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
+}
+
+// ✅ Format score input — ✅ UPDATED: use "TBD" with styling
+function formatFixtureScoreInputHTML(rounds, type) {
+  injectFixtureStyles(); // ✅ Inject styles once
+
+  let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
     const matchCount = roundObj.matches.length;
     const roundLabel = getRoundLabel(matchCount, roundObj.round);
@@ -527,29 +552,12 @@ function formatFixtureWinnerSelectionHTML(rounds, type) {
       const p1Name = formatPlayerName(match.player1, type === "doubles");
       const p2Name = formatPlayerName(match.player2, type === "doubles");
 
-      // Skip if both players are TBD (not scheduled yet)
-      if (p1Name.includes("TBD") && p2Name.includes("TBD")) {
-        html += `<div class="winner-select">
-          <p>Match ${j + 1}: Not yet scheduled</p>
-        </div><hr>`;
-        return;
-      }
-
-      // Build winner options
-      let options = `<option value="">-- Select Winner --</option>`;
-      if (!p1Name.includes("TBD")) {
-        options += `<option value="player1">${p1Name.replace(/<[^>]*>/g, '')}</option>`;
-      }
-      if (!p2Name.includes("TBD")) {
-        options += `<option value="player2">${p2Name.replace(/<[^>]*>/g, '')}</option>`;
-      }
-
-      html += `<div class="winner-select">
-          <label>Match ${j + 1}: ${p1Name} vs ${p2Name}</label>
-          <select id="${type}-${i}-${j}-winner">
-            ${options}
-          </select>
-          <button class="update-btn" onclick="updateWinner('${type}', ${i}, ${j})">Set Winner</button>
+      html += `<div class="score-row">
+          <span>${p1Name}</span>
+          <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}" placeholder="0">
+          <span class="vs">vs</span>
+          <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}" placeholder="0">
+          <button onclick="updateScore('${type}', ${i}, ${j})">Update</button>
         </div><hr>`;
     });
   });
@@ -557,18 +565,19 @@ function formatFixtureWinnerSelectionHTML(rounds, type) {
   return html;
 }
 
-// ✅ Update winner + auto-propagate to next round
-async function updateWinner(type, roundIndex, matchIndex) {
+// ✅ Update score + auto-propagate winner to next round
+async function updateScore(type, roundIndex, matchIndex) {
   try {
-    const winnerSelect = document.getElementById(`${type}-${roundIndex}-${matchIndex}-winner`);
-    if (!winnerSelect) {
-      alert("Winner selector missing.");
+    const score1Input = document.getElementById(`${type}-${roundIndex}-${matchIndex}-score1`);
+    const score2Input = document.getElementById(`${type}-${roundIndex}-${matchIndex}-score2`);
+    if (!score1Input || !score2Input) {
+      alert("Score inputs missing.");
       return;
     }
-
-    const winnerChoice = winnerSelect.value;
-    if (!winnerChoice) {
-      alert("Please select a winner.");
+    const score1 = parseInt(score1Input.value);
+    const score2 = parseInt(score2Input.value);
+    if (isNaN(score1) || isNaN(score2)) {
+      alert("Enter valid numeric scores.");
       return;
     }
 
@@ -583,16 +592,23 @@ async function updateWinner(type, roundIndex, matchIndex) {
     // Deep clone to avoid mutation issues
     const rounds = JSON.parse(JSON.stringify(fixtureSnap.data().rounds));
 
-    // Determine winner object
-    let winner = null;
-    if (winnerChoice === "player1") {
-      winner = rounds[roundIndex].matches[matchIndex].player1;
-    } else if (winnerChoice === "player2") {
-      winner = rounds[roundIndex].matches[matchIndex].player2;
-    }
+    // Update scores
+    rounds[roundIndex].matches[matchIndex].score1 = score1;
+    rounds[roundIndex].matches[matchIndex].score2 = score2;
 
-    if (!winner) {
-      alert("Invalid winner selection.");
+    // Determine winner
+    let winner = null;
+    if (score1 > score2) {
+      winner = rounds[roundIndex].matches[matchIndex].player1;
+    } else if (score2 > score1) {
+      winner = rounds[roundIndex].matches[matchIndex].player2;
+    } else {
+      // Draw — no winner yet
+      rounds[roundIndex].matches[matchIndex].winner = null;
+      await updateDoc(fixtureDoc, { rounds });
+      alert("Scores updated. No winner due to draw.");
+      if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
+      if (typeof loadFixtures === 'function') loadFixtures();
       return;
     }
 
@@ -618,12 +634,12 @@ async function updateWinner(type, roundIndex, matchIndex) {
     // Save back updated rounds
     await updateDoc(fixtureDoc, { rounds });
 
-    alert("Winner set and propagated to next round.");
-    loadFixturesAdmin(); // Refresh admin view
-    if (typeof loadFixtures === 'function') loadFixtures(); // Refresh public view
+    alert("Score updated and winner set. Winner propagated to next round.");
+    if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
+    if (typeof loadFixtures === 'function') loadFixtures();
   } catch (error) {
-    console.error("❌ Error updating winner:", error);
-    alert("Failed to update winner: " + error.message);
+    console.error("❌ Error updating score:", error);
+    alert("Failed to update score: " + error.message);
   }
 }
 
@@ -652,7 +668,7 @@ window.addEventListener("load", () => {
     loadFixtures();
   }
 
-  if (document.getElementById('edit-fixtures')) {
+  if (document.getElementById('edit-fixtures') || document.getElementById('enter-scores')) {
     loadFixturesAdmin();
   }
 
@@ -669,9 +685,8 @@ try {
   window.generateFixtures = generateFixtures;
   window.logoutAdmin = logoutAdmin;
   window.removePlayer = removePlayer;
-  window.updateWinner = updateWinner;
-  window.loadPlayers = loadPlayers;
-  window.loadFixturesAdmin = loadFixturesAdmin;
+  window.updateScore = updateScore;
+  window.editMatch = editMatch;
 
   // ✅ CRITICAL for index.html
   window.getRegistrationStatus = getRegistrationStatus;
