@@ -1,9 +1,9 @@
 console.log("Loaded updated script.js");
 
-// Firebase setup and imports — REMOVED TRAILING SPACES
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js ";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js ";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js ";
+// Firebase setup and imports — TRAILING SPACES REMOVED ✅
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
@@ -375,6 +375,14 @@ function shuffleArray(arr) {
   return array;
 }
 
+// ✅ HELPER: Get display label for round based on number of matches
+function getRoundLabel(matchCount, roundNumber) {
+  if (matchCount === 4) return "Quarter Finals";
+  if (matchCount === 2) return "Semi Finals";
+  if (matchCount === 1) return "Final";
+  return `Round ${roundNumber}`;
+}
+
 // Load fixtures for public view page (fixtures.html)
 async function loadFixtures() {
   const singlesDiv = document.getElementById('singles-fixtures');
@@ -440,12 +448,14 @@ async function loadFixturesAdmin() {
   }
 }
 
-// Format bracket display HTML (read-only)
+// Format bracket display HTML (read-only) — ✅ UPDATED
 function formatBracketsHTML(rounds, isDoubles = false) {
   let html = '<div class="bracket">';
 
   rounds.forEach((roundObj, i) => {
-    html += `<div class="round"><strong>Round ${roundObj.round}</strong><ul>`;
+    const matchCount = roundObj.matches.length;
+    const roundLabel = getRoundLabel(matchCount, roundObj.round);
+    html += `<div class="round"><strong>${roundLabel}</strong><ul>`;
     roundObj.matches.forEach(match => {
       const p1 = formatPlayerName(match.player1, isDoubles);
       const p2 = formatPlayerName(match.player2, isDoubles);
@@ -471,11 +481,13 @@ function formatPlayerName(playerObj, isDoubles) {
   return playerObj.name || "Unknown";
 }
 
-// ✅ Format fixture display WITHOUT "Edit" buttons
+// ✅ Format fixture display WITHOUT "Edit" buttons — ✅ UPDATED
 function formatFixtureEditingHTML(rounds, type) {
   let html = `<div id="${type}-edit-area">`;
   rounds.forEach((roundObj, i) => {
-    html += `<h4>Round ${roundObj.round}</h4><ul>`;
+    const matchCount = roundObj.matches.length;
+    const roundLabel = getRoundLabel(matchCount, roundObj.round);
+    html += `<h4>${roundLabel}</h4><ul>`;
     roundObj.matches.forEach((match, j) => {
       html += `<li>Match ${j + 1}: ${formatPlayerName(match.player1, type === "doubles")} vs ${formatPlayerName(match.player2, type === "doubles")}</li>`;
     });
@@ -490,11 +502,13 @@ function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// ✅ Format score input — CLEAN: Player [input] vs Player [input] [Update]
+// ✅ Format score input — CLEAN: Player [input] vs Player [input] [Update] — ✅ UPDATED
 function formatFixtureScoreInputHTML(rounds, type) {
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
-    html += `<h4>Round ${roundObj.round}</h4>`;
+    const matchCount = roundObj.matches.length;
+    const roundLabel = getRoundLabel(matchCount, roundObj.round);
+    html += `<h4>${roundLabel}</h4>`;
     roundObj.matches.forEach((match, j) => {
       const p1Name = formatPlayerName(match.player1, type === "doubles");
       const p2Name = formatPlayerName(match.player2, type === "doubles");
