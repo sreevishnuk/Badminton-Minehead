@@ -1,9 +1,9 @@
 console.log("Loaded updated script.js");
 
 // Firebase setup and imports — REMOVED TRAILING SPACES
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js ";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js ";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js ";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
@@ -176,7 +176,7 @@ async function toggleRegistration() {
   }
 }
 
-// ✅ Generate fixtures + FORCE CLOSE REGISTRATION
+// ✅ ✅ ✅ FIXED: Generate fixtures + FORCE CLOSE REGISTRATION
 async function generateFixtures() {
   const btn = document.querySelector('button[onclick="generateFixtures()"]');
   if (btn) {
@@ -440,70 +440,38 @@ async function loadFixturesAdmin() {
   }
 }
 
-// ✅ Format bracket display as true tournament bracket (left-to-right)
+// Format bracket display HTML (read-only)
 function formatBracketsHTML(rounds, isDoubles = false) {
-  let html = '<div class="bracket-container">';
+  let html = '<div class="bracket">';
 
   rounds.forEach((roundObj, i) => {
-    const totalRounds = rounds.length;
-    const roundNumber = roundObj.round;
-    let roundLabel = `Round ${roundNumber}`;
-
-    // ✅ Smart labels: Final, Semi Final, Quarter Final
-    if (totalRounds === 1) {
-      roundLabel = "Final";
-    } else if (totalRounds === 2) {
-      if (roundNumber === 1) roundLabel = "Semi Final";
-      if (roundNumber === 2) roundLabel = "Final";
-    } else if (totalRounds >= 3) {
-      if (roundNumber === totalRounds) {
-        roundLabel = "Final";
-      } else if (roundNumber === totalRounds - 1) {
-        roundLabel = "Semi Final";
-      } else if (roundNumber === totalRounds - 2 && roundObj.matches.length <= 4) {
-        roundLabel = "Quarter Final";
-      }
-    }
-
-    html += `<div class="bracket-round">
-      <div class="round-title">${roundLabel}</div>
-      <div class="matches">`;
-
-    roundObj.matches.forEach((match, j) => {
+    html += `<div class="round"><strong>Round ${roundObj.round}</strong><ul>`;
+    roundObj.matches.forEach(match => {
       const p1 = formatPlayerName(match.player1, isDoubles);
       const p2 = formatPlayerName(match.player2, isDoubles);
       let winner = match.winner ? formatPlayerName(match.winner, isDoubles) : "TBD";
-
-      html += `
-        <div class="match-card">
-          <div class="player">${p1}</div>
-          <div class="vs">vs</div>
-          <div class="player">${p2}</div>
-          <div class="winner">Winner: ${winner}</div>
-        </div>`;
+      html += `<li>${p1} vs ${p2} - <em>Winner: ${winner}</em></li>`;
     });
-
-    html += `</div></div>`;
+    html += '</ul></div>';
   });
 
   html += '</div>';
   return html;
 }
 
-// ✅ Show "TBD" instead of "BYE"
+// Format player or pair names for display
 function formatPlayerName(playerObj, isDoubles) {
-  if (!playerObj) return "TBD";
-  if (!isDoubles) return playerObj.name || "TBD";
+  if (!playerObj) return "BYE";
+  if (!isDoubles) return playerObj.name || "Unknown";
 
+  // Doubles playerObj expected as {player1: {}, player2: {}}
   if (playerObj.player1 && playerObj.player2) {
-    const p1 = playerObj.player1.name || "TBD";
-    const p2 = playerObj.player2.name || "TBD";
-    return `${p1} & ${p2}`;
+    return `${playerObj.player1.name || "Unknown"} & ${playerObj.player2.name || "Unknown"}`;
   }
-  return playerObj.name || "TBD";
+  return playerObj.name || "Unknown";
 }
 
-// Format fixture display WITHOUT "Edit" buttons
+// ✅ Format fixture display WITHOUT "Edit" buttons
 function formatFixtureEditingHTML(rounds, type) {
   let html = `<div id="${type}-edit-area">`;
   rounds.forEach((roundObj, i) => {
@@ -517,12 +485,12 @@ function formatFixtureEditingHTML(rounds, type) {
   return html;
 }
 
-// Placeholder for editing match
+// Placeholder for editing match (to be implemented) — kept for compatibility
 function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// Format score input — CLEAN: Player [input] vs Player [input] [Update]
+// ✅ Format score input — CLEAN: Player [input] vs Player [input] [Update]
 function formatFixtureScoreInputHTML(rounds, type) {
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
@@ -582,6 +550,7 @@ async function updateScore(type, roundIndex, matchIndex) {
     } else if (score2 > score1) {
       winner = rounds[roundIndex].matches[matchIndex].player2;
     } else {
+      // Draw — no winner yet
       rounds[roundIndex].matches[matchIndex].winner = null;
       await updateDoc(fixtureDoc, { rounds });
       alert("Scores updated. No winner due to draw.");
@@ -596,9 +565,13 @@ async function updateScore(type, roundIndex, matchIndex) {
     // ➡️ PROPAGATE WINNER TO NEXT ROUND (if exists)
     const nextRoundIndex = roundIndex + 1;
     if (nextRoundIndex < rounds.length) {
+      // In knockout, winner of match N goes to match floor(N/2) in next round
       const nextMatchIndex = Math.floor(matchIndex / 2);
+
+      // Which slot? Even matchIndex → player1, Odd → player2
       const slot = matchIndex % 2 === 0 ? "player1" : "player2";
 
+      // Assign winner to next round match
       if (rounds[nextRoundIndex].matches[nextMatchIndex]) {
         rounds[nextRoundIndex].matches[nextMatchIndex][slot] = winner;
         console.log(`✅ Winner "${formatPlayerName(winner, type === 'doubles')}" propagated to Round ${nextRoundIndex + 1}, Match ${nextMatchIndex + 1}, slot: ${slot}`);
@@ -626,6 +599,7 @@ function logoutAdmin() {
 window.addEventListener("load", () => {
   console.log("Page loaded — initializing components...");
 
+  // Detect page and run relevant functions
   if (document.getElementById('registration-form')) {
     const form = document.getElementById('registration-form');
     if (form) {
@@ -645,13 +619,14 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 
+  // Login button handler
   const loginBtn = document.getElementById('admin-login-btn');
   if (loginBtn) {
     loginBtn.addEventListener('click', loginAdmin);
   }
 });
 
-// ✅ Expose ALL required functions to window
+// ✅ ✅ ✅ FIXED: Expose ALL required functions to window
 try {
   window.toggleRegistration = toggleRegistration;
   window.generateFixtures = generateFixtures;
@@ -659,6 +634,8 @@ try {
   window.removePlayer = removePlayer;
   window.updateScore = updateScore;
   window.editMatch = editMatch;
+
+  // ✅ CRITICAL for index.html
   window.getRegistrationStatus = getRegistrationStatus;
   window.loadFixtures = loadFixtures;
   window.submitRegistrationForm = submitRegistrationForm;
@@ -666,4 +643,4 @@ try {
   console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-      }
+}
