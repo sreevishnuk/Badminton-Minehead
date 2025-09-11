@@ -448,7 +448,7 @@ async function loadFixturesAdmin() {
   }
 }
 
-// Format bracket display HTML (read-only) — ✅ UPDATED
+// Format bracket display HTML (read-only) — ✅ UPDATED: Removed "Winner: TBD", use "TBD" for null players
 function formatBracketsHTML(rounds, isDoubles = false) {
   let html = '<div class="bracket">';
 
@@ -459,8 +459,8 @@ function formatBracketsHTML(rounds, isDoubles = false) {
     roundObj.matches.forEach(match => {
       const p1 = formatPlayerName(match.player1, isDoubles);
       const p2 = formatPlayerName(match.player2, isDoubles);
-      let winner = match.winner ? formatPlayerName(match.winner, isDoubles) : "TBD";
-      html += `<li>${p1} vs ${p2} - <em>Winner: ${winner}</em></li>`;
+      // ✅ REMOVED WINNER DISPLAY — just show match
+      html += `<li>${p1} vs ${p2}</li>`;
     });
     html += '</ul></div>';
   });
@@ -469,19 +469,21 @@ function formatBracketsHTML(rounds, isDoubles = false) {
   return html;
 }
 
-// Format player or pair names for display
+// Format player or pair names for display — ✅ UPDATED: "BYE" → "TBD"
 function formatPlayerName(playerObj, isDoubles) {
-  if (!playerObj) return "BYE";
-  if (!isDoubles) return playerObj.name || "Unknown";
+  if (!playerObj) return "TBD"; // ✅ Changed from "BYE" to "TBD"
+  if (!isDoubles) return playerObj.name || "TBD"; // fallback to TBD if name missing
 
   // Doubles playerObj expected as {player1: {}, player2: {}}
   if (playerObj.player1 && playerObj.player2) {
-    return `${playerObj.player1.name || "Unknown"} & ${playerObj.player2.name || "Unknown"}`;
+    const name1 = playerObj.player1.name || "TBD";
+    const name2 = playerObj.player2.name || "TBD";
+    return `${name1} & ${name2}`;
   }
-  return playerObj.name || "Unknown";
+  return "TBD";
 }
 
-// ✅ Format fixture display WITHOUT "Edit" buttons — ✅ UPDATED
+// ✅ Format fixture display WITHOUT "Edit" buttons — ✅ UPDATED: use "TBD"
 function formatFixtureEditingHTML(rounds, type) {
   let html = `<div id="${type}-edit-area">`;
   rounds.forEach((roundObj, i) => {
@@ -502,7 +504,7 @@ function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// ✅ Format score input — CLEAN: Player [input] vs Player [input] [Update] — ✅ UPDATED
+// ✅ Format score input — ✅ UPDATED: use "TBD" for null players
 function formatFixtureScoreInputHTML(rounds, type) {
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
@@ -657,4 +659,4 @@ try {
   console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-}
+      }
