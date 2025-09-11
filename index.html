@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minehead Badminton Tournament</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2196F3;
+            --accent: #FF9800;
+            --dark: #333;
+            --light: #f5f5f5;
+            --danger: #f44336;
+            --success: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #388E3C;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #1976D2;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .fixture-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .fixture-bracket {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .match {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .match-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .players {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .player {
+            flex: 1;
+            padding: 5px;
+        }
+        
+        .score-input {
+            width: 50px;
+            text-align: center;
+            padding: 5px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin-right: 5px;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-color: #ddd;
+            border-bottom-color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 0 10px;
+            }
+            
+            .fixture-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">Minehead Badminton Tournament</div>
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-home">Home</a></li>
+                    <li><a href="#" id="nav-register" class="hidden">Register</a></li>
+                    <li><a href="#" id="nav-fixtures">Fixtures</a></li>
+                    <li><a href="#" id="nav-admin-login">Admin Login</a></li>
+                    <li><a href="#" id="nav-admin" class="hidden">Admin Dashboard</a></li>
+                    <li><a href="#" id="nav-logout" class="hidden">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="login-page" class="card">
+            <div class="card-header">Admin Login</div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="admin-email">Email</label>
+                    <input type="email" id="admin-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" placeholder="Enter your password" required>
+                </div>
+                <div id="login-error" class="error-message hidden"></div>
+                <button type="submit" class="btn" id="login-btn">Login</button>
+                <div id="login-loading" class="loading hidden">Authenticating...</div>
+            </form>
+        </div>
+
+        <!-- Home Page -->
+        <div id="home-page" class="hidden">
+            <div class="card">
+                <div class="card-header">Welcome to Minehead Badminton Tournament</div>
+                <p>Join us for an exciting badminton tournament in beautiful Minehead!</p>
+                <p>Registration Fee: £2 for Singles, £2 for Doubles, £4 for both</p>
+                <div id="registration-status" class="alert alert-success">
+                    Registration is currently OPEN!
+                </div>
+                <button id="register-btn" class="btn">Register Now</button>
+                <button id="view-fixtures-btn" class="btn btn-secondary">View Fixtures</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Registered Players</div>
+                <div class="tabs">
+                    <div class="tab active" data-tab="singles">Singles</div>
+                    <div class="tab" data-tab="doubles">Doubles</div>
+                </div>
+                
+                <div id="singles-tab" class="tab-content active">
+                    <div id="singles-loading" class="loading hidden">Loading players...</div>
+                    <table id="singles-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="singles-list">
+                            <!-- Player data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="doubles-tab" class="tab-content">
+                    <div id="doubles-loading" class="loading hidden">Loading players...</div>
+                    <table id="doubles-table">
+                        <thead>
+                            <tr>
+                                <th>Team</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doubles-list">
+                            <!-- Player data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Page -->
+        <div id="registration-page" class="hidden">
+            <div class="card">
+                <div class="card-header">Player Registration</div>
+                <form id="registration-form">
+                    <div class="form-group">
+                        <label for="player-name">Full Name</label>
+                        <input type="text" id="player-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categories</label>
+                        <div>
+                            <input type="checkbox" id="singles-checkbox" name="categories" value="singles">
+                            <label for="singles-checkbox" style="display: inline;">Singles (£2)</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="doubles-checkbox" name="categories" value="doubles">
+                            <label for="doubles-checkbox" style="display: inline;">Doubles (£2)</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p>Total Fee: £<span id="total-fee">0</span></p>
+                    </div>
+                    <div id="registration-error" class="error-message hidden"></div>
+                    <div id="registration-loading" class="loading hidden">Registering...</div>
+                    <button type="submit" class="btn" id="register-submit-btn">Register</button>
+                    <button type="button" id="cancel-registration" class="btn btn-secondary">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Fixtures Page -->
+        <div id="fixtures-page" class="hidden">
+            <div class="card">
+                <div class="card-header">Tournament Fixtures</div>
+                <div id="fixtures-status" class="alert alert-success">
+                    Fixtures have been generated and registration is now closed.
+                </div>
+                <div id="fixtures-loading" class="loading hidden">Loading fixtures...</div>
+                <div class="fixture-container">
+                    <div class="fixture-bracket">
+                        <h3>Singles Tournament</h3>
+                        <div id="singles-fixtures">
+                            <!-- Singles fixtures will be generated here -->
+                            <p>No fixtures available yet.</p>
+                        </div>
+                    </div>
+                    <div class="fixture-bracket">
+                        <h3>Doubles Tournament</h3>
+                        <div id="doubles-fixtures">
+                            <!-- Doubles fixtures will be generated here -->
+                            <p>No fixtures available yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="admin-dashboard" class="hidden">
+            <div class="card">
+                <div class="card-header">Admin Dashboard</div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="admin-players">Players</div>
+                    <div class="tab" data-tab="admin-fixtures">Fixtures</div>
+                    <div class="tab" data-tab="admin-settings">Settings</div>
+                </div>
+                
+                <div id="admin-players-tab" class="tab-content active">
+                    <h3>Manage Players</h3>
+                    <button id="add-player-btn" class="btn">Add Player</button>
+                    <button id="generate-fixtures-btn" class="btn btn-success">Generate Fixtures</button>
+                    <div id="admin-players-loading" class="loading hidden">Loading players...</div>
+                    
+                    <div id="add-player-form" class="hidden card" style="margin-top: 20px;">
+                        <h4>Add New Player</h4>
+                        <form id="admin-add-player-form">
+                            <div class="form-group">
+                                <label for="admin-player-name">Player Name</label>
+                                <input type="text" id="admin-player-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Categories</label>
+                                <div>
+                                    <input type="checkbox" id="admin-singles" name="admin-categories" value="singles">
+                                    <label for="admin-singles" style="display: inline;">Singles</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="admin-doubles" name="admin-categories" value="doubles">
+                                    <label for="admin-doubles" style="display: inline;">Doubles</label>
+                                </div>
+                            </div>
+                            <div id="admin-add-error" class="error-message hidden"></div>
+                            <div id="admin-add-loading" class="loading hidden">Adding player...</div>
+                            <button type="submit" class="btn" id="admin-add-submit">Add Player</button>
+                            <button type="button" id="cancel-add-player" class="btn btn-secondary">Cancel</button>
+                        </form>
+                    </div>
+                    
+                    <h4 style="margin-top: 30px;">Singles Players</h4>
+                    <table id="admin-singles-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-singles-list">
+                            <!-- Admin singles data will be inserted here -->
+                        </tbody>
+                    </table>
+                    
+                    <h4 style="margin-top: 30px;">Doubles Players</h4>
+                    <table id="admin-doubles-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-doubles-list">
+                            <!-- Admin doubles data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="admin-fixtures-tab" class="tab-content">
+                    <h3>Manage Fixtures</h3>
+                    <div id="admin-fixtures-loading" class="loading hidden">Loading fixtures...</div>
+                    <div class="fixture-container">
+                        <div class="fixture-bracket">
+                            <h4>Singles Fixtures</h4>
+                            <div id="admin-singles-fixtures">
+                                <!-- Admin singles fixtures -->
+                                <p>No fixtures available yet.</p>
+                            </div>
+                        </div>
+                        <div class="fixture-bracket">
+                            <h4>Doubles Fixtures</h4>
+                            <div id="admin-doubles-fixtures">
+                                <!-- Admin doubles fixtures -->
+                                <p>No fixtures available yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="admin-settings-tab" class="tab-content">
+                    <h3>Tournament Settings</h3>
+                    <div class="form-group">
+                        <label for="registration-toggle">Registration Status</label>
+                        <select id="registration-toggle" class="form-control">
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                    <div id="settings-error" class="error-message hidden"></div>
+                    <div id="settings-loading" class="loading hidden">Saving settings...</div>
+                    <button id="save-settings" class="btn">Save Settings</button>
+                    
+                    <div class="alert alert-danger" style="margin-top: 30px;">
+                        <h4>Warning</h4>
+                        <p>Generating fixtures will close registration and create the tournament bracket. This action cannot be undone.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Minehead Badminton Tournament. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
+            authDomain: "minehead-badminton-tournament.firebaseapp.com",
+            projectId: "minehead-badminton-tournament",
+            storageBucket: "minehead-badminton-tournament.firebasestorage.app",
+            messagingSenderId: "237720155580",
+            appId: "1:237720155580:web:8faed76ef425f262d727b9",
+            measurementId: "G-RG7J53MLE2"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // DOM Elements
+        const navHome = document.getElementById('nav-home');
+        const navRegister = document.getElementById('nav-register');
+        const navFixtures = document.getElementById('nav-fixtures');
+        const navAdminLogin = document.getElementById('nav-admin-login');
+        const navAdmin = document.getElementById('nav-admin');
+        const navLogout = document.getElementById('nav-logout');
+        
+        const loginPage = document.getElementById('login-page');
+        const homePage = document.getElementById('home-page');
+        const registrationPage = document.getElementById('registration-page');
+        const fixturesPage = document.getElementById('fixtures-page');
+        const adminDashboard = document.getElementById('admin-dashboard');
+        
+        const loginForm = document.getElementById('login-form');
+        const registrationForm = document.getElementById('registration-form');
+        const adminAddPlayerForm = document.getElementById('admin-add-player-form');
+        
+        const registrationStatus = document.getElementById('registration-status');
+        const fixturesStatus = document.getElementById('fixtures-status');
+        const totalFee = document.getElementById('total-fee');
+        
+        const singlesCheckbox = document.getElementById('singles-checkbox');
+        const doublesCheckbox = document.getElementById('doubles-checkbox');
+        const adminSingles = document.getElementById('admin-singles');
+        const adminDoubles = document.getElementById('admin-doubles');
+        
+        const addPlayerBtn = document.getElementById('add-player-btn');
+        const addPlayerForm = document.getElementById('add-player-form');
+        const cancelAddPlayer = document.getElementById('cancel-add-player');
+        const generateFixturesBtn = document.getElementById('generate-fixtures-btn');
+        const saveSettingsBtn = document.getElementById('save-settings');
+        const cancelRegistration = document.getElementById('cancel-registration');
+
+        // Loading and error elements
+        const loginBtn = document.getElementById('login-btn');
+        const loginLoading = document.getElementById('login-loading');
+        const loginError = document.getElementById('login-error');
+        
+        const registerSubmitBtn = document.getElementById('register-submit-btn');
+        const registrationLoading = document.getElementById('registration-loading');
+        const registrationError = document.getElementById('registration-error');
+        
+        const adminAddSubmit = document.getElementById('admin-add-submit');
+        const adminAddLoading = document.getElementById('admin-add-loading');
+        const adminAddError = document.getElementById('admin-add-error');
+        
+        const settingsLoading = document.getElementById('settings-loading');
+        const settingsError = document.getElementById('settings-error');
+        
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabGroup = tab.parentElement;
+                const tabContentId = tab.getAttribute('data-tab');
+                
+                // Remove active class from all tabs in this group
+                tabGroup.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab contents related to this tab group
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    if (content.id === `${tabContentId}-tab`) {
+                        content.classList.add('active');
+                    } else if (content.parentElement.closest('.card') === tabGroup.parentElement && content.classList.contains('active')) {
+                        content.classList.remove('active');
+                    }
+                });
+                
+                // Load data for the selected tab if needed
+                if (tabContentId === 'admin-fixtures' && isAuthenticated()) {
+                    loadAdminFixtures();
+                }
+            });
+        });
+
+        // Navigation functions
+        function showPage(pageToShow) {
+            // Hide all pages
+            loginPage.classList.add('hidden');
+            homePage.classList.add('hidden');
+            registrationPage.classList.add('hidden');
+            fixturesPage.classList.add('hidden');
+            adminDashboard.classList.add('hidden');
+            
+            // Show requested page
+            pageToShow.classList.remove('hidden');
+            
+            // Update navigation based on user state
+            updateNavigation();
+        }
+
+        function updateNavigation() {
+            const user = firebase.auth().currentUser;
+            
+            if (user) {
+                navAdminLogin.classList.add('hidden');
+                navAdmin.classList.remove('hidden');
+                navLogout.classList.remove('hidden');
+                if (isRegistrationOpen()) {
+                    navRegister.classList.remove('hidden');
+                } else {
+                    navRegister.classList.add('hidden');
+                }
+            } else {
+                navAdminLogin.classList.remove('hidden');
+                navAdmin.classList.add('hidden');
+                navLogout.classList.add('hidden');
+                navRegister.classList.add('hidden');
+            }
+        }
+
+        function isAuthenticated() {
+            return firebase.auth().currentUser !== null;
+        }
+
+        // Firebase authentication and data functions
+        async function checkRegistrationStatus() {
+            try {
+                const settingsDoc = await db.collection('settings').doc('tournament').get();
+                if (settingsDoc.exists) {
+                    return settingsDoc.data().registrationOpen !== false;
+                }
+                return true; // Default to open if no settings exist
+            } catch (error) {
+                console.error("Error checking registration status:", error);
+                return true;
+            }
+        }
+
+        async function isRegistrationOpen() {
+            try {
+                const settingsDoc = await db.collection('settings').doc('tournament').get();
+                if (settingsDoc.exists) {
+                    return settingsDoc.data().registrationOpen !== false;
+                }
+                return true;
+            } catch (error) {
+                console.error("Error checking registration status:", error);
+                return true;
+            }
+        }
+
+        async function updateRegistrationStatus(status) {
+            try {
+                await db.collection('settings').doc('tournament').set({
+                    registrationOpen: status === 'open',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                return true;
+            } catch (error) {
+                console.error("Error updating registration status:", error);
+                return false;
+            }
+        }
+
+        async function addPlayer(name, categories) {
+            try {
+                const playerData = {
+                    name: name,
+                    singles: categories.includes('singles'),
+                    doubles: categories.includes('doubles'),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                const docRef = await db.collection('players').add(playerData);
+                return { id: docRef.id, ...playerData };
+            } catch (error) {
+                console.error("Error adding player:", error);
+                throw error;
+            }
+        }
+
+        async function removePlayer(playerId) {
+            try {
+                await db.collection('players').doc(playerId).delete();
+                return true;
+            } catch (error) {
+                console.error("Error removing player:", error);
+                throw error;
+            }
+        }
+
+        async function getPlayers() {
+            try {
+                const snapshot = await db.collection('players').get();
+                return snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+            } catch (error) {
+                console.error("Error getting players:", error);
+                throw error;
+            }
+        }
+
+        async function generateFixtures() {
+            try {
+                // Get players
+                const players = await getPlayers();
+                
+                // Generate singles fixtures
+                const singlesPlayers = players.filter(p => p.singles);
+                const singlesFixtures = createKnockoutBracket(singlesPlayers.map(p => ({ id: p.id, name: p.name })));
+                
+                // Generate doubles fixtures
+                const doublesPlayers = players.filter(p => p.doubles);
+                // Randomly pair players for doubles
+                const shuffledDoubles = [...doublesPlayers].sort(() => 0.5 - Math.random());
+                const doublesTeams = [];
+                
+                for (let i = 0; i < shuffledDoubles.length; i += 2) {
+                    if (i + 1 < shuffledDoubles.length) {
+                        doublesTeams.push({
+                            id: `${shuffledDoubles[i].id}-${shuffledDoubles[i+1].id}`,
+                            name: `${shuffledDoubles[i].name} & ${shuffledDoubles[i+1].name}`
+                        });
+                    } else {
+                        // Handle odd number of players
+                        doublesTeams.push({
+                            id: shuffledDoubles[i].id,
+                            name: shuffledDoubles[i].name
+                        });
+                    }
+                }
+                
+                const doublesFixtures = createKnockoutBracket(doublesTeams);
+                
+                // Save fixtures
+                const fixturesData = {
+                    singles: singlesFixtures,
+                    doubles: doublesFixtures,
+                    generatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('fixtures').doc('current').set(fixturesData);
+                
+                // Close registration
+                await updateRegistrationStatus('closed');
+                
+                return fixturesData;
+            } catch (error) {
+                console.error("Error generating fixtures:", error);
+                throw error;
+            }
+        }
+
+        function createKnockoutBracket(players) {
+            if (players.length === 0) return [];
+            
+            // Create a copy to avoid modifying the original array
+            let bracketPlayers = [...players];
+            
+            // If odd number of players, give one a bye
+            if (bracketPlayers.length % 2 !== 0) {
+                bracketPlayers.push({ id: 'bye', name: 'BYE' });
+            }
+            
+            // Create first round matches
+            const matches = [];
+            for (let i = 0; i < bracketPlayers.length; i += 2) {
+                matches.push({
+                    id: `match-${Date.now()}-${i}`,
+                    player1: bracketPlayers[i],
+                    player2: bracketPlayers[i + 1],
+                    score1: null,
+                    score2: null,
+                    winner: null,
+                    completed: false
+                });
+            }
+            
+            return matches;
+        }
+
+        async function getFixtures() {
+            try {
+                const doc = await db.collection('fixtures').doc('current').get();
+                if (doc.exists) {
+                    return doc.data();
+                }
+                return null;
+            } catch (error) {
+                console.error("Error getting fixtures:", error);
+                return null;
+            }
+        }
+
+        async function updateMatchScore(matchId, score1, score2, category) {
+            try {
+                const fixturesDoc = await db.collection('fixtures').doc('current').get();
+                if (!fixturesDoc.exists) {
+                    throw new Error("Fixtures not found");
+                }
+                
+                const fixtures = fixturesDoc.data();
+                const categoryFixtures = fixtures[category];
+                const matchIndex = categoryFixtures.findIndex(m => m.id === matchId);
+                
+                if (matchIndex === -1) {
+                    throw new Error("Match not found");
+                }
+                
+                // Update the match
+                categoryFixtures[matchIndex].score1 = parseInt(score1);
+                categoryFixtures[matchIndex].score2 = parseInt(score2);
+                categoryFixtures[matchIndex].completed = true;
+                
+                // Determine winner
+                if (categoryFixtures[matchIndex].score1 > categoryFixtures[matchIndex].score2) {
+                    categoryFixtures[matchIndex].winner = categoryFixtures[matchIndex].player1;
+                } else if (categoryFixtures[matchIndex].score2 > categoryFixtures[matchIndex].score1) {
+                    categoryFixtures[matchIndex].winner = categoryFixtures[matchIndex].player2;
+                } else {
+                    categoryFixtures[matchIndex].winner = { name: "Tie" };
+                }
+                
+                // Save updated fixtures
+                await db.collection('fixtures').doc('current').set(fixtures);
+                
+                return true;
+            } catch (error) {
+                console.error("Error updating match score:", error);
+                throw error;
+            }
+        }
+
+        // Event Listeners
+        navHome.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(homePage);
+            loadPlayerLists();
+        });
+
+        navRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(registrationPage);
+        });
+
+        navFixtures.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(fixturesPage);
+            loadFixtures();
+        });
+
+        navAdminLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(loginPage);
+        });
+
+        navAdmin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(adminDashboard);
+            loadAdminData();
+        });
+
+        navLogout.addEventListener('click', (e) => {
+            e.preventDefault();
+            auth.signOut().then(() => {
+                showPage(homePage);
+                loadPlayerLists();
+            }).catch((error) => {
+                console.error("Error signing out:", error);
+                alert("Error signing out: " + error.message);
+            });
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            
+            // Show loading state
+            loginBtn.classList.add('hidden');
+            loginLoading.classList.remove('hidden');
+            loginError.classList.add('hidden');
+            
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                console.log("Signed in as:", userCredential.user.email);
+                showPage(adminDashboard);
+                loadAdminData();
+            } catch (error) {
+                console.error("Login error:", error);
+                loginError.textContent = "Login failed: " + error.message;
+                loginError.classList.remove('hidden');
+            } finally {
+                loginBtn.classList.remove('hidden');
+                loginLoading.classList.add('hidden');
+            }
+        });
+
+        registrationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const playerName = document.getElementById('player-name').value;
+            const categories = [];
+            
+            if (singlesCheckbox.checked) categories.push('singles');
+            if (doublesCheckbox.checked) categories.push('doubles');
+            
+            if (categories.length === 0) {
+                alert('Please select at least one category.');
+                return;
+            }
+            
+            // Check if registration is open
+            const isOpen = await isRegistrationOpen();
+            if (!isOpen) {
+                alert('Registration is currently closed.');
+                return;
+            }
+            
+            // Show loading state
+            registerSubmitBtn.classList.add('hidden');
+            registrationLoading.classList.remove('hidden');
+            registrationError.classList.add('hidden');
+            
+            try {
+                await addPlayer(playerName, categories);
+                alert('Registration successful!');
+                registrationForm.reset();
+                showPage(homePage);
+                loadPlayerLists();
+            } catch (error) {
+                console.error("Registration error:", error);
+                registrationError.textContent = "Registration failed: " + error.message;
+                registrationError.classList.remove('hidden');
+            } finally {
+                registerSubmitBtn.classList.remove('hidden');
+                registrationLoading.classList.add('hidden');
+            }
+        });
+
+        adminAddPlayerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const playerName = document.getElementById('admin-player-name').value;
+            const categories = [];
+            
+            if (adminSingles.checked) categories.push('singles');
+            if (adminDoubles.checked) categories.push('doubles');
+            
+            if (categories.length === 0) {
+                alert('Please select at least one category.');
+                return;
+            }
+            
+            // Show loading state
+            adminAddSubmit.classList.add('hidden');
+            adminAddLoading.classList.remove('hidden');
+            adminAddError.classList.add('hidden');
+            
+            try {
+                await addPlayer(playerName, categories);
+                alert('Player added successfully!');
+                adminAddPlayerForm.reset();
+                addPlayerForm.classList.add('hidden');
+                loadAdminData();
+            } catch (error) {
+                console.error("Add player error:", error);
+                adminAddError.textContent = "Failed to add player: " + error.message;
+                adminAddError.classList.remove('hidden');
+            } finally {
+                adminAddSubmit.classList.remove('hidden');
+                adminAddLoading.classList.add('hidden');
+            }
+        });
+
+        addPlayerBtn.addEventListener('click', () => {
+            addPlayerForm.classList.remove('hidden');
+        });
+
+        cancelAddPlayer.addEventListener('click', () => {
+            addPlayerForm.classList.add('hidden');
+        });
+
+        cancelRegistration.addEventListener('click', () => {
+            showPage(homePage);
+        });
+
+        generateFixturesBtn.addEventListener('click', async () => {
+            if (confirm('Are you sure you want to generate fixtures? This will close registration and cannot be undone.')) {
+                try {
+                    const fixtures = await generateFixtures();
+                    alert('Fixtures generated successfully!');
+                    loadAdminData();
+                    loadFixtures();
+                } catch (error) {
+                    alert('Error generating fixtures: ' + error.message);
+                }
+            }
+        });
+
+        saveSettingsBtn.addEventListener('click', async () => {
+            const status = registrationToggle.value;
+            
+            // Show loading state
+            saveSettingsBtn.classList.add('hidden');
+            settingsLoading.classList.remove('hidden');
+            settingsError.classList.add('hidden');
+            
+            try {
+                const success = await updateRegistrationStatus(status);
+                if (success) {
+                    alert('Settings saved successfully!');
+                    updateNavigation();
+                    updateRegistrationStatusDisplay();
+                } else {
+                    throw new Error("Failed to update settings");
+                }
+            } catch (error) {
+                console.error("Save settings error:", error);
+                settingsError.textContent = "Failed to save settings: " + error.message;
+                settingsError.classList.remove('hidden');
+            } finally {
+                saveSettingsBtn.classList.remove('hidden');
+                settingsLoading.classList.add('hidden');
+            }
+        });
+
+        // Update fee calculation
+        singlesCheckbox.addEventListener('change', updateFee);
+        doublesCheckbox.addEventListener('change', updateFee);
+        
+        function updateFee() {
+            let fee = 0;
+            if (singlesCheckbox.checked) fee += 2;
+            if (doublesCheckbox.checked) fee += 2;
+            totalFee.textContent = fee;
+        }
+
+        // Helper functions
+        async function loadPlayerLists() {
+            try {
+                // Show loading state
+                document.getElementById('singles-loading').classList.remove('hidden');
+                document.getElementById('doubles-loading').classList.remove('hidden');
+                
+                const players = await getPlayers();
+                
+                // Load singles players
+                const singlesList = document.getElementById('singles-list');
+                singlesList.innerHTML = '';
+                
+                const singlesPlayers = players.filter(p => p.singles);
+                singlesPlayers.forEach(player => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${player.name}</td>
+                        <td>Registered</td>
+                    `;
+                    singlesList.appendChild(row);
+                });
+                
+                // Load doubles players
+                const doublesList = document.getElementById('doubles-list');
+                doublesList.innerHTML = '';
+                
+                const doublesPlayers = players.filter(p => p.doubles);
+                doublesPlayers.forEach(player => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${player.name}</td>
+                        <td>Registered</td>
+                    `;
+                    doublesList.appendChild(row);
+                });
+                
+                // Hide loading state
+                document.getElementById('singles-loading').classList.add('hidden');
+                document.getElementById('doubles-loading').classList.add('hidden');
+                
+                updateRegistrationStatusDisplay();
+            } catch (error) {
+                console.error("Error loading player lists:", error);
+                document.getElementById('singles-loading').classList.add('hidden');
+                document.getElementById('doubles-loading').classList.add('hidden');
+                alert("Error loading players: " + error.message);
+            }
+        }
+
+        async function updateRegistrationStatusDisplay() {
+            try {
+                const isOpen = await isRegistrationOpen();
+                registrationStatus.textContent = isOpen ? 
+                    'Registration is currently OPEN!' : 'Registration is currently CLOSED.';
+                registrationStatus.className = isOpen ? 
+                    'alert alert-success' : 'alert alert-danger';
+                    
+                fixturesStatus.textContent = 'Loading fixtures status...';
+                
+                const fixtures = await getFixtures();
+                fixturesStatus.textContent = fixtures ? 
+                    'Fixtures have been generated and registration is now closed.' : 
+                    'Fixtures have not been generated yet.';
+                fixturesStatus.className = fixtures ? 
+                    'alert alert-success' : 'alert alert-danger';
+                    
+                if (registrationToggle) {
+                    registrationToggle.value = isOpen ? 'open' : 'closed';
+                }
+            } catch (error) {
+                console.error("Error updating registration status display:", error);
+            }
+        }
+
+        async function loadAdminData() {
+            try {
+                // Show loading state
+                document.getElementById('admin-players-loading').classList.remove('hidden');
+                
+                // Load players for admin
+                const players = await getPlayers();
+                
+                const adminSinglesList = document.getElementById('admin-singles-list');
+                adminSinglesList.innerHTML = '';
+                
+                const singlesPlayers = players.filter(p => p.singles);
+                singlesPlayers.forEach(player => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${player.name}</td>
+                        <td>
+                            <button class="btn btn-danger remove-player" data-id="${player.id}">Remove</button>
+                        </td>
+                    `;
+                    adminSinglesList.appendChild(row);
+                });
+                
+                const adminDoublesList = document.getElementById('admin-doubles-list');
+                adminDoublesList.innerHTML = '';
+                
+                const doublesPlayers = players.filter(p => p.doubles);
+                doublesPlayers.forEach(player => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${player.name}</td>
+                        <td>
+                            <button class="btn btn-danger remove-player" data-id="${player.id}">Remove</button>
+                        </td>
+                    `;
+                    adminDoublesList.appendChild(row);
+                });
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-player').forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const playerId = e.target.getAttribute('data-id');
+                        if (confirm('Are you sure you want to remove this player?')) {
+                            try {
+                                await removePlayer(playerId);
+                                loadAdminData();
+                                loadPlayerLists();
+                            } catch (error) {
+                                alert('Error removing player: ' + error.message);
+                            }
+                        }
+                    });
+                });
+                
+                // Hide loading state
+                document.getElementById('admin-players-loading').classList.add('hidden');
+                
+                // Load fixtures for admin
+                loadAdminFixtures();
+                updateRegistrationStatusDisplay();
+            } catch (error) {
+                console.error("Error loading admin data:", error);
+                document.getElementById('admin-players-loading').classList.add('hidden');
+                alert("Error loading admin data: " + error.message);
+            }
+        }
+
+        async function loadFixtures() {
+            try {
+                // Show loading state
+                document.getElementById('fixtures-loading').classList.remove('hidden');
+                
+                const fixtures = await getFixtures();
+                
+                const singlesFixturesDiv = document.getElementById('singles-fixtures');
+                const doublesFixturesDiv = document.getElementById('doubles-fixtures');
+                
+                if (!fixtures) {
+                    singlesFixturesDiv.innerHTML = '<p>No fixtures available yet.</p>';
+                    doublesFixturesDiv.innerHTML = '<p>No fixtures available yet.</p>';
+                    document.getElementById('fixtures-loading').classList.add('hidden');
+                    return;
+                }
+                
+                // Load singles fixtures
+                if (fixtures.singles && fixtures.singles.length > 0) {
+                    singlesFixturesDiv.innerHTML = '';
+                    fixtures.singles.forEach(match => {
+                        const matchDiv = document.createElement('div');
+                        matchDiv.className = 'match';
+                        matchDiv.innerHTML = `
+                            <div class="match-header">Match</div>
+                            <div class="players">
+                                <div class="player">${match.player1.name}</div>
+                                <div class="player">${match.player2.name}</div>
+                            </div>
+                            ${match.completed ? `
+                            <div class="result">
+                                <strong>Score:</strong> ${match.score1} - ${match.score2}<br>
+                                <strong>Winner:</strong> ${match.winner.name}
+                            </div>
+                            ` : '<p>Match not yet played</p>'}
+                        `;
+                        singlesFixturesDiv.appendChild(matchDiv);
+                    });
+                } else {
+                    singlesFixturesDiv.innerHTML = '<p>No singles fixtures available.</p>';
+                }
+                
+                // Load doubles fixtures
+                if (fixtures.doubles && fixtures.doubles.length > 0) {
+                    doublesFixturesDiv.innerHTML = '';
+                    fixtures.doubles.forEach(match => {
+                        const matchDiv = document.createElement('div');
+                        matchDiv.className = 'match';
+                        matchDiv.innerHTML = `
+                            <div class="match-header">Match</div>
+                            <div class="players">
+                                <div class="player">${match.player1.name}</div>
+                                <div class="player">${match.player2.name}</div>
+                            </div>
+                            ${match.completed ? `
+                            <div class="result">
+                                <strong>Score:</strong> ${match.score1} - ${match.score2}<br>
+                                <strong>Winner:</strong> ${match.winner.name}
+                            </div>
+                            ` : '<p>Match not yet played</p>'}
+                        `;
+                        doublesFixturesDiv.appendChild(matchDiv);
+                    });
+                } else {
+                    doublesFixturesDiv.innerHTML = '<p>No doubles fixtures available.</p>';
+                }
+                
+                // Hide loading state
+                document.getElementById('fixtures-loading').classList.add('hidden');
+            } catch (error) {
+                console.error("Error loading fixtures:", error);
+                document.getElementById('fixtures-loading').classList.add('hidden');
+                alert("Error loading fixtures: " + error.message);
+            }
+        }
+
+        async function loadAdminFixtures() {
+            try {
+                // Show loading state
+                document.getElementById('admin-fixtures-loading').classList.remove('hidden');
+                
+                const fixtures = await getFixtures();
+                
+                const adminSinglesFixturesDiv = document.getElementById('admin-singles-fixtures');
+                const adminDoublesFixturesDiv = document.getElementById('admin-doubles-fixtures');
+                
+                if (!fixtures) {
+                    adminSinglesFixturesDiv.innerHTML = '<p>No fixtures available yet.</p>';
+                    adminDoublesFixturesDiv.innerHTML = '<p>No fixtures available yet.</p>';
+                    document.getElementById('admin-fixtures-loading').classList.add('hidden');
+                    return;
+                }
+                
+                // Load singles fixtures
+                if (fixtures.singles && fixtures.singles.length > 0) {
+                    adminSinglesFixturesDiv.innerHTML = '';
+                    fixtures.singles.forEach(match => {
+                        const matchDiv = document.createElement('div');
+                        matchDiv.className = 'match';
+                        matchDiv.innerHTML = `
+                            <div class="match-header">Match</div>
+                            <div class="players">
+                                <div class="player">${match.player1.name}</div>
+                                <div class="player">${match.player2.name}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Score</label>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="number" class="score-input" value="${match.score1 || 0}" min="0" data-match-id="${match.id}" data-player="1" data-category="singles">
+                                    <span>-</span>
+                                    <input type="number" class="score-input" value="${match.score2 || 0}" min="0" data-match-id="${match.id}" data-player="2" data-category="singles">
+                                </div>
+                            </div>
+                            <button class="btn btn-success update-score" data-match-id="${match.id}" data-category="singles">Update Score</button>
+                            ${match.completed ? `<p><strong>Winner:</strong> ${match.winner.name}</p>` : ''}
+                        `;
+                        adminSinglesFixturesDiv.appendChild(matchDiv);
+                    });
+                } else {
+                    adminSinglesFixturesDiv.innerHTML = '<p>No singles fixtures available.</p>';
+                }
+                
+                // Load doubles fixtures
+                if (fixtures.doubles && fixtures.doubles.length > 0) {
+                    adminDoublesFixturesDiv.innerHTML = '';
+                    fixtures.doubles.forEach(match => {
+                        const matchDiv = document.createElement('div');
+                        matchDiv.className = 'match';
+                        matchDiv.innerHTML = `
+                            <div class="match-header">Match</div>
+                            <div class="players">
+                                <div class="player">${match.player1.name}</div>
+                                <div class="player">${match.player2.name}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Score</label>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="number" class="score-input" value="${match.score1 || 0}" min="0" data-match-id="${match.id}" data-player="1" data-category="doubles">
+                                    <span>-</span>
+                                    <input type="number" class="score-input" value="${match.score2 || 0}" min="0" data-match-id="${match.id}" data-player="2" data-category="doubles">
+                                </div>
+                            </div>
+                            <button class="btn btn-success update-score" data-match-id="${match.id}" data-category="doubles">Update Score</button>
+                            ${match.completed ? `<p><strong>Winner:</strong> ${match.winner.name}</p>` : ''}
+                        `;
+                        adminDoublesFixturesDiv.appendChild(matchDiv);
+                    });
+                } else {
+                    adminDoublesFixturesDiv.innerHTML = '<p>No doubles fixtures available.</p>';
+                }
+                
+                // Add event listeners to update score buttons
+                document.querySelectorAll('.update-score').forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const matchId = e.target.getAttribute('data-match-id');
+                        const category = e.target.getAttribute('data-category');
+                        const score1Input = document.querySelector(`input[data-match-id="${matchId}"][data-player="1"]`);
+                        const score2Input = document.querySelector(`input[data-match-id="${matchId}"][data-player="2"]`);
+                        
+                        const score1 = score1Input.value;
+                        const score2 = score2Input.value;
+                        
+                        if (score1 === '' || score2 === '') {
+                            alert('Please enter both scores.');
+                            return;
+                        }
+                        
+                        try {
+                            await updateMatchScore(matchId, score1, score2, category);
+                            loadAdminFixtures();
+                            loadFixtures();
+                        } catch (error) {
+                            alert('Error updating score: ' + error.message);
+                        }
+                    });
+                });
+                
+                // Hide loading state
+                document.getElementById('admin-fixtures-loading').classList.add('hidden');
+            } catch (error) {
+                console.error("Error loading admin fixtures:", error);
+                document.getElementById('admin-fixtures-loading').classList.add('hidden');
+                alert("Error loading fixtures: " + error.message);
+            }
+        }
+
+        // Initialize the app
+        async function init() {
+            // Set up auth state observer
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    // User is signed in
+                    console.log("User is signed in:", user.email);
+                    updateNavigation();
+                    
+                    // If on login page, redirect to admin dashboard
+                    if (loginPage.classList.contains('hidden') === false) {
+                        showPage(adminDashboard);
+                        loadAdminData();
+                    }
+                } else {
+                    // User is signed out
+                    console.log("User is signed out");
+                    updateNavigation();
+                    
+                    // If on admin pages, redirect to home
+                    if (!loginPage.classList.contains('hidden') && 
+                        !homePage.classList.contains('hidden') && 
+                        !fixturesPage.classList.contains('hidden')) {
+                        showPage(homePage);
+                        loadPlayerLists();
+                    }
+                }
+            });
+            
+            // Initial page load
+            showPage(homePage);
+            loadPlayerLists();
+        }
+
+        // Start the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
