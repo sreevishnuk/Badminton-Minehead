@@ -278,6 +278,40 @@
             margin-top: 10px;
         }
         
+        /* Fixed: Checkbox alignment styles */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            margin-left: 0;
+            height: 18px;
+            width: 18px;
+        }
+        
+        .checkbox-group label {
+            display: inline;
+            margin-bottom: 0;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+        
+        .categories-container {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        .categories-container h4 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -398,13 +432,16 @@
                     </div>
                     <div class="form-group">
                         <label>Categories</label>
-                        <div>
-                            <input type="checkbox" id="singles-checkbox" name="categories" value="singles">
-                            <label for="singles-checkbox" style="display: inline;">Singles (£2)</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="doubles-checkbox" name="categories" value="doubles">
-                            <label for="doubles-checkbox" style="display: inline;">Doubles (£2)</label>
+                        <div class="categories-container">
+                            <h4>Select your categories:</h4>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="singles-checkbox" name="categories" value="singles">
+                                <label for="singles-checkbox">Singles (£2)</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="doubles-checkbox" name="categories" value="doubles">
+                                <label for="doubles-checkbox">Doubles (£2)</label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -471,13 +508,16 @@
                             </div>
                             <div class="form-group">
                                 <label>Categories</label>
-                                <div>
-                                    <input type="checkbox" id="admin-singles" name="admin-categories" value="singles">
-                                    <label for="admin-singles" style="display: inline;">Singles</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="admin-doubles" name="admin-categories" value="doubles">
-                                    <label for="admin-doubles" style="display: inline;">Doubles</label>
+                                <div class="categories-container">
+                                    <h4>Select categories:</h4>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="admin-singles" name="admin-categories" value="singles">
+                                        <label for="admin-singles">Singles</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="admin-doubles" name="admin-categories" value="doubles">
+                                        <label for="admin-doubles">Doubles</label>
+                                    </div>
                                 </div>
                             </div>
                             <div id="admin-add-error" class="error-message hidden"></div>
@@ -1280,9 +1320,9 @@
                 loadAdminFixtures();
                 updateRegistrationStatusDisplay();
             } catch (error) {
-                console.error("Error loading admin ", error);
+                console.error("Error loading admin data:", error);
                 document.getElementById('admin-players-loading').classList.add('hidden');
-                alert("Error loading admin  " + error.message);
+                alert("Error loading admin data: " + error.message);
             }
         }
 
