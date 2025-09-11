@@ -5,8 +5,10 @@
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="styles.css">
 
-  <!-- ✅ SECURITY GUARD (Safe, Deferred Version) -->
+  <!-- ✅ SECURITY GUARD (Ultra Safe Version) -->
   <script type="module">
+    console.log("[SECURITY] Starting auth check...");
+
     try {
       // Import Firebase
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -23,20 +25,27 @@
         measurementId: "G-RG7J53MLE2"
       };
 
-      // Initialize
+      // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
 
-      // Check auth state
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          console.log("[SECURITY] No user. Redirecting to login...");
-          window.location.href = 'adminlogin.html';
-        }
-      });
+      console.log("[SECURITY] Firebase initialized.");
+
+      // Wait a tiny bit to ensure auth state is ready (optional but helpful)
+      setTimeout(() => {
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            console.log("[SECURITY] User is logged in:", user.email);
+          } else {
+            console.log("[SECURITY] No user detected. Redirecting to adminlogin.html...");
+            window.location.href = 'adminlogin.html';
+          }
+        });
+      }, 500);
+
     } catch (err) {
-      console.error("[SECURITY ERROR]", err);
-      // Even if script fails, don't break the page. Let it load.
+      console.error("[SECURITY CRITICAL ERROR]", err);
+      alert("Security check failed. Please contact administrator.");
     }
   </script>
 </head>
