@@ -618,6 +618,10 @@
         const generateFixturesBtn = document.getElementById('generate-fixtures-btn');
         const saveSettingsBtn = document.getElementById('save-settings');
         const cancelRegistration = document.getElementById('cancel-registration');
+        
+        // Register and View Fixtures buttons
+        const registerBtn = document.getElementById('register-btn');
+        const viewFixturesBtn = document.getElementById('view-fixtures-btn');
 
         // Loading and error elements
         const loginBtn = document.getElementById('login-btn');
@@ -634,7 +638,7 @@
         
         const settingsLoading = document.getElementById('settings-loading');
         const settingsError = document.getElementById('settings-error');
-        
+
         // Tab functionality
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -954,6 +958,29 @@
             });
         });
 
+        // Fixed: Register Now button click handler
+        registerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Check if registration is open
+            isRegistrationOpen().then(isOpen => {
+                if (isOpen) {
+                    showPage(registrationPage);
+                } else {
+                    alert('Registration is currently closed.');
+                }
+            }).catch(error => {
+                console.error("Error checking registration status:", error);
+                alert('Error checking registration status: ' + error.message);
+            });
+        });
+
+        // Fixed: View Fixtures button click handler
+        viewFixturesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage(fixturesPage);
+            loadFixtures();
+        });
+
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('admin-email').value;
@@ -1253,9 +1280,9 @@
                 loadAdminFixtures();
                 updateRegistrationStatusDisplay();
             } catch (error) {
-                console.error("Error loading admin data:", error);
+                console.error("Error loading admin ", error);
                 document.getElementById('admin-players-loading').classList.add('hidden');
-                alert("Error loading admin data: " + error.message);
+                alert("Error loading admin  " + error.message);
             }
         }
 
@@ -1477,6 +1504,24 @@
             // Initial page load
             showPage(homePage);
             loadPlayerLists();
+            
+            // Add event listeners for Register Now and View Fixtures buttons
+            registerBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                isRegistrationOpen().then(isOpen => {
+                    if (isOpen) {
+                        showPage(registrationPage);
+                    } else {
+                        alert('Registration is currently closed.');
+                    }
+                });
+            });
+            
+            viewFixturesBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage(fixturesPage);
+                loadFixtures();
+            });
         }
 
         // Start the app when DOM is loaded
