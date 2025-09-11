@@ -25,7 +25,7 @@
         body {
             background-color: var(--light);
             color: var(--dark);
-            line-height: 1.6;
+            line-height: 1.4;
         }
         
         .container {
@@ -37,7 +37,7 @@
         header {
             background-color: var(--primary);
             color: white;
-            padding: 20px 0;
+            padding: 15px 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
@@ -58,7 +58,7 @@
         }
         
         nav li {
-            margin-left: 20px;
+            margin-left: 15px;
         }
         
         nav a {
@@ -67,6 +67,7 @@
             padding: 5px 10px;
             border-radius: 4px;
             transition: background-color 0.3s;
+            font-size: 14px;
         }
         
         nav a:hover {
@@ -75,13 +76,13 @@
         
         .btn {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 8px 16px;
             background-color: var(--primary);
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             transition: background-color 0.3s;
         }
         
@@ -110,47 +111,49 @@
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            font-size: 14px;
         }
         
         input, select {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .card {
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
         }
         
         .card-header {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 2px solid var(--primary);
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
         
         th, td {
-            padding: 12px;
+            padding: 8px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
@@ -164,56 +167,21 @@
             background-color: #f5f5f5;
         }
         
-        .fixture-container {
-            margin-top: 20px;
-        }
-        
         .fixture-section {
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
+            padding: 15px;
         }
         
         .fixture-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
-            margin-bottom: 20px;
-            color: var(--primary);
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary);
-        }
-        
-        .match {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 15px;
             margin-bottom: 15px;
-        }
-        
-        .match-header {
-            font-weight: bold;
-            margin-bottom: 10px;
             color: var(--primary);
-        }
-        
-        .players {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .player {
-            flex: 1;
-            padding: 5px;
-        }
-        
-        .score-input {
-            width: 50px;
-            text-align: center;
-            padding: 5px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
         }
         
         .hidden {
@@ -221,9 +189,10 @@
         }
         
         .alert {
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 12px;
+            margin-bottom: 15px;
             border-radius: 4px;
+            font-size: 14px;
         }
         
         .alert-success {
@@ -240,17 +209,18 @@
         
         .tabs {
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 1px solid #ddd;
         }
         
         .tab {
-            padding: 10px 20px;
+            padding: 8px 15px;
             cursor: pointer;
             border: 1px solid transparent;
             border-bottom: none;
             border-radius: 4px 4px 0 0;
             margin-right: 5px;
+            font-size: 14px;
         }
         
         .tab.active {
@@ -271,33 +241,36 @@
             background-color: var(--dark);
             color: white;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
+            padding: 15px 0;
+            margin-top: 30px;
+            font-size: 14px;
         }
         
         .loading {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
+            font-size: 14px;
         }
         
         .error-message {
             color: var(--danger);
-            margin-top: 10px;
+            margin-top: 8px;
+            font-size: 14px;
         }
         
         /* Fixed: Checkbox alignment styles */
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .checkbox-group input[type="checkbox"] {
             width: auto;
-            margin-right: 10px;
+            margin-right: 8px;
             margin-left: 0;
-            height: 18px;
-            width: 18px;
+            height: 16px;
+            width: 16px;
         }
         
         .checkbox-group label {
@@ -305,107 +278,111 @@
             margin-bottom: 0;
             font-weight: normal;
             margin-left: 5px;
+            font-size: 14px;
         }
         
         .categories-container {
             background-color: #f9f9f9;
-            padding: 15px;
+            padding: 12px;
             border-radius: 6px;
             border: 1px solid #ddd;
         }
         
         .categories-container h4 {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: var(--dark);
+            font-size: 16px;
         }
         
-        /* Horizontal Tournament Bracket Styles */
+        /* Compact Tournament Bracket Styles */
         .tournament-bracket {
             width: 100%;
             overflow-x: auto;
-            margin: 20px 0;
-            padding: 20px 0;
+            margin: 15px 0;
+            padding: 10px 0;
         }
         
         .bracket-container {
             display: flex;
             flex-direction: row;
-            min-width: 1000px;
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-            border-radius: 10px;
+            min-width: 800px;
+            padding: 10px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
             align-items: center;
             justify-content: flex-start;
-            gap: 30px;
+            gap: 15px;
         }
         
         .round-column {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 250px;
+            min-width: 180px;
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .round-header {
             text-align: center;
             font-weight: bold;
-            margin-bottom: 20px;
-            padding: 10px 20px;
+            margin-bottom: 12px;
+            padding: 6px 12px;
             background-color: var(--primary);
             color: white;
-            border-radius: 8px;
-            font-size: 18px;
+            border-radius: 6px;
+            font-size: 14px;
             width: 100%;
-            max-width: 300px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 220px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .match-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 15px 0;
+            margin: 8px 0;
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             width: 90%;
-            max-width: 350px;
-            transition: all 0.3s ease;
+            max-width: 280px;
+            transition: all 0.2s ease;
+            font-size: 13px;
         }
         
         .match-container:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
         
         .player-container {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 2px solid #ddd;
-            border-radius: 6px;
+            padding: 8px;
+            margin: 6px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             text-align: center;
             background-color: #fafafa;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             position: relative;
+            font-size: 13px;
         }
         
         .player-name {
             font-weight: 500;
-            font-size: 16px;
+            font-size: 13px;
         }
         
         .vs-divider {
-            margin: 15px 0;
+            margin: 10px 0;
             text-align: center;
             font-weight: bold;
             color: #666;
-            font-size: 18px;
+            font-size: 14px;
             position: relative;
         }
         
@@ -422,21 +399,22 @@
         
         .vs-divider span {
             background-color: white;
-            padding: 0 10px;
+            padding: 0 8px;
             position: relative;
             z-index: 1;
+            font-size: 12px;
         }
         
         .match-score {
-            margin: 15px 0;
+            margin: 10px 0;
             text-align: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 14px;
             color: var(--primary);
             background-color: #e8f5e9;
-            padding: 10px;
-            border-radius: 6px;
-            width: 80%;
+            padding: 6px;
+            border-radius: 4px;
+            width: 70%;
         }
         
         .winner {
@@ -447,46 +425,46 @@
         
         .final-match {
             background-color: #fff3e0;
-            border: 3px solid var(--accent);
-            transform: scale(1.05);
+            border: 2px solid var(--accent);
+            transform: scale(1.03);
         }
         
         .champion {
             background-color: #fff9c4 !important;
-            border: 3px solid #ffc107 !important;
+            border: 2px solid #ffc107 !important;
             font-weight: bold;
             animation: championGlow 2s infinite;
         }
         
         @keyframes championGlow {
-            0% { box-shadow: 0 0 5px gold; }
-            50% { box-shadow: 0 0 20px gold; }
-            100% { box-shadow: 0 0 5px gold; }
+            0% { box-shadow: 0 0 3px gold; }
+            50% { box-shadow: 0 0 15px gold; }
+            100% { box-shadow: 0 0 3px gold; }
         }
         
         .champion-crown {
-            font-size: 24px;
-            margin-right: 5px;
+            font-size: 18px;
+            margin-right: 3px;
         }
         
-        /* Connector lines between rounds */
+        /* Compact Connector lines between rounds */
         .round-connector {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100%;
-            min-height: 300px;
+            min-height: 200px;
         }
         
         .connector-line {
-            width: 30px;
-            height: 2px;
+            width: 20px;
+            height: 1px;
             background-color: #ddd;
-            margin: 0 5px;
+            margin: 0 3px;
         }
         
         .connector-arrow {
-            font-size: 24px;
+            font-size: 18px;
             color: var(--primary);
             font-weight: bold;
         }
@@ -498,7 +476,7 @@
             }
             
             .round-column {
-                margin-bottom: 30px;
+                margin-bottom: 20px;
             }
         }
         
@@ -509,30 +487,39 @@
             }
             
             nav ul {
-                margin-top: 15px;
+                margin-top: 10px;
                 justify-content: center;
             }
             
             nav li {
-                margin: 0 10px;
+                margin: 0 8px;
             }
             
             .bracket-container {
                 flex-direction: column;
                 min-width: 100%;
-                padding: 10px;
-                gap: 20px;
+                padding: 8px;
+                gap: 12px;
+            }
+            
+            .round-column {
+                min-width: 100%;
+                max-width: 100%;
             }
             
             .round-connector {
                 width: 100%;
                 justify-content: center;
-                min-height: 40px;
+                min-height: 30px;
             }
             
             .connector-line {
-                width: 100px;
-                height: 2px;
+                width: 60px;
+                height: 1px;
+            }
+            
+            .connector-arrow {
+                font-size: 16px;
             }
         }
     </style>
@@ -703,7 +690,7 @@
                     <button id="generate-fixtures-btn" class="btn btn-success">Generate Fixtures</button>
                     <div id="admin-players-loading" class="loading hidden">Loading players...</div>
                     
-                    <div id="add-player-form" class="hidden card" style="margin-top: 20px;">
+                    <div id="add-player-form" class="hidden card" style="margin-top: 15px;">
                         <h4>Add New Player</h4>
                         <form id="admin-add-player-form">
                             <div class="form-group">
@@ -731,7 +718,7 @@
                         </form>
                     </div>
                     
-                    <h4 style="margin-top: 30px;">Singles Players</h4>
+                    <h4 style="margin-top: 20px; font-size: 16px;">Singles Players</h4>
                     <table id="admin-singles-table">
                         <thead>
                             <tr>
@@ -744,7 +731,7 @@
                         </tbody>
                     </table>
                     
-                    <h4 style="margin-top: 30px;">Doubles Players</h4>
+                    <h4 style="margin-top: 20px; font-size: 16px;">Doubles Players</h4>
                     <table id="admin-doubles-table">
                         <thead>
                             <tr>
@@ -792,7 +779,7 @@
                     <div id="settings-loading" class="loading hidden">Saving settings...</div>
                     <button id="save-settings" class="btn">Save Settings</button>
                     
-                    <div class="alert alert-danger" style="margin-top: 30px;">
+                    <div class="alert alert-danger" style="margin-top: 20px;">
                         <h4>Warning</h4>
                         <p>Generating fixtures will close registration and create the tournament bracket. This action cannot be undone.</p>
                     </div>
@@ -1262,13 +1249,16 @@
                 
                 // Special headers for final rounds
                 if (roundIndex === bracket.rounds.length - 1) {
-                    roundHeader.textContent = '🏆 FINAL 🏆';
+                    roundHeader.textContent = '🏆 FINAL';
                     roundHeader.style.backgroundColor = '#ffc107';
+                    roundHeader.style.fontSize = '13px';
                 } else if (roundIndex === bracket.rounds.length - 2) {
                     roundHeader.textContent = 'SEMIFINALS';
                     roundHeader.style.backgroundColor = '#2196F3';
+                    roundHeader.style.fontSize = '13px';
                 } else {
-                    roundHeader.textContent = `ROUND ${round.roundNumber}`;
+                    roundHeader.textContent = `R${round.roundNumber}`;
+                    roundHeader.style.fontSize = '13px';
                 }
                 
                 roundColumn.appendChild(roundHeader);
@@ -1353,9 +1343,10 @@
                     
                     if (actualChampion) {
                         const championSection = document.createElement('div');
-                        championSection.style.marginLeft = '50px';
+                        championSection.style.marginLeft = '30px';
                         championSection.style.display = 'flex';
                         championSection.style.alignItems = 'center';
+                        championSection.style.marginTop = '10px';
                         
                         const championArrow = document.createElement('div');
                         championArrow.className = 'round-connector';
@@ -1369,20 +1360,15 @@
                         championDiv.className = 'round-column';
                         championDiv.style.marginTop = '0';
                         championDiv.style.textAlign = 'center';
-                        
-                        const championTitle = document.createElement('h3');
-                        championTitle.textContent = '🏆 TOURNAMENT CHAMPION 🏆';
-                        championTitle.style.color = '#ffc107';
-                        championTitle.style.marginBottom = '20px';
+                        championDiv.style.padding = '10px';
                         
                         const championName = document.createElement('div');
                         championName.className = 'player-container champion';
-                        championName.style.fontSize = '28px';
+                        championName.style.fontSize = '16px';
                         championName.style.fontWeight = 'bold';
-                        championName.style.padding = '20px';
-                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name} <span class="champion-crown">👑</span>`;
+                        championName.style.padding = '10px';
+                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name}`;
                         
-                        championDiv.appendChild(championTitle);
                         championDiv.appendChild(championName);
                         
                         championSection.appendChild(championArrow);
@@ -1844,13 +1830,16 @@
                 
                 // Special headers for final rounds
                 if (roundIndex === bracket.rounds.length - 1) {
-                    roundHeader.textContent = '🏆 FINAL 🏆';
+                    roundHeader.textContent = '🏆 FINAL';
                     roundHeader.style.backgroundColor = '#ffc107';
+                    roundHeader.style.fontSize = '13px';
                 } else if (roundIndex === bracket.rounds.length - 2) {
                     roundHeader.textContent = 'SEMIFINALS';
                     roundHeader.style.backgroundColor = '#2196F3';
+                    roundHeader.style.fontSize = '13px';
                 } else {
-                    roundHeader.textContent = `ROUND ${round.roundNumber}`;
+                    roundHeader.textContent = `R${round.roundNumber}`;
+                    roundHeader.style.fontSize = '13px';
                 }
                 
                 roundColumn.appendChild(roundHeader);
@@ -1899,12 +1888,12 @@
                         scoreForm.className = 'form-group';
                         scoreForm.innerHTML = `
                             <label>Score</label>
-                            <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                            <div style="display: flex; align-items: center; gap: 8px; justify-content: center; font-size: 12px;">
                                 <input type="number" class="score-input" value="${match.score1 || 0}" min="0" data-match-id="${match.id}" data-player="1" data-category="${category}">
                                 <span>-</span>
                                 <input type="number" class="score-input" value="${match.score2 || 0}" min="0" data-match-id="${match.id}" data-player="2" data-category="${category}">
                             </div>
-                            <button class="btn btn-success update-score" data-match-id="${match.id}" data-category="${category}" style="margin-top: 10px;">Update Score</button>
+                            <button class="btn btn-success update-score" data-match-id="${match.id}" data-category="${category}" style="margin-top: 8px; padding: 6px 12px; font-size: 12px;">Update</button>
                         `;
                         matchDiv.appendChild(scoreForm);
                     } else {
@@ -1949,9 +1938,10 @@
                     
                     if (actualChampion) {
                         const championSection = document.createElement('div');
-                        championSection.style.marginLeft = '50px';
+                        championSection.style.marginLeft = '30px';
                         championSection.style.display = 'flex';
                         championSection.style.alignItems = 'center';
+                        championSection.style.marginTop = '10px';
                         
                         const championArrow = document.createElement('div');
                         championArrow.className = 'round-connector';
@@ -1965,20 +1955,15 @@
                         championDiv.className = 'round-column';
                         championDiv.style.marginTop = '0';
                         championDiv.style.textAlign = 'center';
-                        
-                        const championTitle = document.createElement('h3');
-                        championTitle.textContent = '🏆 TOURNAMENT CHAMPION 🏆';
-                        championTitle.style.color = '#ffc107';
-                        championTitle.style.marginBottom = '20px';
+                        championDiv.style.padding = '10px';
                         
                         const championName = document.createElement('div');
                         championName.className = 'player-container champion';
-                        championName.style.fontSize = '28px';
+                        championName.style.fontSize = '16px';
                         championName.style.fontWeight = 'bold';
-                        championName.style.padding = '20px';
-                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name} <span class="champion-crown">👑</span>`;
+                        championName.style.padding = '10px';
+                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name}`;
                         
-                        championDiv.appendChild(championTitle);
                         championDiv.appendChild(championName);
                         
                         championSection.appendChild(championArrow);
