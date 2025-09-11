@@ -6,6 +6,25 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="admin-bg">
+
+  <!-- ✅ SECURITY CHECK: Redirect to login if not authenticated -->
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    // Initialize Firebase Auth
+    // We assume your script.js has already initialized the app.
+    // If not, you can initialize it here, but since script.js is loaded below, we rely on it.
+    const auth = getAuth();
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // User is not signed in. Redirect to login page.
+        window.location.href = 'adminlogin.html';
+      }
+      // If user is signed in, do nothing. Let the page load normally.
+    });
+  </script>
+
   <nav class="admin-nav">
     <img src="badmintonlogo.png" alt="Badminton Logo" class="logo-sm" />
     <span class="admin-title">Admin Dashboard</span>
