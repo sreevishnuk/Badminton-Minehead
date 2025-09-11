@@ -176,7 +176,7 @@ async function toggleRegistration() {
   }
 }
 
-// ✅ ✅ ✅ FIXED: Generate fixtures + FORCE CLOSE REGISTRATION
+// ✅ Generate fixtures + FORCE CLOSE REGISTRATION
 async function generateFixtures() {
   const btn = document.querySelector('button[onclick="generateFixtures()"]');
   if (btn) {
@@ -440,16 +440,16 @@ async function loadFixturesAdmin() {
   }
 }
 
-// ✅ ✅ ✅ UPDATED: Format bracket display as true tournament bracket
+// ✅ Format bracket display as true tournament bracket (left-to-right)
 function formatBracketsHTML(rounds, isDoubles = false) {
-  let html = '<div class="bracket">';
+  let html = '<div class="bracket-container">';
 
   rounds.forEach((roundObj, i) => {
     const totalRounds = rounds.length;
     const roundNumber = roundObj.round;
     let roundLabel = `Round ${roundNumber}`;
 
-    // ✅ Smart labels based on total rounds and match count
+    // ✅ Smart labels: Final, Semi Final, Quarter Final
     if (totalRounds === 1) {
       roundLabel = "Final";
     } else if (totalRounds === 2) {
@@ -465,8 +465,8 @@ function formatBracketsHTML(rounds, isDoubles = false) {
       }
     }
 
-    html += `<div class="round">
-      <div class="round-header">${roundLabel}</div>
+    html += `<div class="bracket-round">
+      <div class="round-title">${roundLabel}</div>
       <div class="matches">`;
 
     roundObj.matches.forEach((match, j) => {
@@ -474,20 +474,12 @@ function formatBracketsHTML(rounds, isDoubles = false) {
       const p2 = formatPlayerName(match.player2, isDoubles);
       let winner = match.winner ? formatPlayerName(match.winner, isDoubles) : "TBD";
 
-      // Calculate position for lines
-      const matchIndex = j + 1;
-      const hasNextRound = i < rounds.length - 1;
-      const nextMatchIndex = Math.floor(matchIndex / 2); // Winner goes to next match
-
       html += `
-        <div class="match-item" data-match="${matchIndex}" data-next="${nextMatchIndex}">
-          <div class="match-box">
-            <div class="match-player">${p1}</div>
-            <div class="match-vs">vs</div>
-            <div class="match-player">${p2}</div>
-            <div class="match-winner">${winner}</div>
-          </div>
-          <div class="match-line"></div>
+        <div class="match-card">
+          <div class="player">${p1}</div>
+          <div class="vs">vs</div>
+          <div class="player">${p2}</div>
+          <div class="winner">Winner: ${winner}</div>
         </div>`;
     });
 
@@ -498,12 +490,11 @@ function formatBracketsHTML(rounds, isDoubles = false) {
   return html;
 }
 
-// ✅ ✅ ✅ UPDATED: Show "TBD" instead of "BYE"
+// ✅ Show "TBD" instead of "BYE"
 function formatPlayerName(playerObj, isDoubles) {
-  if (!playerObj) return "TBD"; // ✅ Changed from "BYE" to "TBD"
+  if (!playerObj) return "TBD";
   if (!isDoubles) return playerObj.name || "TBD";
 
-  // Doubles playerObj expected as {player1: {}, player2: {}}
   if (playerObj.player1 && playerObj.player2) {
     const p1 = playerObj.player1.name || "TBD";
     const p2 = playerObj.player2.name || "TBD";
@@ -512,7 +503,7 @@ function formatPlayerName(playerObj, isDoubles) {
   return playerObj.name || "TBD";
 }
 
-// ✅ Format fixture display WITHOUT "Edit" buttons
+// Format fixture display WITHOUT "Edit" buttons
 function formatFixtureEditingHTML(rounds, type) {
   let html = `<div id="${type}-edit-area">`;
   rounds.forEach((roundObj, i) => {
@@ -526,12 +517,12 @@ function formatFixtureEditingHTML(rounds, type) {
   return html;
 }
 
-// Placeholder for editing match (to be implemented) — kept for compatibility
+// Placeholder for editing match
 function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// ✅ Format score input — CLEAN: Player [input] vs Player [input] [Update]
+// Format score input — CLEAN: Player [input] vs Player [input] [Update]
 function formatFixtureScoreInputHTML(rounds, type) {
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
@@ -591,7 +582,6 @@ async function updateScore(type, roundIndex, matchIndex) {
     } else if (score2 > score1) {
       winner = rounds[roundIndex].matches[matchIndex].player2;
     } else {
-      // Draw — no winner yet
       rounds[roundIndex].matches[matchIndex].winner = null;
       await updateDoc(fixtureDoc, { rounds });
       alert("Scores updated. No winner due to draw.");
@@ -606,13 +596,9 @@ async function updateScore(type, roundIndex, matchIndex) {
     // ➡️ PROPAGATE WINNER TO NEXT ROUND (if exists)
     const nextRoundIndex = roundIndex + 1;
     if (nextRoundIndex < rounds.length) {
-      // In knockout, winner of match N goes to match floor(N/2) in next round
       const nextMatchIndex = Math.floor(matchIndex / 2);
-
-      // Which slot? Even matchIndex → player1, Odd → player2
       const slot = matchIndex % 2 === 0 ? "player1" : "player2";
 
-      // Assign winner to next round match
       if (rounds[nextRoundIndex].matches[nextMatchIndex]) {
         rounds[nextRoundIndex].matches[nextMatchIndex][slot] = winner;
         console.log(`✅ Winner "${formatPlayerName(winner, type === 'doubles')}" propagated to Round ${nextRoundIndex + 1}, Match ${nextMatchIndex + 1}, slot: ${slot}`);
@@ -640,7 +626,6 @@ function logoutAdmin() {
 window.addEventListener("load", () => {
   console.log("Page loaded — initializing components...");
 
-  // Detect page and run relevant functions
   if (document.getElementById('registration-form')) {
     const form = document.getElementById('registration-form');
     if (form) {
@@ -660,14 +645,13 @@ window.addEventListener("load", () => {
     loadFixturesAdmin();
   }
 
-  // Login button handler
   const loginBtn = document.getElementById('admin-login-btn');
   if (loginBtn) {
     loginBtn.addEventListener('click', loginAdmin);
   }
 });
 
-// ✅ ✅ ✅ FIXED: Expose ALL required functions to window
+// ✅ Expose ALL required functions to window
 try {
   window.toggleRegistration = toggleRegistration;
   window.generateFixtures = generateFixtures;
@@ -675,8 +659,6 @@ try {
   window.removePlayer = removePlayer;
   window.updateScore = updateScore;
   window.editMatch = editMatch;
-
-  // ✅ CRITICAL for index.html
   window.getRegistrationStatus = getRegistrationStatus;
   window.loadFixtures = loadFixtures;
   window.submitRegistrationForm = submitRegistrationForm;
@@ -684,4 +666,4 @@ try {
   console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-          }
+      }
