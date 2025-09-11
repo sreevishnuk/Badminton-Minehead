@@ -1,9 +1,9 @@
 console.log("Loaded updated script.js");
 
 // Firebase setup and imports — TRAILING SPACES REMOVED ✅
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js ";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js ";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js ";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
@@ -383,72 +383,7 @@ function getRoundLabel(matchCount, roundNumber) {
   return `Round ${roundNumber}`;
 }
 
-// Load fixtures for public view page (fixtures.html)
-async function loadFixtures() {
-  const singlesDiv = document.getElementById('singles-fixtures');
-  const doublesDiv = document.getElementById('doubles-fixtures');
-
-  if (!singlesDiv || !doublesDiv) return;
-
-  singlesDiv.innerHTML = "Loading singles fixtures...";
-  doublesDiv.innerHTML = "Loading doubles fixtures...";
-
-  try {
-    const singlesSnap = await getDoc(doc(db, "fixtures", "singles"));
-    const doublesSnap = await getDoc(doc(db, "fixtures", "doubles"));
-
-    if (singlesSnap.exists() && doublesSnap.exists()) {
-      const singlesBrackets = singlesSnap.data().rounds;
-      const doublesBrackets = doublesSnap.data().rounds;
-
-      singlesDiv.innerHTML = formatBracketsHTML(singlesBrackets);
-      doublesDiv.innerHTML = formatBracketsHTML(doublesBrackets, true);
-    } else {
-      singlesDiv.innerHTML = "No fixtures generated yet.";
-      doublesDiv.innerHTML = "No fixtures generated yet.";
-    }
-  } catch (error) {
-    singlesDiv.innerHTML = "Error loading fixtures: " + error.message;
-    doublesDiv.innerHTML = "Error loading fixtures: " + error.message;
-  }
-}
-
-// Admin fixture editor view loading
-async function loadFixturesAdmin() {
-  const editDiv = document.getElementById('edit-fixtures');
-  const scoresDiv = document.getElementById('enter-scores');
-  if (!editDiv || !scoresDiv) return;
-
-  editDiv.innerHTML = "Loading fixtures...";
-  scoresDiv.innerHTML = "Loading fixtures...";
-
-  try {
-    const singlesSnap = await getDoc(doc(db, "fixtures", "singles"));
-    const doublesSnap = await getDoc(doc(db, "fixtures", "doubles"));
-
-    if (!(singlesSnap.exists() && doublesSnap.exists())) {
-      editDiv.innerHTML = "<p>No fixtures found. Generate fixtures first.</p>";
-      scoresDiv.innerHTML = "";
-      return;
-    }
-
-    const singlesBrackets = singlesSnap.data().rounds;
-    const doublesBrackets = doublesSnap.data().rounds;
-
-    editDiv.innerHTML = '<h3>Singles Fixtures</h3>' + formatFixtureEditingHTML(singlesBrackets, "singles");
-    editDiv.innerHTML += '<h3>Doubles Fixtures</h3>' + formatFixtureEditingHTML(doublesBrackets, "doubles");
-
-    scoresDiv.innerHTML = '<h3>Update Scores & Winners</h3>' +
-      formatFixtureScoreInputHTML(singlesBrackets, "singles") +
-      formatFixtureScoreInputHTML(doublesBrackets, "doubles");
-
-  } catch (error) {
-    editDiv.innerHTML = "Error loading fixtures: " + error.message;
-    scoresDiv.innerHTML = "Error loading fixtures: " + error.message;
-  }
-}
-
-// ✅ Inject CSS once for styling TBD and player names
+// ✅ Inject CSS once for styling TBD, player names, and "vs"
 function injectFixtureStyles() {
   if (document.getElementById('fixture-styles')) return; // avoid duplicates
 
@@ -460,17 +395,39 @@ function injectFixtureStyles() {
       color: #888;
       font-style: italic;
     }
-    .player-name {
+    .player1 {
       font-size: 1.1em;
-      font-weight: 500;
+      font-weight: 600;
+      color: #2c5aa0; /* deep blue */
+    }
+    .player2 {
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #d62d20; /* bold red */
+    }
+    .vs {
+      font-size: 0.9em;
+      color: #666;
+      margin: 0 0.5em;
+      font-weight: normal;
+    }
+    .score-row {
+      margin: 10px 0;
+      align-items: center;
+      display: flex;
+      gap: 8px;
+    }
+    .score-row input {
+      width: 60px;
+      text-align: center;
     }
   `;
   document.head.appendChild(style);
 }
 
-// Format bracket display HTML (read-only) — ✅ UPDATED: Removed "Winner: TBD", use "TBD" for null players
+// Format bracket display HTML (read-only) — ✅ UPDATED: colored players, smaller "vs"
 function formatBracketsHTML(rounds, isDoubles = false) {
-  injectFixtureStyles(); // ✅ Inject styles once
+  injectFixtureStyles();
 
   let html = '<div class="bracket">';
 
@@ -479,10 +436,9 @@ function formatBracketsHTML(rounds, isDoubles = false) {
     const roundLabel = getRoundLabel(matchCount, roundObj.round);
     html += `<div class="round"><strong>${roundLabel}</strong><ul>`;
     roundObj.matches.forEach(match => {
-      const p1 = formatPlayerName(match.player1, isDoubles);
-      const p2 = formatPlayerName(match.player2, isDoubles);
-      // ✅ REMOVED WINNER DISPLAY — just show match
-      html += `<li>${p1} vs ${p2}</li>`;
+      const p1 = formatPlayerName(match.player1, isDoubles, 'player1');
+      const p2 = formatPlayerName(match.player2, isDoubles, 'player2');
+      html += `<li>${p1} <span class="vs">vs</span> ${p2}</li>`;
     });
     html += '</ul></div>';
   });
@@ -491,34 +447,36 @@ function formatBracketsHTML(rounds, isDoubles = false) {
   return html;
 }
 
-// Format player or pair names for display — ✅ UPDATED: "BYE" → "TBD" + HTML with classes
-function formatPlayerName(playerObj, isDoubles) {
+// Format player or pair names for display — ✅ UPDATED: accepts className for coloring
+function formatPlayerName(playerObj, isDoubles, className = '') {
   if (!playerObj) {
     return `<span class="tbd">TBD</span>`;
   }
 
   if (!isDoubles) {
     const name = playerObj.name || "TBD";
-    return name === "TBD"
-      ? `<span class="tbd">TBD</span>`
-      : `<span class="player-name">${name}</span>`;
+    if (name === "TBD") {
+      return `<span class="tbd">TBD</span>`;
+    } else {
+      return `<span class="${className || 'player-name'}">${name}</span>`;
+    }
   }
 
-  // Doubles playerObj expected as {player1: {}, player2: {}}
+  // Doubles: {player1: {}, player2: {}}
   if (playerObj.player1 && playerObj.player2) {
     const name1 = playerObj.player1.name || "TBD";
     const name2 = playerObj.player2.name || "TBD";
-    const display1 = name1 === "TBD" ? `<span class="tbd">TBD</span>` : `<span class="player-name">${name1}</span>`;
-    const display2 = name2 === "TBD" ? `<span class="tbd">TBD</span>` : `<span class="player-name">${name2}</span>`;
+    const display1 = name1 === "TBD" ? `<span class="tbd">TBD</span>` : `<span class="${className || 'player-name'}">${name1}</span>`;
+    const display2 = name2 === "TBD" ? `<span class="tbd">TBD</span>` : `<span class="${className || 'player-name'}">${name2}</span>`;
     return `${display1} & ${display2}`;
   }
 
   return `<span class="tbd">TBD</span>`;
 }
 
-// ✅ Format fixture display WITHOUT "Edit" buttons — ✅ UPDATED: use "TBD" with styling
+// ✅ Format fixture display WITHOUT "Edit" buttons — ✅ UPDATED: colored players
 function formatFixtureEditingHTML(rounds, type) {
-  injectFixtureStyles(); // ✅ Inject styles once
+  injectFixtureStyles();
 
   let html = `<div id="${type}-edit-area">`;
   rounds.forEach((roundObj, i) => {
@@ -526,7 +484,9 @@ function formatFixtureEditingHTML(rounds, type) {
     const roundLabel = getRoundLabel(matchCount, roundObj.round);
     html += `<h4>${roundLabel}</h4><ul>`;
     roundObj.matches.forEach((match, j) => {
-      html += `<li>Match ${j + 1}: ${formatPlayerName(match.player1, type === "doubles")} vs ${formatPlayerName(match.player2, type === "doubles")}</li>`;
+      const p1 = formatPlayerName(match.player1, type === "doubles", 'player1');
+      const p2 = formatPlayerName(match.player2, type === "doubles", 'player2');
+      html += `<li>Match ${j + 1}: ${p1} <span class="vs">vs</span> ${p2}</li>`;
     });
     html += `</ul>`;
   });
@@ -539,9 +499,9 @@ function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// ✅ Format score input — ✅ UPDATED: use "TBD" with styling
+// ✅ Format score input — ✅ UPDATED: colored players, styled "vs"
 function formatFixtureScoreInputHTML(rounds, type) {
-  injectFixtureStyles(); // ✅ Inject styles once
+  injectFixtureStyles();
 
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
@@ -549,11 +509,11 @@ function formatFixtureScoreInputHTML(rounds, type) {
     const roundLabel = getRoundLabel(matchCount, roundObj.round);
     html += `<h4>${roundLabel}</h4>`;
     roundObj.matches.forEach((match, j) => {
-      const p1Name = formatPlayerName(match.player1, type === "doubles");
-      const p2Name = formatPlayerName(match.player2, type === "doubles");
+      const p1Name = formatPlayerName(match.player1, type === "doubles", 'player1');
+      const p2Name = formatPlayerName(match.player2, type === "doubles", 'player2');
 
       html += `<div class="score-row">
-          <span>${p1Name}</span>
+          ${p1Name}
           <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}" placeholder="0">
           <span class="vs">vs</span>
           <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}" placeholder="0">
@@ -696,4 +656,4 @@ try {
   console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-}
+  }
