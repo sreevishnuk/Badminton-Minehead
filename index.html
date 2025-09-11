@@ -312,6 +312,190 @@
             color: var(--dark);
         }
         
+        /* Complete Tournament Bracket Styles */
+        .tournament-bracket {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            padding: 20px 0;
+        }
+        
+        .bracket-container {
+            display: flex;
+            flex-direction: column;
+            min-width: 800px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            border-radius: 10px;
+        }
+        
+        .rounds-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+            padding: 20px 0;
+        }
+        
+        .round-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .round-header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 8px;
+            font-size: 18px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .match-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 15px 0;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 350px;
+            transition: all 0.3s ease;
+        }
+        
+        .match-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .player-container {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            text-align: center;
+            background-color: #fafafa;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .player-name {
+            font-weight: 500;
+            font-size: 16px;
+        }
+        
+        .vs-divider {
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        .vs-divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #ddd;
+            z-index: 0;
+        }
+        
+        .vs-divider span {
+            background-color: white;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .match-score {
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--primary);
+            background-color: #e8f5e9;
+            padding: 10px;
+            border-radius: 6px;
+            width: 80%;
+        }
+        
+        .winner {
+            background-color: #e8f5e9 !important;
+            border-color: #4CAF50 !important;
+            font-weight: bold;
+        }
+        
+        .final-match {
+            background-color: #fff3e0;
+            border: 3px solid var(--accent);
+            transform: scale(1.05);
+        }
+        
+        .champion {
+            background-color: #fff9c4 !important;
+            border: 3px solid #ffc107 !important;
+            font-weight: bold;
+            animation: championGlow 2s infinite;
+        }
+        
+        @keyframes championGlow {
+            0% { box-shadow: 0 0 5px gold; }
+            50% { box-shadow: 0 0 20px gold; }
+            100% { box-shadow: 0 0 5px gold; }
+        }
+        
+        .champion-crown {
+            font-size: 24px;
+            margin-right: 5px;
+        }
+        
+        .connector-line {
+            width: 100%;
+            height: 2px;
+            background-color: #ddd;
+            margin: 10px 0;
+        }
+        
+        .round-connector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px;
+        }
+        
+        .connector-arrow {
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .rounds-container {
+                flex-wrap: wrap;
+            }
+            
+            .round-column {
+                min-width: 220px;
+                margin-bottom: 30px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -329,6 +513,21 @@
             
             .fixture-container {
                 grid-template-columns: 1fr;
+            }
+            
+            .bracket-container {
+                min-width: 100%;
+                padding: 10px;
+            }
+            
+            .rounds-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .round-column {
+                width: 100%;
+                max-width: 100%;
             }
         }
     </style>
@@ -463,18 +662,17 @@
                     Fixtures have been generated and registration is now closed.
                 </div>
                 <div id="fixtures-loading" class="loading hidden">Loading fixtures...</div>
+                
                 <div class="fixture-container">
                     <div class="fixture-bracket">
                         <h3>Singles Tournament</h3>
-                        <div id="singles-fixtures">
-                            <!-- Singles fixtures will be generated here -->
+                        <div id="singles-fixtures" class="tournament-bracket">
                             <p>No fixtures available yet.</p>
                         </div>
                     </div>
                     <div class="fixture-bracket">
                         <h3>Doubles Tournament</h3>
-                        <div id="doubles-fixtures">
-                            <!-- Doubles fixtures will be generated here -->
+                        <div id="doubles-fixtures" class="tournament-bracket">
                             <p>No fixtures available yet.</p>
                         </div>
                     </div>
@@ -557,18 +755,17 @@
                 <div id="admin-fixtures-tab" class="tab-content">
                     <h3>Manage Fixtures</h3>
                     <div id="admin-fixtures-loading" class="loading hidden">Loading fixtures...</div>
+                    
                     <div class="fixture-container">
                         <div class="fixture-bracket">
                             <h4>Singles Fixtures</h4>
-                            <div id="admin-singles-fixtures">
-                                <!-- Admin singles fixtures -->
+                            <div id="admin-singles-fixtures" class="tournament-bracket">
                                 <p>No fixtures available yet.</p>
                             </div>
                         </div>
                         <div class="fixture-bracket">
                             <h4>Doubles Fixtures</h4>
-                            <div id="admin-doubles-fixtures">
-                                <!-- Admin doubles fixtures -->
+                            <div id="admin-doubles-fixtures" class="tournament-bracket">
                                 <p>No fixtures available yet.</p>
                             </div>
                         </div>
@@ -827,16 +1024,17 @@
             }
         }
 
+        // Updated: Complete tournament bracket generation with proper structure
         async function generateFixtures() {
             try {
                 // Get players
                 const players = await getPlayers();
                 
-                // Generate singles fixtures
+                // Generate singles fixtures with complete bracket
                 const singlesPlayers = players.filter(p => p.singles);
-                const singlesFixtures = createKnockoutBracket(singlesPlayers.map(p => ({ id: p.id, name: p.name })));
+                const singlesBracket = createCompleteTournamentBracket(singlesPlayers.map(p => ({ id: p.id, name: p.name })));
                 
-                // Generate doubles fixtures
+                // Generate doubles fixtures with complete bracket
                 const doublesPlayers = players.filter(p => p.doubles);
                 // Randomly pair players for doubles
                 const shuffledDoubles = [...doublesPlayers].sort(() => 0.5 - Math.random());
@@ -857,12 +1055,12 @@
                     }
                 }
                 
-                const doublesFixtures = createKnockoutBracket(doublesTeams);
+                const doublesBracket = createCompleteTournamentBracket(doublesTeams);
                 
                 // Save fixtures
                 const fixturesData = {
-                    singles: singlesFixtures,
-                    doubles: doublesFixtures,
+                    singles: singlesBracket,
+                    doubles: doublesBracket,
                     generatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
@@ -878,32 +1076,72 @@
             }
         }
 
-        function createKnockoutBracket(players) {
-            if (players.length === 0) return [];
+        // Updated: Create a complete tournament bracket with multiple rounds
+        function createCompleteTournamentBracket(players) {
+            if (players.length === 0) return { rounds: [], champion: null, totalRounds: 0 };
             
             // Create a copy to avoid modifying the original array
-            let bracketPlayers = [...players];
+            let currentRoundPlayers = [...players];
             
             // If odd number of players, give one a bye
-            if (bracketPlayers.length % 2 !== 0) {
-                bracketPlayers.push({ id: 'bye', name: 'BYE' });
+            if (currentRoundPlayers.length % 2 !== 0) {
+                currentRoundPlayers.push({ id: 'bye', name: 'BYE' });
             }
             
-            // Create first round matches
-            const matches = [];
-            for (let i = 0; i < bracketPlayers.length; i += 2) {
-                matches.push({
-                    id: `match-${Date.now()}-${i}`,
-                    player1: bracketPlayers[i],
-                    player2: bracketPlayers[i + 1],
-                    score1: null,
-                    score2: null,
-                    winner: null,
-                    completed: false
+            // Create rounds
+            const rounds = [];
+            let roundNumber = 1;
+            
+            // Continue until we have a winner
+            while (currentRoundPlayers.length > 1) {
+                const roundMatches = [];
+                
+                // Create matches for this round
+                for (let i = 0; i < currentRoundPlayers.length; i += 2) {
+                    // Handle case where there's an odd number of players in this round
+                    if (i + 1 >= currentRoundPlayers.length) {
+                        // Player gets a bye to next round
+                        roundMatches.push({
+                            id: `match-${Date.now()}-${roundNumber}-${i}`,
+                            player1: currentRoundPlayers[i],
+                            player2: { id: 'bye', name: 'BYE' },
+                            score1: null,
+                            score2: null,
+                            winner: currentRoundPlayers[i], // Auto-win for bye
+                            completed: true,
+                            round: roundNumber
+                        });
+                    } else {
+                        roundMatches.push({
+                            id: `match-${Date.now()}-${roundNumber}-${i}`,
+                            player1: currentRoundPlayers[i],
+                            player2: currentRoundPlayers[i + 1],
+                            score1: null,
+                            score2: null,
+                            winner: null,
+                            completed: false,
+                            round: roundNumber
+                        });
+                    }
+                }
+                
+                rounds.push({
+                    roundNumber: roundNumber,
+                    matches: roundMatches
                 });
+                
+                // For the next round, we'll need to determine winners
+                // For now, we'll just carry forward player1 as placeholder
+                // In reality, winners will be determined when scores are entered
+                currentRoundPlayers = roundMatches.map(match => match.player1);
+                roundNumber++;
             }
             
-            return matches;
+            return {
+                rounds: rounds,
+                champion: currentRoundPlayers.length > 0 ? currentRoundPlayers[0] : null,
+                totalRounds: rounds.length
+            };
         }
 
         async function getFixtures() {
@@ -928,24 +1166,60 @@
                 
                 const fixtures = fixturesDoc.data();
                 const categoryFixtures = fixtures[category];
-                const matchIndex = categoryFixtures.findIndex(m => m.id === matchId);
                 
-                if (matchIndex === -1) {
+                // Find the match in all rounds
+                let matchFound = false;
+                let roundIndex = -1;
+                let matchIndex = -1;
+                
+                for (let i = 0; i < categoryFixtures.rounds.length && !matchFound; i++) {
+                    const round = categoryFixtures.rounds[i];
+                    matchIndex = round.matches.findIndex(m => m.id === matchId);
+                    
+                    if (matchIndex !== -1) {
+                        roundIndex = i;
+                        matchFound = true;
+                        break;
+                    }
+                }
+                
+                if (!matchFound) {
                     throw new Error("Match not found");
                 }
                 
                 // Update the match
-                categoryFixtures[matchIndex].score1 = parseInt(score1);
-                categoryFixtures[matchIndex].score2 = parseInt(score2);
-                categoryFixtures[matchIndex].completed = true;
+                categoryFixtures.rounds[roundIndex].matches[matchIndex].score1 = parseInt(score1);
+                categoryFixtures.rounds[roundIndex].matches[matchIndex].score2 = parseInt(score2);
+                categoryFixtures.rounds[roundIndex].matches[matchIndex].completed = true;
                 
                 // Determine winner
-                if (categoryFixtures[matchIndex].score1 > categoryFixtures[matchIndex].score2) {
-                    categoryFixtures[matchIndex].winner = categoryFixtures[matchIndex].player1;
-                } else if (categoryFixtures[matchIndex].score2 > categoryFixtures[matchIndex].score1) {
-                    categoryFixtures[matchIndex].winner = categoryFixtures[matchIndex].player2;
+                if (categoryFixtures.rounds[roundIndex].matches[matchIndex].score1 > categoryFixtures.rounds[roundIndex].matches[matchIndex].score2) {
+                    categoryFixtures.rounds[roundIndex].matches[matchIndex].winner = categoryFixtures.rounds[roundIndex].matches[matchIndex].player1;
+                } else if (categoryFixtures.rounds[roundIndex].matches[matchIndex].score2 > categoryFixtures.rounds[roundIndex].matches[matchIndex].score1) {
+                    categoryFixtures.rounds[roundIndex].matches[matchIndex].winner = categoryFixtures.rounds[roundIndex].matches[matchIndex].player2;
                 } else {
-                    categoryFixtures[matchIndex].winner = { name: "Tie" };
+                    categoryFixtures.rounds[roundIndex].matches[matchIndex].winner = { name: "Tie" };
+                }
+                
+                // If this is not the final round, add winner to next round
+                if (roundIndex < categoryFixtures.rounds.length - 1) {
+                    // Find the corresponding match in the next round
+                    const nextRound = categoryFixtures.rounds[roundIndex + 1];
+                    
+                    // Calculate which match in the next round this winner should go to
+                    // Each match in the next round corresponds to two matches in the current round
+                    const nextMatchIndex = Math.floor(matchIndex / 2);
+                    
+                    if (nextMatchIndex < nextRound.matches.length) {
+                        // Determine if this winner should be player1 or player2 in the next match
+                        const isPlayer1 = matchIndex % 2 === 0;
+                        
+                        if (isPlayer1) {
+                            nextRound.matches[nextMatchIndex].player1 = categoryFixtures.rounds[roundIndex].matches[matchIndex].winner;
+                        } else {
+                            nextRound.matches[nextMatchIndex].player2 = categoryFixtures.rounds[roundIndex].matches[matchIndex].winner;
+                        }
+                    }
                 }
                 
                 // Save updated fixtures
@@ -956,6 +1230,147 @@
                 console.error("Error updating match score:", error);
                 throw error;
             }
+        }
+
+        // Updated: Render complete tournament bracket with improved visual structure
+        function renderTournamentBracket(bracket, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            if (!bracket || !bracket.rounds || bracket.rounds.length === 0) {
+                container.innerHTML = '<p>No fixtures available yet.</p>';
+                return;
+            }
+            
+            const bracketContainer = document.createElement('div');
+            bracketContainer.className = 'bracket-container';
+            
+            const roundsContainer = document.createElement('div');
+            roundsContainer.className = 'rounds-container';
+            
+            // Render each round
+            bracket.rounds.forEach((round, roundIndex) => {
+                const roundColumn = document.createElement('div');
+                roundColumn.className = 'round-column';
+                
+                const roundHeader = document.createElement('div');
+                roundHeader.className = 'round-header';
+                
+                // Special headers for final rounds
+                if (roundIndex === bracket.rounds.length - 1) {
+                    roundHeader.textContent = '🏆 FINAL 🏆';
+                    roundHeader.style.backgroundColor = '#ffc107';
+                } else if (roundIndex === bracket.rounds.length - 2) {
+                    roundHeader.textContent = 'SEMIFINALS';
+                    roundHeader.style.backgroundColor = '#2196F3';
+                } else {
+                    roundHeader.textContent = `ROUND ${round.roundNumber}`;
+                }
+                
+                roundColumn.appendChild(roundHeader);
+                
+                // Render matches in this round
+                round.matches.forEach((match, matchIndex) => {
+                    const matchDiv = document.createElement('div');
+                    matchDiv.className = 'match-container';
+                    
+                    // Special styling for final match
+                    if (roundIndex === bracket.rounds.length - 1) {
+                        matchDiv.classList.add('final-match');
+                    }
+                    
+                    const player1Div = document.createElement('div');
+                    player1Div.className = 'player-container';
+                    if (match.winner && match.winner.id === match.player1.id) {
+                        player1Div.classList.add('winner');
+                        if (roundIndex === bracket.rounds.length - 1) {
+                            player1Div.classList.add('champion');
+                        }
+                    }
+                    player1Div.innerHTML = `<div class="player-name">${match.player1.name}</div>`;
+                    
+                    const vsDiv = document.createElement('div');
+                    vsDiv.className = 'vs-divider';
+                    vsDiv.innerHTML = '<span>VS</span>';
+                    
+                    const player2Div = document.createElement('div');
+                    player2Div.className = 'player-container';
+                    if (match.winner && match.winner.id === match.player2.id) {
+                        player2Div.classList.add('winner');
+                        if (roundIndex === bracket.rounds.length - 1) {
+                            player2Div.classList.add('champion');
+                        }
+                    }
+                    player2Div.innerHTML = `<div class="player-name">${match.player2.name}</div>`;
+                    
+                    matchDiv.appendChild(player1Div);
+                    matchDiv.appendChild(vsDiv);
+                    matchDiv.appendChild(player2Div);
+                    
+                    if (match.completed) {
+                        const scoreDiv = document.createElement('div');
+                        scoreDiv.className = 'match-score';
+                        scoreDiv.textContent = `${match.score1} - ${match.score2}`;
+                        matchDiv.appendChild(scoreDiv);
+                    }
+                    
+                    roundColumn.appendChild(matchDiv);
+                });
+                
+                roundsContainer.appendChild(roundColumn);
+                
+                // Add connector arrow between rounds (except after the last round)
+                if (roundIndex < bracket.rounds.length - 1) {
+                    const connectorDiv = document.createElement('div');
+                    connectorDiv.className = 'round-connector';
+                    connectorDiv.innerHTML = '<div class="connector-arrow">→</div>';
+                    roundsContainer.appendChild(connectorDiv);
+                }
+            });
+            
+            bracketContainer.appendChild(roundsContainer);
+            
+            // Add champion section if tournament is complete
+            if (bracket.rounds.length > 0) {
+                const lastRound = bracket.rounds[bracket.rounds.length - 1];
+                const allMatchesCompleted = lastRound.matches.every(match => match.completed);
+                
+                if (allMatchesCompleted) {
+                    // Find the actual champion (not just the placeholder)
+                    let actualChampion = null;
+                    for (const match of lastRound.matches) {
+                        if (match.winner && match.winner.name !== "Tie" && match.winner.name !== "BYE") {
+                            actualChampion = match.winner;
+                            break;
+                        }
+                    }
+                    
+                    if (actualChampion) {
+                        const championDiv = document.createElement('div');
+                        championDiv.className = 'round-column';
+                        championDiv.style.marginTop = '40px';
+                        championDiv.style.textAlign = 'center';
+                        
+                        const championTitle = document.createElement('h3');
+                        championTitle.textContent = '🏆 TOURNAMENT CHAMPION 🏆';
+                        championTitle.style.color = '#ffc107';
+                        championTitle.style.marginBottom = '20px';
+                        
+                        const championName = document.createElement('div');
+                        championName.className = 'player-container champion';
+                        championName.style.fontSize = '28px';
+                        championName.style.fontWeight = 'bold';
+                        championName.style.padding = '20px';
+                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name} <span class="champion-crown">👑</span>`;
+                        
+                        championDiv.appendChild(championTitle);
+                        championDiv.appendChild(championName);
+                        bracketContainer.appendChild(championDiv);
+                    }
+                }
+            }
+            
+            container.appendChild(bracketContainer);
         }
 
         // Event Listeners
@@ -1322,7 +1737,7 @@
             } catch (error) {
                 console.error("Error loading admin data:", error);
                 document.getElementById('admin-players-loading').classList.add('hidden');
-                alert("Error loading admin data: " + error.message);
+                alert("Error loading admin  " + error.message);
             }
         }
 
@@ -1333,65 +1748,18 @@
                 
                 const fixtures = await getFixtures();
                 
-                const singlesFixturesDiv = document.getElementById('singles-fixtures');
-                const doublesFixturesDiv = document.getElementById('doubles-fixtures');
-                
                 if (!fixtures) {
-                    singlesFixturesDiv.innerHTML = '<p>No fixtures available yet.</p>';
-                    doublesFixturesDiv.innerHTML = '<p>No fixtures available yet.</p>';
+                    document.getElementById('singles-fixtures').innerHTML = '<p>No fixtures available yet.</p>';
+                    document.getElementById('doubles-fixtures').innerHTML = '<p>No fixtures available yet.</p>';
                     document.getElementById('fixtures-loading').classList.add('hidden');
                     return;
                 }
                 
-                // Load singles fixtures
-                if (fixtures.singles && fixtures.singles.length > 0) {
-                    singlesFixturesDiv.innerHTML = '';
-                    fixtures.singles.forEach(match => {
-                        const matchDiv = document.createElement('div');
-                        matchDiv.className = 'match';
-                        matchDiv.innerHTML = `
-                            <div class="match-header">Match</div>
-                            <div class="players">
-                                <div class="player">${match.player1.name}</div>
-                                <div class="player">${match.player2.name}</div>
-                            </div>
-                            ${match.completed ? `
-                            <div class="result">
-                                <strong>Score:</strong> ${match.score1} - ${match.score2}<br>
-                                <strong>Winner:</strong> ${match.winner.name}
-                            </div>
-                            ` : '<p>Match not yet played</p>'}
-                        `;
-                        singlesFixturesDiv.appendChild(matchDiv);
-                    });
-                } else {
-                    singlesFixturesDiv.innerHTML = '<p>No singles fixtures available.</p>';
-                }
+                // Render singles fixtures
+                renderTournamentBracket(fixtures.singles, 'singles-fixtures');
                 
-                // Load doubles fixtures
-                if (fixtures.doubles && fixtures.doubles.length > 0) {
-                    doublesFixturesDiv.innerHTML = '';
-                    fixtures.doubles.forEach(match => {
-                        const matchDiv = document.createElement('div');
-                        matchDiv.className = 'match';
-                        matchDiv.innerHTML = `
-                            <div class="match-header">Match</div>
-                            <div class="players">
-                                <div class="player">${match.player1.name}</div>
-                                <div class="player">${match.player2.name}</div>
-                            </div>
-                            ${match.completed ? `
-                            <div class="result">
-                                <strong>Score:</strong> ${match.score1} - ${match.score2}<br>
-                                <strong>Winner:</strong> ${match.winner.name}
-                            </div>
-                            ` : '<p>Match not yet played</p>'}
-                        `;
-                        doublesFixturesDiv.appendChild(matchDiv);
-                    });
-                } else {
-                    doublesFixturesDiv.innerHTML = '<p>No doubles fixtures available.</p>';
-                }
+                // Render doubles fixtures
+                renderTournamentBracket(fixtures.doubles, 'doubles-fixtures');
                 
                 // Hide loading state
                 document.getElementById('fixtures-loading').classList.add('hidden');
@@ -1409,99 +1777,18 @@
                 
                 const fixtures = await getFixtures();
                 
-                const adminSinglesFixturesDiv = document.getElementById('admin-singles-fixtures');
-                const adminDoublesFixturesDiv = document.getElementById('admin-doubles-fixtures');
-                
                 if (!fixtures) {
-                    adminSinglesFixturesDiv.innerHTML = '<p>No fixtures available yet.</p>';
-                    adminDoublesFixturesDiv.innerHTML = '<p>No fixtures available yet.</p>';
+                    document.getElementById('admin-singles-fixtures').innerHTML = '<p>No fixtures available yet.</p>';
+                    document.getElementById('admin-doubles-fixtures').innerHTML = '<p>No fixtures available yet.</p>';
                     document.getElementById('admin-fixtures-loading').classList.add('hidden');
                     return;
                 }
                 
-                // Load singles fixtures
-                if (fixtures.singles && fixtures.singles.length > 0) {
-                    adminSinglesFixturesDiv.innerHTML = '';
-                    fixtures.singles.forEach(match => {
-                        const matchDiv = document.createElement('div');
-                        matchDiv.className = 'match';
-                        matchDiv.innerHTML = `
-                            <div class="match-header">Match</div>
-                            <div class="players">
-                                <div class="player">${match.player1.name}</div>
-                                <div class="player">${match.player2.name}</div>
-                            </div>
-                            <div class="form-group">
-                                <label>Score</label>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <input type="number" class="score-input" value="${match.score1 || 0}" min="0" data-match-id="${match.id}" data-player="1" data-category="singles">
-                                    <span>-</span>
-                                    <input type="number" class="score-input" value="${match.score2 || 0}" min="0" data-match-id="${match.id}" data-player="2" data-category="singles">
-                                </div>
-                            </div>
-                            <button class="btn btn-success update-score" data-match-id="${match.id}" data-category="singles">Update Score</button>
-                            ${match.completed ? `<p><strong>Winner:</strong> ${match.winner.name}</p>` : ''}
-                        `;
-                        adminSinglesFixturesDiv.appendChild(matchDiv);
-                    });
-                } else {
-                    adminSinglesFixturesDiv.innerHTML = '<p>No singles fixtures available.</p>';
-                }
+                // Render singles fixtures with score inputs
+                renderAdminTournamentBracket(fixtures.singles, 'admin-singles-fixtures', 'singles');
                 
-                // Load doubles fixtures
-                if (fixtures.doubles && fixtures.doubles.length > 0) {
-                    adminDoublesFixturesDiv.innerHTML = '';
-                    fixtures.doubles.forEach(match => {
-                        const matchDiv = document.createElement('div');
-                        matchDiv.className = 'match';
-                        matchDiv.innerHTML = `
-                            <div class="match-header">Match</div>
-                            <div class="players">
-                                <div class="player">${match.player1.name}</div>
-                                <div class="player">${match.player2.name}</div>
-                            </div>
-                            <div class="form-group">
-                                <label>Score</label>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <input type="number" class="score-input" value="${match.score1 || 0}" min="0" data-match-id="${match.id}" data-player="1" data-category="doubles">
-                                    <span>-</span>
-                                    <input type="number" class="score-input" value="${match.score2 || 0}" min="0" data-match-id="${match.id}" data-player="2" data-category="doubles">
-                                </div>
-                            </div>
-                            <button class="btn btn-success update-score" data-match-id="${match.id}" data-category="doubles">Update Score</button>
-                            ${match.completed ? `<p><strong>Winner:</strong> ${match.winner.name}</p>` : ''}
-                        `;
-                        adminDoublesFixturesDiv.appendChild(matchDiv);
-                    });
-                } else {
-                    adminDoublesFixturesDiv.innerHTML = '<p>No doubles fixtures available.</p>';
-                }
-                
-                // Add event listeners to update score buttons
-                document.querySelectorAll('.update-score').forEach(button => {
-                    button.addEventListener('click', async (e) => {
-                        const matchId = e.target.getAttribute('data-match-id');
-                        const category = e.target.getAttribute('data-category');
-                        const score1Input = document.querySelector(`input[data-match-id="${matchId}"][data-player="1"]`);
-                        const score2Input = document.querySelector(`input[data-match-id="${matchId}"][data-player="2"]`);
-                        
-                        const score1 = score1Input.value;
-                        const score2 = score2Input.value;
-                        
-                        if (score1 === '' || score2 === '') {
-                            alert('Please enter both scores.');
-                            return;
-                        }
-                        
-                        try {
-                            await updateMatchScore(matchId, score1, score2, category);
-                            loadAdminFixtures();
-                            loadFixtures();
-                        } catch (error) {
-                            alert('Error updating score: ' + error.message);
-                        }
-                    });
-                });
+                // Render doubles fixtures with score inputs
+                renderAdminTournamentBracket(fixtures.doubles, 'admin-doubles-fixtures', 'doubles');
                 
                 // Hide loading state
                 document.getElementById('admin-fixtures-loading').classList.add('hidden');
@@ -1510,6 +1797,187 @@
                 document.getElementById('admin-fixtures-loading').classList.add('hidden');
                 alert("Error loading fixtures: " + error.message);
             }
+        }
+
+        // Updated: Render tournament bracket for admin with score inputs
+        function renderAdminTournamentBracket(bracket, containerId, category) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            if (!bracket || !bracket.rounds || bracket.rounds.length === 0) {
+                container.innerHTML = '<p>No fixtures available yet.</p>';
+                return;
+            }
+            
+            const bracketContainer = document.createElement('div');
+            bracketContainer.className = 'bracket-container';
+            
+            const roundsContainer = document.createElement('div');
+            roundsContainer.className = 'rounds-container';
+            
+            // Render each round
+            bracket.rounds.forEach((round, roundIndex) => {
+                const roundColumn = document.createElement('div');
+                roundColumn.className = 'round-column';
+                
+                const roundHeader = document.createElement('div');
+                roundHeader.className = 'round-header';
+                
+                // Special headers for final rounds
+                if (roundIndex === bracket.rounds.length - 1) {
+                    roundHeader.textContent = '🏆 FINAL 🏆';
+                    roundHeader.style.backgroundColor = '#ffc107';
+                } else if (roundIndex === bracket.rounds.length - 2) {
+                    roundHeader.textContent = 'SEMIFINALS';
+                    roundHeader.style.backgroundColor = '#2196F3';
+                } else {
+                    roundHeader.textContent = `ROUND ${round.roundNumber}`;
+                }
+                
+                roundColumn.appendChild(roundHeader);
+                
+                // Render matches in this round
+                round.matches.forEach((match, matchIndex) => {
+                    const matchDiv = document.createElement('div');
+                    matchDiv.className = 'match-container';
+                    
+                    // Special styling for final match
+                    if (roundIndex === bracket.rounds.length - 1) {
+                        matchDiv.classList.add('final-match');
+                    }
+                    
+                    const player1Div = document.createElement('div');
+                    player1Div.className = 'player-container';
+                    if (match.winner && match.winner.id === match.player1.id) {
+                        player1Div.classList.add('winner');
+                        if (roundIndex === bracket.rounds.length - 1) {
+                            player1Div.classList.add('champion');
+                        }
+                    }
+                    player1Div.innerHTML = `<div class="player-name">${match.player1.name}</div>`;
+                    
+                    const vsDiv = document.createElement('div');
+                    vsDiv.className = 'vs-divider';
+                    vsDiv.innerHTML = '<span>VS</span>';
+                    
+                    const player2Div = document.createElement('div');
+                    player2Div.className = 'player-container';
+                    if (match.winner && match.winner.id === match.player2.id) {
+                        player2Div.classList.add('winner');
+                        if (roundIndex === bracket.rounds.length - 1) {
+                            player2Div.classList.add('champion');
+                        }
+                    }
+                    player2Div.innerHTML = `<div class="player-name">${match.player2.name}</div>`;
+                    
+                    matchDiv.appendChild(player1Div);
+                    matchDiv.appendChild(vsDiv);
+                    matchDiv.appendChild(player2Div);
+                    
+                    // Add score inputs and update button for admin
+                    if (!match.completed) {
+                        const scoreForm = document.createElement('div');
+                        scoreForm.className = 'form-group';
+                        scoreForm.innerHTML = `
+                            <label>Score</label>
+                            <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                                <input type="number" class="score-input" value="${match.score1 || 0}" min="0" data-match-id="${match.id}" data-player="1" data-category="${category}">
+                                <span>-</span>
+                                <input type="number" class="score-input" value="${match.score2 || 0}" min="0" data-match-id="${match.id}" data-player="2" data-category="${category}">
+                            </div>
+                            <button class="btn btn-success update-score" data-match-id="${match.id}" data-category="${category}" style="margin-top: 10px;">Update Score</button>
+                        `;
+                        matchDiv.appendChild(scoreForm);
+                    } else {
+                        const scoreDiv = document.createElement('div');
+                        scoreDiv.className = 'match-score';
+                        scoreDiv.textContent = `${match.score1} - ${match.score2}`;
+                        matchDiv.appendChild(scoreDiv);
+                    }
+                    
+                    roundColumn.appendChild(matchDiv);
+                });
+                
+                roundsContainer.appendChild(roundColumn);
+                
+                // Add connector arrow between rounds (except after the last round)
+                if (roundIndex < bracket.rounds.length - 1) {
+                    const connectorDiv = document.createElement('div');
+                    connectorDiv.className = 'round-connector';
+                    connectorDiv.innerHTML = '<div class="connector-arrow">→</div>';
+                    roundsContainer.appendChild(connectorDiv);
+                }
+            });
+            
+            bracketContainer.appendChild(roundsContainer);
+            
+            // Add champion section if tournament is complete
+            if (bracket.rounds.length > 0) {
+                const lastRound = bracket.rounds[bracket.rounds.length - 1];
+                const allMatchesCompleted = lastRound.matches.every(match => match.completed);
+                
+                if (allMatchesCompleted) {
+                    // Find the actual champion (not just the placeholder)
+                    let actualChampion = null;
+                    for (const match of lastRound.matches) {
+                        if (match.winner && match.winner.name !== "Tie" && match.winner.name !== "BYE") {
+                            actualChampion = match.winner;
+                            break;
+                        }
+                    }
+                    
+                    if (actualChampion) {
+                        const championDiv = document.createElement('div');
+                        championDiv.className = 'round-column';
+                        championDiv.style.marginTop = '40px';
+                        championDiv.style.textAlign = 'center';
+                        
+                        const championTitle = document.createElement('h3');
+                        championTitle.textContent = '🏆 TOURNAMENT CHAMPION 🏆';
+                        championTitle.style.color = '#ffc107';
+                        championTitle.style.marginBottom = '20px';
+                        
+                        const championName = document.createElement('div');
+                        championName.className = 'player-container champion';
+                        championName.style.fontSize = '28px';
+                        championName.style.fontWeight = 'bold';
+                        championName.style.padding = '20px';
+                        championName.innerHTML = `<span class="champion-crown">👑</span> ${actualChampion.name} <span class="champion-crown">👑</span>`;
+                        
+                        championDiv.appendChild(championTitle);
+                        championDiv.appendChild(championName);
+                        bracketContainer.appendChild(championDiv);
+                    }
+                }
+            }
+            
+            container.appendChild(bracketContainer);
+            
+            // Add event listeners to update score buttons
+            document.querySelectorAll('.update-score').forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const matchId = e.target.getAttribute('data-match-id');
+                    const category = e.target.getAttribute('data-category');
+                    const score1Input = document.querySelector(`input[data-match-id="${matchId}"][data-player="1"]`);
+                    const score2Input = document.querySelector(`input[data-match-id="${matchId}"][data-player="2"]`);
+                    
+                    const score1 = score1Input.value;
+                    const score2 = score2Input.value;
+                    
+                    if (score1 === '' || score2 === '') {
+                        alert('Please enter both scores.');
+                        return;
+                    }
+                    
+                    try {
+                        await updateMatchScore(matchId, score1, score2, category);
+                        loadAdminFixtures();
+                        loadFixtures();
+                    } catch (error) {
+                        alert('Error updating score: ' + error.message);
+                    }
+                });
+            });
         }
 
         // Initialize the app
