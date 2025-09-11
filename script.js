@@ -448,8 +448,30 @@ async function loadFixturesAdmin() {
   }
 }
 
+// ✅ Inject CSS once for styling TBD and player names
+function injectFixtureStyles() {
+  if (document.getElementById('fixture-styles')) return; // avoid duplicates
+
+  const style = document.createElement('style');
+  style.id = 'fixture-styles';
+  style.textContent = `
+    .tbd {
+      font-size: 0.85em;
+      color: #888;
+      font-style: italic;
+    }
+    .player-name {
+      font-size: 1.1em;
+      font-weight: 500;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 // Format bracket display HTML (read-only) — ✅ UPDATED: Removed "Winner: TBD", use "TBD" for null players
 function formatBracketsHTML(rounds, isDoubles = false) {
+  injectFixtureStyles(); // ✅ Inject styles once
+
   let html = '<div class="bracket">';
 
   rounds.forEach((roundObj, i) => {
@@ -469,22 +491,35 @@ function formatBracketsHTML(rounds, isDoubles = false) {
   return html;
 }
 
-// Format player or pair names for display — ✅ UPDATED: "BYE" → "TBD"
+// Format player or pair names for display — ✅ UPDATED: "BYE" → "TBD" + HTML with classes
 function formatPlayerName(playerObj, isDoubles) {
-  if (!playerObj) return "TBD"; // ✅ Changed from "BYE" to "TBD"
-  if (!isDoubles) return playerObj.name || "TBD"; // fallback to TBD if name missing
+  if (!playerObj) {
+    return `<span class="tbd">TBD</span>`;
+  }
+
+  if (!isDoubles) {
+    const name = playerObj.name || "TBD";
+    return name === "TBD"
+      ? `<span class="tbd">TBD</span>`
+      : `<span class="player-name">${name}</span>`;
+  }
 
   // Doubles playerObj expected as {player1: {}, player2: {}}
   if (playerObj.player1 && playerObj.player2) {
     const name1 = playerObj.player1.name || "TBD";
     const name2 = playerObj.player2.name || "TBD";
-    return `${name1} & ${name2}`;
+    const display1 = name1 === "TBD" ? `<span class="tbd">TBD</span>` : `<span class="player-name">${name1}</span>`;
+    const display2 = name2 === "TBD" ? `<span class="tbd">TBD</span>` : `<span class="player-name">${name2}</span>`;
+    return `${display1} & ${display2}`;
   }
-  return "TBD";
+
+  return `<span class="tbd">TBD</span>`;
 }
 
-// ✅ Format fixture display WITHOUT "Edit" buttons — ✅ UPDATED: use "TBD"
+// ✅ Format fixture display WITHOUT "Edit" buttons — ✅ UPDATED: use "TBD" with styling
 function formatFixtureEditingHTML(rounds, type) {
+  injectFixtureStyles(); // ✅ Inject styles once
+
   let html = `<div id="${type}-edit-area">`;
   rounds.forEach((roundObj, i) => {
     const matchCount = roundObj.matches.length;
@@ -504,8 +539,10 @@ function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// ✅ Format score input — ✅ UPDATED: use "TBD" for null players
+// ✅ Format score input — ✅ UPDATED: use "TBD" with styling
 function formatFixtureScoreInputHTML(rounds, type) {
+  injectFixtureStyles(); // ✅ Inject styles once
+
   let html = `<div id="${type}-score-area">`;
   rounds.forEach((roundObj, i) => {
     const matchCount = roundObj.matches.length;
@@ -659,4 +696,4 @@ try {
   console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-}
+      }
