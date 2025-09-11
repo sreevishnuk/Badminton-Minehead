@@ -464,6 +464,11 @@ function injectFixtureStyles() {
       font-size: 1.1em;
       font-weight: 500;
     }
+    .vs {
+      margin: 0 8px;
+      font-weight: bold;
+      color: #555;
+    }
   `;
   document.head.appendChild(style);
 }
@@ -539,7 +544,7 @@ function editMatch(type, roundIndex, matchIndex) {
   alert(`Edit match ${matchIndex + 1} of round ${roundIndex + 1} in ${type} - feature to be implemented.`);
 }
 
-// ✅ Format score input — ✅ UPDATED: use "TBD" with styling
+// ✅ Format score input — ✅ FIXED: NOW SHOWS PLAYER 2 NAME
 function formatFixtureScoreInputHTML(rounds, type) {
   injectFixtureStyles(); // ✅ Inject styles once
 
@@ -552,10 +557,12 @@ function formatFixtureScoreInputHTML(rounds, type) {
       const p1Name = formatPlayerName(match.player1, type === "doubles");
       const p2Name = formatPlayerName(match.player2, type === "doubles");
 
+      // ✅ FIXED: Added Player 2 name display
       html += `<div class="score-row">
           <span>${p1Name}</span>
           <input type="number" id="${type}-${i}-${j}-score1" min="0" value="${match.score1 ?? ''}" placeholder="0">
           <span class="vs">vs</span>
+          <span>${p2Name}</span> <!-- ✅ Player 2 name now displayed -->
           <input type="number" id="${type}-${i}-${j}-score2" min="0" value="${match.score2 ?? ''}" placeholder="0">
           <button onclick="updateScore('${type}', ${i}, ${j})">Update</button>
         </div><hr>`;
@@ -696,4 +703,4 @@ try {
   console.log("✅ All functions exposed to window scope successfully.");
 } catch (err) {
   console.error("❌ Failed to expose functions to window:", err);
-}
+  }
