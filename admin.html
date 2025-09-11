@@ -4,52 +4,60 @@
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-bg">
 
-  <!-- ✅ SECURITY GUARD (Ultra Safe Version) -->
-  <script type="module">
-    console.log("[SECURITY] Starting auth check...");
+  <!-- ✅ SECURITY CHECK — PLACED AT VERY TOP OF BODY -->
+  <script>
+    // Immediately log that this script is running
+    console.log("[SECURITY] Running inline auth check...");
 
-    try {
-      // Import Firebase
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    // Load Firebase dynamically
+    const loadFirebaseAndCheckAuth = async () => {
+      try {
+        // Import Firebase modules dynamically
+        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js");
+        const { getAuth, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js");
 
-      // Firebase Config
-      const firebaseConfig = {
-        apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
-        authDomain: "minehead-badminton-tournament.firebaseapp.com",
-        projectId: "minehead-badminton-tournament",
-        storageBucket: "minehead-badminton-tournament.appspot.com",
-        messagingSenderId: "237720155580",
-        appId: "1:237720155580:web:8faed76ef425f262d727b9",
-        measurementId: "G-RG7J53MLE2"
-      };
+        // Your Firebase config
+        const firebaseConfig = {
+          apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
+          authDomain: "minehead-badminton-tournament.firebaseapp.com",
+          projectId: "minehead-badminton-tournament",
+          storageBucket: "minehead-badminton-tournament.appspot.com",
+          messagingSenderId: "237720155580",
+          appId: "1:237720155580:web:8faed76ef425f262d727b9",
+          measurementId: "G-RG7J53MLE2"
+        };
 
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-      console.log("[SECURITY] Firebase initialized.");
+        console.log("[SECURITY] Firebase initialized. Checking auth state...");
 
-      // Wait a tiny bit to ensure auth state is ready (optional but helpful)
-      setTimeout(() => {
+        // Check auth state
         onAuthStateChanged(auth, (user) => {
           if (user) {
-            console.log("[SECURITY] User is logged in:", user.email);
+            console.log("[SECURITY] Authenticated user:", user.email);
           } else {
-            console.log("[SECURITY] No user detected. Redirecting to adminlogin.html...");
+            console.log("[SECURITY] No user. Redirecting to adminlogin.html");
             window.location.href = 'adminlogin.html';
           }
         });
-      }, 500);
 
-    } catch (err) {
-      console.error("[SECURITY CRITICAL ERROR]", err);
-      alert("Security check failed. Please contact administrator.");
-    }
+      } catch (err) {
+        console.error("[SECURITY] Failed to load Firebase or check auth:", err);
+        // Don't break the page — but show error for debugging
+        document.body.innerHTML = '<h2 style="color:red;text-align:center;">Security Check Failed</h2><pre>' + err.message + '</pre>';
+      }
+    };
+
+    // Run the check immediately
+    loadFirebaseAndCheckAuth();
   </script>
-</head>
-<body class="admin-bg">
+
+  <!-- Rest of your admin page -->
   <nav class="admin-nav">
     <img src="badmintonlogo.png" alt="Badminton Logo" class="logo-sm" />
     <span class="admin-title">Admin Dashboard</span>
