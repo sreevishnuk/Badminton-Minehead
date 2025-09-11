@@ -1,32 +1,80 @@
-<!-- ✅ SECURITY GUARD (Improved Version) -->
-<script type="module">
-  // Import Firebase modules
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
 
-  // Your Firebase config (COPY-PASTE from your script.js)
-  const firebaseConfig = {
-    apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
-    authDomain: "minehead-badminton-tournament.firebaseapp.com",
-    projectId: "minehead-badminton-tournament",
-    storageBucket: "minehead-badminton-tournament.appspot.com",
-    messagingSenderId: "237720155580",
-    appId: "1:237720155580:web:8faed76ef425f262d727b9",
-    measurementId: "G-RG7J53MLE2"
-  };
+  <!-- ✅ SECURITY GUARD (Safe, Deferred Version) -->
+  <script type="module">
+    try {
+      // Import Firebase
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-  // Initialize Firebase App and Auth
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+      // Firebase Config
+      const firebaseConfig = {
+        apiKey: "AIzaSyBQvr257MnUMdv-i4VkgjaGUPnSho3F_x0",
+        authDomain: "minehead-badminton-tournament.firebaseapp.com",
+        projectId: "minehead-badminton-tournament",
+        storageBucket: "minehead-badminton-tournament.appspot.com",
+        messagingSenderId: "237720155580",
+        appId: "1:237720155580:web:8faed76ef425f262d727b9",
+        measurementId: "G-RG7J53MLE2"
+      };
 
-  // Check authentication state
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      console.log("No user detected. Redirecting to login...");
-      window.location.href = 'adminlogin.html';
-    } else {
-      console.log("User is logged in:", user.email);
-      // Allow page to load
+      // Initialize
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // Check auth state
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          console.log("[SECURITY] No user. Redirecting to login...");
+          window.location.href = 'adminlogin.html';
+        }
+      });
+    } catch (err) {
+      console.error("[SECURITY ERROR]", err);
+      // Even if script fails, don't break the page. Let it load.
     }
-  });
-</script>
+  </script>
+</head>
+<body class="admin-bg">
+  <nav class="admin-nav">
+    <img src="badmintonlogo.png" alt="Badminton Logo" class="logo-sm" />
+    <span class="admin-title">Admin Dashboard</span>
+    <button class="btn-secondary" onclick="logoutAdmin()">Logout</button>
+  </nav>
+
+  <div class="admin-container">
+    <section>
+      <button class="btn-primary" onclick="toggleRegistration()">Enable/Disable Registration</button>
+      <button class="btn-accent" onclick="generateFixtures()">Generate Fixtures</button>
+    </section>
+
+    <section>
+      <h2>Player Control</h2>
+      <div id="players-list">Loading players...</div>
+    </section>
+
+    <section>
+      <h2>Manage Fixtures</h2>
+      <div id="edit-fixtures">Loading fixtures...</div>
+    </section>
+
+    <section>
+      <h2>Fixtures & Results</h2>
+      <div id="enter-scores">Loading score entry...</div>
+    </section>
+  </div>
+
+  <script src="script.js" type="module"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof loadPlayers === 'function') loadPlayers();
+      if (typeof loadFixturesAdmin === 'function') loadFixturesAdmin();
+    });
+  </script>
+</body>
+</html>
