@@ -1,45 +1,51 @@
-// Global script for common functionality across pages
+// script.js
+import { auth } from './firebase-config.js';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-// Check if user is logged in as admin
-document.addEventListener('DOMContentLoaded', function() {
-    // Add event listeners for login form on login.html
+document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+
     if (loginForm) {
-        loginForm.addEventListener('submit', async function(e) {
+        loginForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            
-            const email = document.getElementById('email').value;
+
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            
+
+            if (!email || !password) {
+                loginError.textContent = 'Please enter both email and password.';
+                return;
+            }
+
+            loginError.textContent = '';
+
             try {
-                // In a real app, you'd have admin users set up in Firebase Authentication
-                // For this demo, we'll use a simple admin credential
-                // In production, use Firebase Authentication with custom claims or a separate admin collection
-                
-                // This is a simplified approach - in reality, you'd authenticate with Firebase Auth
-                if (email === 'admin@mineheadbadminton.com' && password === 'admin123') {
+                // Sign in using Firebase Auth
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+                // Check if user is an admin via custom claim (you'll set this in Firebase Console later)
+                const user = userCredential.user;
+                const idTokenResult = await user.getIdTokenResult();
+
+                if (idTokenResult.claims.admin === true) {
                     localStorage.setItem('isAdmin', 'true');
                     window.location.href = 'admin.html';
                 } else {
-                    document.getElementById('loginError').textContent = 'Invalid credentials. Try admin@mineheadbadminton.com / admin123';
+                    // User is not an admin — show error
+                    loginError.textContent = 'Access denied. You are not authorized as an admin.';
+                    await auth.signOut(); // Log out non-admin users
                 }
             } catch (error) {
-                document.getElementById('loginError').textContent = 'Login failed: ' + error.message;
+                console.error('Login error:', error);
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    loginError.textContent = 'Invalid credentials. Please check your email and password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    loginError.textContent = 'Invalid email format.';
+                } else {
+                    loginError.textContent = 'Login failed: ' + error.message;
+                }
             }
         });
     }
-    
-    // Check if user is admin on admin page
-    if (window.location.pathname.includes('admin.html')) {
-        const isAdmin = localStorage.getItem('isAdmin') === 'true';
-        if (!isAdmin) {
-            window.location.href = 'login.html';
-        }
-    }
 });
-
-// Function to handle logout
-function logout() {
-    localStorage.removeItem('isAdmin');
-    window.location.href = 'login.html';
-}
