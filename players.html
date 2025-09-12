@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Registration - Minehead Badminton Tournament</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="badmintonlogo.png">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="badmintonlogo.png" alt="Minehead Badminton Tournament Logo" class="logo">
+            <h1>Minehead Badminton Tournament</h1>
+        </div>
+    </header>
+
+    <main class="container players-container">
+        <section id="registrationSection" class="registration-section">
+            <h2>Player Registration</h2>
+            <p>Sign up for our exciting badminton tournament in Minehead!</p>
+            
+            <div id="registrationStatus" class="registration-status">
+                <p>Registration is currently closed. Please check back later.</p>
+            </div>
+            
+            <form id="playerRegistrationForm" class="registration-form">
+                <div class="form-group">
+                    <label for="playerName">Full Name:</label>
+                    <input type="text" id="playerName" name="playerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerEmail">Email Address:</label>
+                    <input type="email" id="playerEmail" name="playerEmail">
+                </div>
+                <div class="form-group">
+                    <label for="playerPhone">Phone Number:</label>
+                    <input type="tel" id="playerPhone" name="playerPhone">
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="singles" name="singles">
+                    <label for="singles">Register for Singles</label>
+                    
+                    <input type="checkbox" id="doubles" name="doubles">
+                    <label for="doubles">Register for Doubles</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Register Now</button>
+            </form>
+            
+            <div id="registrationSuccess" class="success-message" style="display: none;">
+                <p>Thank you for registering! We'll contact you with more details soon.</p>
+            </div>
+        </section>
+
+        <section id="fixturesSection" class="fixtures-section">
+            <h2>Tournament Fixtures</h2>
+            <p>Check out the tournament schedule below:</p>
+            
+            <div id="singlesFixtures" class="tournament-bracket">
+                <p>Loading fixtures...</p>
+            </div>
+            
+            <div id="doublesFixtures" class="tournament-bracket">
+                <p>Loading fixtures...</p>
+            </div>
+        </section>
+        
+        <section id="resultsSection" class="results-section">
+            <h2>Results</h2>
+            <p>Latest match results:</p>
+            
+            <div id="matchResults" class="results-list">
+                <p>No results available yet.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Minehead Badminton Tournament. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="firebase-config.js"></script>
+    <script src="players.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Minehead Badminton Tournament</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="badmintonlogo.png">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="badmintonlogo.png" alt="Minehead Badminton Tournament Logo" class="logo">
+            <h1>Minehead Badminton Tournament</h1>
+            <div class="admin-controls">
+                <span id="adminStatus">Welcome, Admin</span>
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container admin-container">
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="#players" class="active">Players</a></li>
+                <li><a href="#fixtures">Fixtures</a></li>
+                <li><a href="#settings">Settings</a></li>
+            </ul>
+        </nav>
+
+        <div class="admin-content">
+            <!-- Players Section -->
+            <section id="players" class="admin-section active">
+                <h2>Player Management</h2>
+                <div class="registration-status">
+                    <span>Registration Status: </span>
+                    <span id="registrationStatus">Open</span>
+                    <button id="toggleRegistration" class="btn btn-primary">Toggle Registration</button>
+                </div>
+                
+                <div class="player-form">
+                    <h3>Add New Player</h3>
+                    <form id="addPlayerForm">
+                        <div class="form-group">
+                            <label for="playerName">Player Name:</label>
+                            <input type="text" id="playerName" name="playerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="playerEmail">Email:</label>
+                            <input type="email" id="playerEmail" name="playerEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="playerPhone">Phone:</label>
+                            <input type="tel" id="playerPhone" name="playerPhone">
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="singles" name="singles">
+                            <label for="singles">Register for Singles</label>
+                            
+                            <input type="checkbox" id="doubles" name="doubles">
+                            <label for="doubles">Register for Doubles</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Player</button>
+                    </form>
+                </div>
+
+                <div class="players-list">
+                    <h3>Registered Players</h3>
+                    <div class="player-category">
+                        <h4>Singles Players</h4>
+                        <ul id="singlesPlayersList"></ul>
+                    </div>
+                    <div class="player-category">
+                        <h4>Doubles Players</h4>
+                        <ul id="doublesPlayersList"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fixtures Section -->
+            <section id="fixtures" class="admin-section">
+                <h2>Fixtures & Results</h2>
+                
+                <div class="fixture-controls">
+                    <button id="generateFixturesBtn" class="btn btn-primary">Generate Fixtures</button>
+                    <button id="resetFixturesBtn" class="btn btn-secondary">Reset Fixtures</button>
+                </div>
+                
+                <div class="fixtures-display">
+                    <h3>Singles Tournament</h3>
+                    <div id="singlesFixtures" class="tournament-bracket">
+                        <!-- Fixtures will be generated here -->
+                        <p>No fixtures generated yet. Click "Generate Fixtures" to create the bracket.</p>
+                    </div>
+                    
+                    <h3>Doubles Tournament</h3>
+                    <div id="doublesFixtures" class="tournament-bracket">
+                        <!-- Fixtures will be generated here -->
+                        <p>No fixtures generated yet. Click "Generate Fixtures" to create the bracket.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="admin-section">
+                <h2>Settings</h2>
+                <div class="settings-item">
+                    <h3>Tournament Information</h3>
+                    <p><strong>Date:</strong> <input type="date" id="tournamentDate" value="2025-10-31"></p>
+                    <p><strong>Location:</strong> <input type="text" id="tournamentLocation" value="Minehead Sports Centre" style="width: 200px;"></p>
+                </div>
+                
+                <div class="settings-item">
+                    <h3>Notification Settings</h3>
+                    <p><input type="checkbox" id="enableNotifications"> Enable email notifications to players</p>
+                </div>
+                
+                <div class="settings-item">
+                    <h3>Export Data</h3>
+                    <button id="exportDataBtn" class="btn btn-secondary">Export Tournament Data</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Minehead Badminton Tournament. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="firebase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

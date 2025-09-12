@@ -1,0 +1,535 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background-color: #1a477a;
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 50px;
+    margin-right: 20px;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.admin-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-controls span {
+    font-weight: bold;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #1a477a;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #123663;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+footer {
+    background-color: #1a477a;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+/* Landing Page */
+.hero {
+    text-align: center;
+    padding: 4rem 0;
+    background-color: #e8f4fd;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1a477a;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.feature-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.feature-card h3 {
+    color: #1a477a;
+    margin-bottom: 1rem;
+}
+
+/* Login Page */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 120px);
+}
+
+.login-form {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-form h2 {
+    text-align: center;
+    color: #1a477a;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.error-message {
+    color: #d32f2f;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.back-link a {
+    color: #1a477a;
+    text-decoration: none;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+/* Admin Dashboard */
+.admin-container {
+    display: flex;
+    margin-top: 2rem;
+}
+
+.admin-nav {
+    width: 250px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-right: 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.admin-nav ul {
+    list-style: none;
+}
+
+.admin-nav li {
+    margin-bottom: 0.5rem;
+}
+
+.admin-nav a {
+    display: block;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #555;
+    transition: background-color 0.3s ease;
+}
+
+.admin-nav a:hover {
+    background-color: #e9ecef;
+}
+
+.admin-nav a.active {
+    background-color: #1a477a;
+    color: white;
+}
+
+.admin-content {
+    flex: 1;
+}
+
+.admin-section {
+    display: none;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.admin-section.active {
+    display: block;
+}
+
+.registration-status {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.registration-status span:nth-child(2) {
+    font-weight: bold;
+    margin: 0 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.registration-status span:nth-child(2).closed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.registration-status button {
+    margin-left: auto;
+}
+
+.player-form {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.player-form h3 {
+    color: #1a477a;
+    margin-bottom: 1.5rem;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.players-list {
+    margin-top: 2rem;
+}
+
+.player-category {
+    margin-bottom: 2rem;
+}
+
+.player-category h4 {
+    color: #1a477a;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.players-list ul {
+    list-style: none;
+}
+
+.players-list li {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: white;
+    border-radius: 4px;
+    border-left: 4px solid #1a477a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.players-list .delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.players-list .delete-btn:hover {
+    background-color: #c82333;
+}
+
+.fixture-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.fixtures-display h3 {
+    color: #1a477a;
+    margin-bottom: 1rem;
+}
+
+.tournament-bracket {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.round-title {
+    background-color: #1a477a;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.match {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 4px;
+    border-left: 4px solid #1a477a;
+}
+
+.match-player {
+    flex: 1;
+    text-align: center;
+}
+
+.match-player span {
+    display: block;
+    font-weight: bold;
+}
+
+.match-score {
+    width: 80px;
+    text-align: center;
+}
+
+.match-score input {
+    width: 30px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.match-winner {
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.settings-item {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.settings-item h3 {
+    color: #1a477a;
+    margin-bottom: 1rem;
+}
+
+.settings-item input,
+.settings-item select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+
+/* Player Page */
+.registration-section {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.registration-form {
+    margin-top: 1.5rem;
+}
+
+.registration-form h3 {
+    color: #1a477a;
+    margin-bottom: 1.5rem;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    border-left: 4px solid #28a745;
+}
+
+.fixtures-section, .results-section {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.results-list {
+    margin-top: 1rem;
+}
+
+.result-item {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 4px solid #1a477a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .logo {
+        margin: 0 0 1rem 0;
+    }
+    
+    .admin-controls {
+        margin-top: 1rem;
+        justify-content: center;
+    }
+    
+    .admin-container {
+        flex-direction: column;
+    }
+    
+    .admin-nav {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .admin-content {
+        padding: 1rem;
+    }
+    
+    .hero h2 {
+        font-size: 2rem;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+    }
+    
+    .checkbox-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .match {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .match-player {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .match-score {
+        width: 100%;
+    }
+}
